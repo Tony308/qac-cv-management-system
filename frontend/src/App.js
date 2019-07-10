@@ -1,21 +1,50 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
-import { Login } from './components/login.js';
-import {NavBar} from "./components/navbar";
-
+import {Route, Switch} from 'react-router';
+import LoginContainer from "./containers/LoginContainer";
+import HomePageContainer from "./containers/HomePageContainer";
+import axios from 'axios';
 
 export class App extends Component {
+    constructor(props) {
+        super(props);
 
-  render() {
-    return (
-        <div className="login">
-            <NavBar/>
-            <Login />
+        this.uploadCV = this.uploadCV.bind(this);
+    }
 
-        </div>
-    );
-  }
+    uploadCV(e) {
+        let cv = document.getElementById("CV").value;
+        console.log(e.target);
+        let reader = new FileReader();
+        reader.onload = () => {
+
+        };
+
+        console.log("fasfs");
+        // let url = "http://localhost:1234/cv-upload";
+        // axios.post(url, {
+        //     header: {
+        //         allow: "*"
+        //     },
+        //     body: {
+        //
+        //     }
+        // })
+    }
+
+    render() {
+        return (
+            <div className="login">
+                <Switch>
+                    <Route exact={true} path="/" render={
+                        () => <LoginContainer/>
+                        } />
+                    <Route exact={true} path="/home" render={() => <HomePageContainer uploadCV={this.uploadCV} />} />
+                </Switch>
+            </div>
+        );
+    }
 }
 
 export default App;

@@ -5,9 +5,9 @@ import { configure, shallow } from 'enzyme';
 import { expect } from 'chai';
 import Adapter from 'enzyme-adapter-react-16'
 
-import {Login} from './components/login.js';
+import {LoginComponent} from './components/LoginComponent.js';
 import {NavBar} from "./components/navbar";
-import loginAuthen from "./components/loginContainer";
+import loginAuthen from "./containers/LoginContainer";
 
 
 
@@ -19,16 +19,16 @@ describe('Check main App.js loads', function() {
         const frontPage = (
             <div className="login">
             <NavBar/>
-            <Login />
+            <LoginComponent />
             </div>
         );
         expect(wrapper.contains(frontPage)).to.equal(true);
     });
 });
 
-describe('Check Login component', function() {
+describe('Check LoginComponent component', function() {
     it('login component exists', () => {
-        const wrapper = shallow(<Login/>);
+        const wrapper = shallow(<LoginComponent/>);
         const loginComponents = (
             <div>
                 <p>Username:</p><input type="text" placeholder="Username"/>
@@ -43,7 +43,7 @@ describe('Check Login component', function() {
 });
 
 describe('REST test', () => {
-    it ('Login function', (done) => {
+    it ('LoginComponent function', (done) => {
         loginAuthen(body)
             .then(data => {
                 expect(data).toBeDefined();
