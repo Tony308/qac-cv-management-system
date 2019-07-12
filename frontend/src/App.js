@@ -14,23 +14,21 @@ export class App extends Component {
     }
 
     uploadCV(e) {
-        let cv = document.getElementById("CV").value;
-        console.log(e.target);
+        let arrayBuffer = null;
         let reader = new FileReader();
-        reader.onload = () => {
 
+        reader.onload = () => {
+            arrayBuffer = reader.result;
+            console.log(arrayBuffer);
         };
 
-        console.log("fasfs");
-        // let url = "http://localhost:1234/cv-upload";
-        // axios.post(url, {
-        //     header: {
-        //         allow: "*"
-        //     },
-        //     body: {
-        //
-        //     }
-        // })
+        let url = "http://localhost:1234/cv-upload";
+        axios.post(url, {
+            header: {
+                allow: "*"
+            },
+            body: arrayBuffer
+        })
     }
 
     render() {
@@ -40,7 +38,9 @@ export class App extends Component {
                     <Route exact={true} path="/" render={
                         () => <LoginContainer/>
                         } />
-                    <Route exact={true} path="/home" render={() => <HomePageContainer uploadCV={this.uploadCV} />} />
+                    <Route exact={true} path="/home" render={() => <HomePageContainer
+                        uploadCV={this.uploadCV}
+                    />} />
                 </Switch>
             </div>
         );
