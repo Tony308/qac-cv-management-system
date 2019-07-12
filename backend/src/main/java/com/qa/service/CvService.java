@@ -41,7 +41,16 @@ public class CvService {
         return new ResponseEntity<>("File is successfully uploaded", HttpStatus.OK);
     }
 
-    public Cv downloadCv(String id) {
+    public ResponseEntity<Object> uploadCv(Binary file, String name) {
+
+        Cv cv = new Cv(name, file);
+        cv.setLastModified(new Date());
+        iCvRepository.save(cv);
+
+        return new ResponseEntity<>("File is successfully uploaded.", HttpStatus.OK);
+    }
+
+        public Cv downloadCv(String id) {
         Cv cv = iCvRepository.findById(id).get();
         //Writes file to PC
 //        Binary document = cv.getCvFile();

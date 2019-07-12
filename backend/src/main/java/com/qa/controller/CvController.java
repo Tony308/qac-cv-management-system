@@ -1,8 +1,10 @@
 package com.qa.controller;
 
+
 import com.qa.domain.Cv;
 import com.qa.service.CvService;
 
+import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +32,12 @@ public class CvController {
 	@PostMapping("/upload-cv")
 	public ResponseEntity<Object> uploadCv(@RequestParam("file")MultipartFile file,
                                            @RequestParam("name") String name){
+		return service.uploadCv(file, name);
+	}
+
+	@PostMapping("/upload-cv-binary")
+	public ResponseEntity<Object> receiveCVNonFile(@RequestParam("file") Binary file,
+												   @RequestParam("name") String name) {
 		return service.uploadCv(file, name);
 	}
 
