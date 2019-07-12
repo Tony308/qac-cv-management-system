@@ -2,6 +2,9 @@
 
 Front-end
 ======
+Javascript frontend using React.JS and Node.JS
+
+Axios library for HTTP requests. More info @ [Axios](https://github.com/axios/axios)
 
 
 Back-end
