@@ -4,7 +4,10 @@ import HomePageComponent from "../components/HomePageComponent";
 export default class HomePageContainer extends Component {
     render() {
         return(
-            <HomePageComponent uploadCV={this.props.uploadCV}/>
+            <HomePageComponent
+                uploadCV={this.props.uploadCV}
+                getCVs={this.props.getCVs}
+            />
         );
     }
 }

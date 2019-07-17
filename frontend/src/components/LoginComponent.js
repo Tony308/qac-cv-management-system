@@ -4,12 +4,12 @@ import React from 'react';
 function loginComponent() {
     return (
         <div>
-            <form method="POST" action="">
+            <form method="POST" onSubmit="">
                 <p>Username:</p><input type="text" placeholder="Username"/>
                 <p>Password</p><input type="password" placeholder="Password"/>
                 <br/>
                 <br/>
-                <input type="submit" value="Submit" onSubmit=""/>
+                <input type="submit" value="Submit"/>
             </form>
         </div>
     );

@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cvsystem")
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "*")
 public class CvController {
 	
 	@Autowired
@@ -30,7 +30,7 @@ public class CvController {
     }
 
 	@PostMapping("/upload-cv")
-	public ResponseEntity<Object> uploadCv(@RequestParam("file")MultipartFile file,
+	public ResponseEntity<Object> uploadCv(@RequestParam("file") MultipartFile file,
                                            @RequestParam("name") String name){
 		return service.uploadCv(file, name);
 	}

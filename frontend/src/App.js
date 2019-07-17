@@ -11,24 +11,63 @@ export class App extends Component {
         super(props);
 
         this.uploadCV = this.uploadCV.bind(this);
+        this.getCVs = this.getCVs.bind(this);
+
+        this.state =  {
+            name: 'test'
+        };
+
     }
 
     uploadCV(e) {
+        e.preventDefault();
+
         let arrayBuffer = null;
         let reader = new FileReader();
 
         reader.onload = () => {
             arrayBuffer = reader.result;
-            console.log(arrayBuffer);
+            console.log("Array buffer." + arrayBuffer);
         };
 
-        let url = "http://localhost:1234/cv-upload";
-        axios.post(url, {
-            header: {
-                allow: "*"
-            },
-            body: arrayBuffer
+        let file = document.getElementById("CV").files[0];
+
+        const data = new FormData();
+
+        data.append('file', file);
+        data.append('name', 'Username');
+        console.log(file);
+
+        let url = "http://localhost:8081/cvsystem/upload-cv";
+        axios.post(url, data)
+            .then(response => console.log(response))
+            .catch(err => console.log(err));
+
+    }
+
+
+    getCVs(e) {
+        e.preventDefault();
+
+        let url = 'http://localhost:8081/cvsystem/get';
+        axios.get(url, {
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
         })
+
+            .then(res => {
+                for (let x = 0; x < res.data.length; x++) {
+                    console.log(res.data[x]);
+                    this.setState({
+                        data: res.data
+                    })
+                }
+                document.getElementById('output').innerText = res.data[0].cvFile;
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 
     render() {
@@ -40,6 +79,7 @@ export class App extends Component {
                         } />
                     <Route exact={true} path="/home" render={() => <HomePageContainer
                         uploadCV={this.uploadCV}
+                        getCVs={this.getCVs}
                     />} />
                 </Switch>
             </div>

@@ -58,4 +58,13 @@ public class Cv {
         this.cvFile = cvFile;
     }
 
+	@Override
+	public String toString() {
+		return "Cv{" +
+				"id='" + id + '\'' +
+				", name='" + name + '\'' +
+				", lastModified=" + lastModified +
+				", cvFile=" + cvFile +
+				'}';
+	}
 }
