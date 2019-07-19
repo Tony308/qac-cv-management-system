@@ -1,24 +1,24 @@
-package com.qa;
-
-import com.qa.domain.Cv;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-
-import com.qa.repository.ICvRepository;
-
-@EnableMongoRepositories(basePackageClasses = ICvRepository.class)
-@Configuration
-public class mongoDBConfig implements CommandLineRunner {
-
-    @Autowired
-    private ICvRepository iCvRepository;
-
-    @Override
-    public void run(String... args) {
-
+//package com.qa;
+//
+//import com.qa.domain.Cv;
+//
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.CommandLineRunner;
+//import org.springframework.context.annotation.Configuration;
+//import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+//
+//import com.qa.repository.ICvRepository;
+//
+//@EnableMongoRepositories(basePackageClasses = ICvRepository.class)
+//@Configuration
+//public class mongoDBConfig implements CommandLineRunner {
+//
+//    @Autowired
+//    private ICvRepository iCvRepository;
+//
+//    @Override
+//    public void run(String... args) {
+//
 //        iCvRepository.deleteAll();
 //
 //        // save a couple of customers
@@ -38,6 +38,6 @@ public class mongoDBConfig implements CommandLineRunner {
 //        System.out.println("Customer found with findByFirstName('Alice'):");
 //        System.out.println("--------------------------------");
 //        System.out.println(iCvRepository.findByName("Alice"));
-
-    }
-}
+//
+//    }
+//}

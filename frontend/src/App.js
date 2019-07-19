@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
+import logo from './logo.svg';
 import './App.css';
 import {Route, Switch} from 'react-router';
 import LoginContainer from "./containers/LoginContainer";
@@ -16,7 +16,6 @@ export class App extends Component {
         this.state =  {
             name: 'test'
         };
-
     }
 
     uploadCV(e) {
@@ -35,8 +34,9 @@ export class App extends Component {
         const data = new FormData();
 
         data.append('file', file);
-        data.append('name', 'Username');
-        console.log(file);
+        data.append('name', this.state.name);
+
+        // console.log(file);
 
         let url = "http://localhost:8081/cvsystem/upload-cv";
         axios.post(url, data)
@@ -44,7 +44,6 @@ export class App extends Component {
             .catch(err => console.log(err));
 
     }
-
 
     getCVs(e) {
         e.preventDefault();
@@ -61,9 +60,9 @@ export class App extends Component {
                     console.log(res.data[x]);
                     this.setState({
                         data: res.data
-                    })
+                    });
+                    // document.getElementById("output").value = ;
                 }
-                document.getElementById('output').innerText = res.data[0].cvFile;
             })
             .catch(err => {
                 console.log(err);
@@ -71,6 +70,7 @@ export class App extends Component {
     }
 
     render() {
+
         return (
             <div className="login">
                 <Switch>
