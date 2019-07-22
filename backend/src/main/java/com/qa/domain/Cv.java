@@ -17,6 +17,8 @@ public class Cv {
 	@Field
 	private Date lastModified;
 	@Field
+	private String fileName;
+	@Field
 	private Binary cvFile;
 
 	public Cv(String name, Binary cvFile) {
@@ -58,12 +60,21 @@ public class Cv {
         this.cvFile = cvFile;
     }
 
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
 	@Override
 	public String toString() {
 		return "Cv{" +
 				"id='" + id + '\'' +
 				", name='" + name + '\'' +
 				", lastModified=" + lastModified +
+				", fileName='" + fileName + '\'' +
 				", cvFile=" + cvFile +
 				'}';
 	}

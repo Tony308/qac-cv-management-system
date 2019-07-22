@@ -31,15 +31,11 @@ public class CvController {
 
 	@PostMapping("/upload-cv")
 	public ResponseEntity<Object> uploadCv(@RequestParam("file") MultipartFile file,
-                                           @RequestParam("name") String name){
-		return service.uploadCv(file, name);
+                                           @RequestParam("user") String name,
+										   @RequestParam("fileName") String fileName){
+		return service.uploadCv(file, name,fileName);
 	}
 
-	@PostMapping("/upload-cv-binary")
-	public ResponseEntity<Object> receiveCVNonFile(@RequestParam("file") Binary file,
-												   @RequestParam("name") String name) {
-		return service.uploadCv(file, name);
-	}
 
     @GetMapping("/retrieve/{id}")
     public Cv retrieveFile(@PathVariable String id) {
@@ -54,7 +50,9 @@ public class CvController {
     @PutMapping("/update-cv/{id}")
     public ResponseEntity<Object> updateCv(@PathVariable String id,
                                            @RequestParam("file") MultipartFile file,
-                                           @RequestParam("name") String name) {
-        return service.updateCv(id, file, name);
+                                           @RequestParam("name") String name,
+										   @RequestParam("fileName") String fileName) {
+
+        return service.updateCv(id, file, name, fileName);
     }
 }

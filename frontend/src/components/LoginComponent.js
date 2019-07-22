@@ -4,7 +4,7 @@ import React from 'react';
 function loginComponent() {
     return (
         <div>
-            <form method="POST" onSubmit="">
+            <form method="POST">
                 <p>Username:</p><input type="text" placeholder="Username"/>
                 <p>Password</p><input type="password" placeholder="Password"/>
                 <br/>

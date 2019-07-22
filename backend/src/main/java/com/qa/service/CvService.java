@@ -27,11 +27,12 @@ public class CvService {
     }
 
 
-    public ResponseEntity<Object> uploadCv(MultipartFile file, String name) {
+    public ResponseEntity<Object> uploadCv(MultipartFile file, String name, String fileName) {
             try {
                 Binary fileToBinaryStorage = new Binary(BsonBinarySubType.BINARY, file.getBytes());
                 Cv cv = new Cv(name, fileToBinaryStorage);
                 cv.setLastModified(new Date());
+                cv.setFileName(fileName);
                 iCvRepository.save(cv);
 
             } catch (Exception e) {
@@ -74,7 +75,7 @@ public class CvService {
 		return new ResponseEntity<>("CV successfully deleted", HttpStatus.OK);
 	}
 
-	public ResponseEntity<Object> updateCv(String id, MultipartFile file, String name) {
+	public ResponseEntity<Object> updateCv(String id, MultipartFile file, String name, String fileName) {
         Cv cvToUpdate = iCvRepository.findById(id).get();
         if (name.equals("")) {
             name = cvToUpdate.getName();
@@ -84,6 +85,7 @@ public class CvService {
             cvToUpdate.setCvFile(updatedCvBinary);
             cvToUpdate.setLastModified(new Date());
             cvToUpdate.setName(name);
+            cvToUpdate.setFileName(fileName);
             iCvRepository.save(cvToUpdate);
 
         } catch(IOException e) {

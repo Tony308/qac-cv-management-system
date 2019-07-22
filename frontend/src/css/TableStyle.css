@@ -1,0 +1,10 @@
+table {
+    margin: 25px;
+    border: solid red 2px;
+}
+
+td {
+    border: solid black 2px;
+    margin: 5px;
+    padding: 5px;
+}
