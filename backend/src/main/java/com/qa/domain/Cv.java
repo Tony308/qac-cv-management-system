@@ -6,8 +6,10 @@ import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.stereotype.Component;
 
 @Document
+@Component
 public class Cv {
 
 	@Id
@@ -20,6 +22,9 @@ public class Cv {
 	private String fileName;
 	@Field
 	private Binary cvFile;
+	@Field
+	private String userId;
+
 
 	public Cv(String name, Binary cvFile) {
 		this.name = name;
@@ -68,14 +73,17 @@ public class Cv {
 		this.fileName = fileName;
 	}
 
-	@Override
-	public String toString() {
-		return "Cv{" +
-				"id='" + id + '\'' +
-				", name='" + name + '\'' +
-				", lastModified=" + lastModified +
-				", fileName='" + fileName + '\'' +
-				", cvFile=" + cvFile +
-				'}';
+
+	public void setId(String id) {
+		this.id = id;
 	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
 }

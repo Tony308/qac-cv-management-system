@@ -39,7 +39,7 @@ public class CvService {
                 e.printStackTrace();
                 return new ResponseEntity<>("Upload failed", HttpStatus.BAD_REQUEST);
             }
-        return new ResponseEntity<>("File is successfully uploaded", HttpStatus.OK);
+        return new ResponseEntity<>("File is successfully uploaded", HttpStatus.CREATED);
     }
 
     public ResponseEntity<Object> uploadCv(Binary file, String name) {

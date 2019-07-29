@@ -1,15 +1,14 @@
 import React from 'react';
 
-
-function loginComponent() {
+function loginComponent(props) {
     return (
         <div>
-            <form method="POST">
-                <p>Username:</p><input type="text" placeholder="Username"/>
-                <p>Password</p><input type="password" placeholder="Password"/>
-                <br/>
-                <br/>
-                <input type="submit" value="Submit"/>
+            <form method="POST" name="login-form" onSubmit={props.login} >
+                <p>Username:</p><input type="text" placeholder="Username" name="username" onChange={props.handleChange}/>
+                <p>Password</p><input type="password" placeholder="Password" name="password" onChange={props.handleChange}/>
+                <br />
+                <br />
+                <input type="submit" value="Login"/>
             </form>
         </div>
     );

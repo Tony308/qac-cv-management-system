@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from "axios";
 import LandingComponent from "../components/LandingComponent";
 
-
 export default class LandingContainer extends Component {
     constructor(props) {
         super(props);
@@ -10,6 +9,9 @@ export default class LandingContainer extends Component {
         this.uploadCV = this.uploadCV.bind(this);
         this.getCVs = this.getCVs.bind(this);
         this.deleteCV = this.deleteCV.bind(this);
+        this.login = this.login.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.createAccount = this.createAccount.bind(this);
 
         this.state =  {
             name: 'test',
@@ -52,6 +54,28 @@ export default class LandingContainer extends Component {
         );
     }
 
+    handleChange(e) {
+        this.setState({
+            [e.target.name]:e.target.value
+        });
+        console.log(this.state.username);
+        console.log(this.state.password);
+    }
+
+    login(e) {
+        e.preventDefault();
+
+        let url = "http://localhost:8081/cvsystem/login";
+        let data = new FormData();
+
+        data.append('username', this.state.username);
+        data.append('password', this.state.password);
+
+        axios.post(url, data)
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
+    }
+
     getCVs() {
         let url = 'http://localhost:8081/cvsystem/get';
 
@@ -71,6 +95,26 @@ export default class LandingContainer extends Component {
 
     }
 
+    createAccount(e) {
+        e.preventDefault();
+
+        let url = "http://localhost:8081/cvsystem/create-account";
+
+        let data = new FormData();
+
+        data.append("username", this.state.username);
+        data.append("password", this.state.password);
+
+        axios.post(url, data)
+            .then(res => console.log(res))
+            .catch(err => console.log(err));
+
+        this.setState({
+            username: '',
+            password: ''
+        })
+    }
+
     render() {
         return (
             <LandingComponent
@@ -78,6 +122,9 @@ export default class LandingContainer extends Component {
                 getCVs={this.getCVs}
                 deleteCV={this.deleteCV}
                 data={this.state.data}
+                login={this.login}
+                createAccount={this.createAccount}
+                handleChange={this.handleChange}
             />
         );
     }
