@@ -1,30 +1,25 @@
 package com.qa.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.stereotype.Component;
 
 @Document
-@Component
 public class User {
 
     @Id
-    String id;
+    private String id;
+
+    @Indexed(unique = true)
+    @Field
+    private String username;
 
     @Field
-    String username;
-
-    @Field
-    String password;
-
+    private String password;
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -41,14 +36,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
     }
 }

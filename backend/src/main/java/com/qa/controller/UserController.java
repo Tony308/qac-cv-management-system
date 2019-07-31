@@ -19,13 +19,14 @@ public class UserController {
     }
 
     @PostMapping("/create-account")
-    public ResponseEntity<HttpStatus> createAccount(@RequestParam("username") String username,
+    public ResponseEntity<String> createAccount(@RequestParam("username") String username,
                                                     @RequestParam("password") String password) {
 
         return userService.createUser(username, password);
     }
 
     @PostMapping("/login")
+    @ResponseBody
     public ResponseEntity<Object> authenticateLogin(@RequestParam("username") String username,
                                                         @RequestParam("password") String password) {
 

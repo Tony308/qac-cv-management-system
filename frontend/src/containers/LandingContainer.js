@@ -4,6 +4,7 @@ import LandingComponent from "../components/LandingComponent";
 
 export default class LandingContainer extends Component {
     constructor(props) {
+
         super(props);
 
         this.uploadCV = this.uploadCV.bind(this);
@@ -25,6 +26,11 @@ export default class LandingContainer extends Component {
         let file = document.getElementById("CV").files[0];
 
         const data = new FormData();
+
+        if (!file || !this.state.name || !file.name) {
+            console.log('error');
+            return "Error, not enough details."
+        }
 
         data.append('file', file);
         data.append('user', this.state.name);
@@ -58,8 +64,6 @@ export default class LandingContainer extends Component {
         this.setState({
             [e.target.name]:e.target.value
         });
-        console.log(this.state.username);
-        console.log(this.state.password);
     }
 
     login(e) {
@@ -73,7 +77,9 @@ export default class LandingContainer extends Component {
 
         axios.post(url, data)
             .then(res => console.log(res))
-            .catch(err => console.log(err))
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     getCVs() {
@@ -109,10 +115,6 @@ export default class LandingContainer extends Component {
             .then(res => console.log(res))
             .catch(err => console.log(err));
 
-        this.setState({
-            username: '',
-            password: ''
-        })
     }
 
     render() {

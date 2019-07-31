@@ -18,6 +18,10 @@ export default class HomePageContainer extends Component {
         }
     }
 
+    componentDidMount() {
+        this.props.getCVs();
+    }
+
     render() {
         let rows = [];
         let data = this.props.data;
