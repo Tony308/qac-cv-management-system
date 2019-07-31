@@ -3,12 +3,14 @@ import {Route, Switch} from "react-router";
 import LoginContainer from "../containers/LoginContainer";
 import HomePageContainer from "../containers/HomePageContainer";
 import CreateAccountContainer from "../containers/CreateAccountContainer";
-
+import Navbar from '../containers/NavigationContainer';
 
 function LandingComponent(props) {
 
     return (
         <div className="login">
+            <Navbar/>
+
             <Switch>
                 <Route exact={true} path="/" render={
                     () => <LoginContainer

@@ -38,8 +38,8 @@ public class UserService {
 
         Optional<User> user = userRepository.findByUsernameAndPassword(username, password);
         if (user.isPresent()) {
-            return new ResponseEntity<>("Login Successful", HttpStatus.OK);
+            return new ResponseEntity<>("Login Successful", HttpStatus.ACCEPTED);
         }
-        return new ResponseEntity<>("Incorrect credentials", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Incorrect credentials", HttpStatus.UNAUTHORIZED);
     }
 }

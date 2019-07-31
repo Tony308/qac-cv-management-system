@@ -6,7 +6,7 @@ import { expect } from 'chai';
 import Adapter from 'enzyme-adapter-react-16'
 
 import {LoginComponent} from './components/LoginComponent.js';
-import {NavBar} from "./components/navbar";
+import {NavigationContainer} from "./containers/NavigationContainer";
 import loginAuthen from "./containers/LoginContainer";
 
 

@@ -76,7 +76,18 @@ export default class LandingContainer extends Component {
         data.append('password', this.state.password);
 
         axios.post(url, data)
-            .then(res => console.log(res))
+            .then(res => {
+                console.log(res);
+                if (res.status === 202) {
+                    this.setState({
+                        auth: true
+                    });
+                    localStorage.setItem("auth", this.state.auth);
+                    console.log(localStorage.getItem("auth"));
+                    console.log(this.state.auth);
+                }
+
+            })
             .catch(err => {
                 console.log(err);
             })
@@ -98,7 +109,6 @@ export default class LandingContainer extends Component {
             .catch(err => {
                 console.log(err);
             });
-
     }
 
     createAccount(e) {
