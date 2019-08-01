@@ -22,8 +22,9 @@ public class CvService {
 	@Autowired
 	private ICvRepository iCvRepository;
 
-	public List<Cv> getAllCv() {
-	    return iCvRepository.findAll();
+	public List<Cv> getUserCVs(String name) {
+
+	    return iCvRepository.findAllByName(name);
     }
 
 
@@ -51,23 +52,23 @@ public class CvService {
         return new ResponseEntity<>("File is successfully uploaded.", HttpStatus.OK);
     }
 
-        public Cv downloadCv(String id) {
-        Cv cv = iCvRepository.findById(id).get();
-        //Writes file to PC
-//        Binary document = cv.getCvFile();
-//        try {
-//            FileOutputStream fos = null;
-//            String fileDestination = "/home/tony308/Documents/" + cv.getName()+"'s_CV";
-//            fos = new FileOutputStream(fileDestination);
-//            //Will write Byte data to fileDestination
-//            fos.write(document.getData());
-//            fos.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return cv;
-//        }
-        return cv;
-    }
+//        public Cv downloadCv(String id) {
+//        Cv cv = iCvRepository.findById(id).get();
+//        //Writes file to PC
+////        Binary document = cv.getCvFile();
+////        try {
+////            FileOutputStream fos = null;
+////            String fileDestination = "/home/tony308/Documents/" + cv.getName()+"'s_CV";
+////            fos = new FileOutputStream(fileDestination);
+////            //Will write Byte data to fileDestination
+////            fos.write(document.getData());
+////            fos.close();
+////        } catch (IOException e) {
+////            e.printStackTrace();
+////            return cv;
+////        }
+//        return cv;
+//    }
 
 	
 	public ResponseEntity<Object> deleteCv(String id) {

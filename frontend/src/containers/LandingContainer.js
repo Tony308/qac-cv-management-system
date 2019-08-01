@@ -15,9 +15,26 @@ export default class LandingContainer extends Component {
         this.createAccount = this.createAccount.bind(this);
 
         this.state =  {
-            name: 'test',
             data: []
         };
+    }
+    createAccount(e) {
+        e.preventDefault();
+
+        let url = "http://localhost:8081/cvsystem/create-account";
+
+        let data = new FormData();
+
+        data.append("username", this.state.username);
+        data.append("password", this.state.password);
+
+        axios.post(url, data)
+            .then(res => console.log(res))
+            .catch(err => console.log(err));
+
+        this.setState({
+            password: null
+        })
     }
 
     uploadCV(e) {
@@ -27,13 +44,13 @@ export default class LandingContainer extends Component {
 
         const data = new FormData();
 
-        if (!file || !this.state.name || !file.name) {
+        if (!file || !localStorage.getItem("username") || !file.name) {
             console.log('error');
-            return "Error, not enough details."
+            return "Error, not enough details.";
         }
 
         data.append('file', file);
-        data.append('user', this.state.name);
+        data.append('user', localStorage.getItem("username"));
         data.append('fileName', file.name);
 
         let url = "http://localhost:8081/cvsystem/upload-cv";
@@ -47,7 +64,7 @@ export default class LandingContainer extends Component {
     }
 
     deleteCV(id) {
-        let url = "http://localhost:8081/cvsystem//delete/" + id;
+        let url = "http://localhost:8081/cvsystem/delete/" + id;
 
         axios.delete(url)
             .then(response => {
@@ -75,18 +92,16 @@ export default class LandingContainer extends Component {
         data.append('username', this.state.username);
         data.append('password', this.state.password);
 
+        localStorage.setItem("username", this.state.username);
+        localStorage.getItem("username");
+
         axios.post(url, data)
             .then(res => {
                 console.log(res);
                 if (res.status === 202) {
-                    this.setState({
-                        auth: true
-                    });
-                    localStorage.setItem("auth", this.state.auth);
-                    console.log(localStorage.getItem("auth"));
-                    console.log(this.state.auth);
+                    sessionStorage.setItem("auth", 'true');
                 }
-
+                window.location.href = '/home';
             })
             .catch(err => {
                 console.log(err);
@@ -94,7 +109,7 @@ export default class LandingContainer extends Component {
     }
 
     getCVs() {
-        let url = 'http://localhost:8081/cvsystem/get';
+        let url = "http://localhost:8081/cvsystem/get?name=" + localStorage.getItem("username");
 
         axios.get(url, {
             headers: {
@@ -111,23 +126,10 @@ export default class LandingContainer extends Component {
             });
     }
 
-    createAccount(e) {
-        e.preventDefault();
 
-        let url = "http://localhost:8081/cvsystem/create-account";
-
-        let data = new FormData();
-
-        data.append("username", this.state.username);
-        data.append("password", this.state.password);
-
-        axios.post(url, data)
-            .then(res => console.log(res))
-            .catch(err => console.log(err));
-
-    }
 
     render() {
+        console.log(sessionStorage.getItem("auth"));
         return (
             <LandingComponent
                 uploadCV={this.uploadCV}

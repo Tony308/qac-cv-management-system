@@ -30,9 +30,3 @@
     transform: rotate(360deg);
   }
 }
-
-.login {
-  margin: 5%;
-  padding: 5%;
-  border: 1px dashed red;
-}

@@ -12,3 +12,11 @@ li a {
     padding: 8px;
     background-color: #dddddd;
 }
+
+.logoutBtn {
+    float: right;
+    display: inline;
+    background-color: #dddddd;
+    padding: 5px;
+
+}

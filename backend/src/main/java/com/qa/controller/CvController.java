@@ -4,7 +4,6 @@ package com.qa.controller;
 import com.qa.domain.Cv;
 import com.qa.service.CvService;
 
-import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +24,8 @@ public class CvController {
 	}
 
 	@GetMapping("/get")
-    public List<Cv> getAllCv() {
-	    return service.getAllCv();
+    public List<Cv> getAllCv(@RequestParam("name") String name) {
+	    return service.getUserCVs(name);
     }
 
 	@PostMapping("/upload-cv")
@@ -37,10 +36,10 @@ public class CvController {
 	}
 
 
-    @GetMapping("/retrieve/{id}")
-    public Cv retrieveFile(@PathVariable String id) {
-	    return service.downloadCv(id);
-    }
+//    @GetMapping("/retrieve/{id}")
+//    public Cv retrieveFile(@PathVariable String id) {
+//	    return service.downloadCv(id);
+//    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deleteCv(@PathVariable String id){
