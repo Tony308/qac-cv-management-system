@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CvService {
@@ -23,7 +24,6 @@ public class CvService {
 	private ICvRepository iCvRepository;
 
 	public List<Cv> getUserCVs(String name) {
-
 	    return iCvRepository.findAllByName(name);
     }
 
@@ -41,15 +41,6 @@ public class CvService {
                 return new ResponseEntity<>("Upload failed", HttpStatus.BAD_REQUEST);
             }
         return new ResponseEntity<>("File is successfully uploaded", HttpStatus.CREATED);
-    }
-
-    public ResponseEntity<Object> uploadCv(Binary file, String name) {
-
-        Cv cv = new Cv(name, file);
-        cv.setLastModified(new Date());
-        iCvRepository.save(cv);
-
-        return new ResponseEntity<>("File is successfully uploaded.", HttpStatus.OK);
     }
 
 //        public Cv downloadCv(String id) {
@@ -70,22 +61,28 @@ public class CvService {
 //        return cv;
 //    }
 
+
+    public Cv getCV(String id) {
+
+	    Optional<Cv> finder = iCvRepository.findById(id);
+	    Cv cv = finder.get();
+        return cv;
+    }
 	
 	public ResponseEntity<Object> deleteCv(String id) {
         iCvRepository.delete(iCvRepository.findById(id).get());
 		return new ResponseEntity<>("CV successfully deleted", HttpStatus.OK);
 	}
 
-	public ResponseEntity<Object> updateCv(String id, MultipartFile file, String name, String fileName) {
-        Cv cvToUpdate = iCvRepository.findById(id).get();
-        if (name.equals("")) {
-            name = cvToUpdate.getName();
-        }
+	public ResponseEntity<Object> updateCv(String id, MultipartFile file, String fileName) {
+	    Optional<Cv> cv;
+        cv = iCvRepository.findById(id);
+        Cv cvToUpdate = cv.get();
+
         try {
             Binary updatedCvBinary = new Binary(BsonBinarySubType.BINARY, file.getBytes());
             cvToUpdate.setCvFile(updatedCvBinary);
             cvToUpdate.setLastModified(new Date());
-            cvToUpdate.setName(name);
             cvToUpdate.setFileName(fileName);
             iCvRepository.save(cvToUpdate);
 

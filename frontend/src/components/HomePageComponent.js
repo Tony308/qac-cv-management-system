@@ -10,9 +10,8 @@ export function HomePageComponent(props) {
                     <label placeholder="Browse file to upload" />
                     <input id="CV" type="file" placeholder="Upload here" alt = "upload-file"
                     />
+                    <textarea style={{float:"right"}} id="output" cols = "50" rows="5"/>
                     <br />
-                    <br />
-                    <textarea id="output" placeholder={"hello world"} cols={50} rows={5}/>
                     <br />
                     <input type="submit" value="Submit" />
                 </form>
@@ -21,15 +20,14 @@ export function HomePageComponent(props) {
 
             </div>
 
-
-            <div className="cvs" style={{}}>
+            <div className="cvs">
                 <hr/>
                 <br/>
                 <table style={TableStyle}>
 
                     <thead>
                         <tr>
-                            <td>ID</td><td>Username</td>
+                            <td>Username</td><td>File name</td>
                         </tr>
                     </thead>
 

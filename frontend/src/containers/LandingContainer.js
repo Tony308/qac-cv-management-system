@@ -13,6 +13,7 @@ export default class LandingContainer extends Component {
         this.login = this.login.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.createAccount = this.createAccount.bind(this);
+        this.updateCv = this.updateCv.bind(this);
 
         this.state =  {
             data: []
@@ -24,7 +25,6 @@ export default class LandingContainer extends Component {
         let url = "http://localhost:8081/cvsystem/create-account";
 
         let data = new FormData();
-
         data.append("username", this.state.username);
         data.append("password", this.state.password);
 
@@ -41,13 +41,11 @@ export default class LandingContainer extends Component {
         e.preventDefault();
 
         let file = document.getElementById("CV").files[0];
-
-        const data = new FormData();
-
         if (!file || !localStorage.getItem("username") || !file.name) {
             console.log('error');
             return "Error, not enough details.";
         }
+        const data = new FormData();
 
         data.append('file', file);
         data.append('user', localStorage.getItem("username"));
@@ -62,6 +60,29 @@ export default class LandingContainer extends Component {
             })
             .catch(err => console.log(err));
     }
+
+    updateCv(id) {
+        let url = "http://localhost:8081/cvsystem/update-cv/" + id;
+        let data = new FormData();
+
+        let file = document.getElementById("CV").files[0];
+        if (!file || !localStorage.getItem("username") || !file.name) {
+            console.log('error');
+            return "Error, not enough details.";
+        }
+
+        data.append("id", id,);
+        data.append("file", file);
+        data.append("fileName", file.name);
+        axios.put(url, data)
+            .then(res => {
+                console.log(res);
+                this.getCVs();
+
+            })
+            .catch(err => console.log(err));
+    }
+
 
     deleteCV(id) {
         let url = "http://localhost:8081/cvsystem/delete/" + id;
@@ -106,6 +127,7 @@ export default class LandingContainer extends Component {
             .catch(err => {
                 console.log(err);
             })
+
     }
 
     getCVs() {
@@ -129,7 +151,7 @@ export default class LandingContainer extends Component {
 
 
     render() {
-        console.log(sessionStorage.getItem("auth"));
+        // console.log(sessionStorage.getItem("auth"));
         return (
             <LandingComponent
                 uploadCV={this.uploadCV}
@@ -139,6 +161,7 @@ export default class LandingContainer extends Component {
                 login={this.login}
                 createAccount={this.createAccount}
                 handleChange={this.handleChange}
+                updateCV={this.updateCv}
             />
         );
     }
