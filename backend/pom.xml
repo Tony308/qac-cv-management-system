@@ -5,7 +5,6 @@
 	<groupId>com.qa.cvsystem</groupId>
 	<artifactId>cvsystem</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
 	<description>cv bench project system</description>
 
 	<parent>
@@ -98,4 +97,5 @@
 	</build>
 
 
+	<name>QAC_CV_Management_System</name>
 </project>

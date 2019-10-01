@@ -29,7 +29,7 @@ public class CvController {
     }
 
 	@PostMapping("/upload-cv")
-	public ResponseEntity<Object> uploadCv(@RequestParam("file") MultipartFile file,
+	public ResponseEntity<String> uploadCv(@RequestParam("file") MultipartFile file,
                                            @RequestParam("user") String name,
 										   @RequestParam("fileName") String fileName){
 		return service.uploadCv(file, name,fileName);
@@ -42,12 +42,12 @@ public class CvController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Object> deleteCv(@PathVariable String id){
+    public ResponseEntity<String> deleteCv(@PathVariable String id){
 	    return service.deleteCv(id);
     }
 
     @PutMapping("/update-cv/{id}")
-    public ResponseEntity<Object> updateCv(@PathVariable("id") String id,
+    public ResponseEntity<String> updateCv(@PathVariable("id") String id,
 										   @RequestParam("file") MultipartFile file,
 										   @RequestParam("fileName") String fileName) {
 
