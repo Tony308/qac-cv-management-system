@@ -1,17 +1,13 @@
 package com.qa.service;
 
-import com.mongodb.DuplicateKeyException;
-import com.mongodb.MongoWriteException;
 import com.qa.domain.User;
 import com.qa.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -21,25 +17,37 @@ public class UserService {
     private UserRepository userRepository;
 
     public ResponseEntity<String> createUser(String username, String password) {
-        try {
-            User user = new User();
-            user.setUsername(username);
-            user.setPassword(password);
-            userRepository.save(user);
-
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch(MongoWriteException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("Username in use.", HttpStatus.BAD_REQUEST);
+    	
+        Optional<User> foundUser = userRepository.findByUsername(username);
+    	try {
+	    	if (foundUser.isPresent()){
+	        	return new ResponseEntity<>("Username already exists.", HttpStatus.CONFLICT);
+		    } else {
+		    	User user = new User();
+				user.setUsername(username);
+				user.setPassword(password);
+				userRepository.save(user);
+				
+				return new ResponseEntity<>(HttpStatus.CREATED);
+		    }
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
 }
 
-    public ResponseEntity<Object> authenticateUser(String username, String password) {
+    public ResponseEntity<String> authenticateUser(String username, String password) {
 
         Optional<User> user = userRepository.findByUsernameAndPassword(username, password);
-        if (user.isPresent()) {
-            return new ResponseEntity<>("Login Successful", HttpStatus.ACCEPTED);
+        try {
+            if (user.isPresent()) {
+                return new ResponseEntity<>("Login Successful", HttpStatus.ACCEPTED);
+            }
+            return new ResponseEntity<>("Incorrect credentials", HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	return new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Incorrect credentials", HttpStatus.UNAUTHORIZED);
     }
 }

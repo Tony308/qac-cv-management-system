@@ -22,8 +22,6 @@ public class Cv {
 	private String fileName;
 	@Field
 	private Binary cvFile;
-	@Field
-	private String userId;
 
 
 	public Cv(String name, Binary cvFile) {
@@ -76,14 +74,6 @@ public class Cv {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
 	}
 
 }

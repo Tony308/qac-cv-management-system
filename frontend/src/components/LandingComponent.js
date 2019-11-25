@@ -9,7 +9,6 @@ import '../css/DefaultStyling.css';
 
 function LandingComponent(props) {
 
-
     return (
         <div className="login">
             <Navbar/>
@@ -33,6 +32,7 @@ function LandingComponent(props) {
                             getCVs={props.getCVs}
                             data={props.data}
                             deleteCV={props.deleteCV}
+                            updateCV={props.updateCV}
                         />
                     }
                         return <Redirect to="/" />
