@@ -13,6 +13,7 @@ import com.qa.repository.ICvRepository;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -61,13 +62,13 @@ public class CvService {
 //        return cv;
 //    }
 
-
+    
     public Cv getCV(String id) {
-    	Cv cv = null;
+      	Cv cv = null;
     	Optional<Cv> finder = iCvRepository.findById(id);
-	    cv = finder.get();
-        return cv;
-
+	    cv = finder.get();    	
+    	return cv;
+    	
     }
 	
 	public ResponseEntity<String> deleteCv(String id) {

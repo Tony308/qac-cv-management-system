@@ -3,6 +3,7 @@ import {Redirect, Route, Switch} from "react-router";
 import LoginContainer from "../containers/LoginContainer";
 import HomePageContainer from "../containers/HomePageContainer";
 import CreateAccountContainer from "../containers/CreateAccountContainer";
+import DisplayCVContainer from "../containers/DisplayCVContainer";
 import Navbar from '../containers/NavigationContainer';
 import '../css/DefaultStyling.css';
 
@@ -33,6 +34,8 @@ function LandingComponent(props) {
                             data={props.data}
                             deleteCV={props.deleteCV}
                             updateCV={props.updateCV}
+                            retrieveCV={props.retrieveCV}
+                            cv={props.cv}
                         />
                     }
                         return <Redirect to="/" />
@@ -40,7 +43,7 @@ function LandingComponent(props) {
 
                 <Route exact={true} path="/create-account" render={() => {
                         if (sessionStorage.getItem("auth") === 'true') {
-                            return (<Redirect to="/home"/>)
+                            return (<Redirect to="/home" />)
                         }
                         return <CreateAccountContainer
                             handleChange={props.handleChange}
@@ -49,6 +52,18 @@ function LandingComponent(props) {
                     }
                 }
                 />
+                <Route exact={true} path="/cv" render={() => {
+                        if (sessionStorage.getItem("auth") === 'false') {
+                            return (<Redirect to="/"/>)
+                        }
+                        return <DisplayCVContainer
+                          cv = {props.cv}
+                          cvFileName={props.cvFileName}
+                        />
+                    }
+                }
+                />
+
             </Switch>
         </div>
     )

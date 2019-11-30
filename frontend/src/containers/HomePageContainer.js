@@ -1,30 +1,9 @@
 import React, {Component} from 'react';
 import HomePageComponent from "../components/HomePageComponent";
-import axios from 'axios';
+import DisplayCVContainer from "../containers/DisplayCVContainer";
+import {Redirect} from "react-router"
+
 export default class HomePageContainer extends Component {
-    constructor(props){
-        super(props);
-
-        this.state = {
-            data: []
-        }
-    }
-
-    retrieveCV(id) {
-        let url = 'http://localhost:8081/cvsystem/retrieve/' + id;
-
-        axios.get(url)
-            .then(res => {
-                this.setState({
-                    data: res.data
-                });
-                // console.log(res.data.cvFile.data);
-                document.getElementById("output").value = res.data.cvFile.data;
-                console.log(res.data.cvFile);
-
-            })
-            .catch(err => console.log(err))
-    }
 
     listCVs(rows, data) {
         for (let x  = 0; x < data.length; x++) {
@@ -33,9 +12,15 @@ export default class HomePageContainer extends Component {
             rows.push(
                 <tr key={x}>
                     <td onClick={() => {
-                        this.retrieveCV(row.id)
-                    }}>{row.name}</td><td>{row.fileName}
-                    </td>
+                        this.props.retrieveCV(row.id);
+
+                    }}>{row.name}</td>
+
+                    <td onClick={() => {
+                      this.props.retrieveCV(row.id)
+                    }}>
+                      {row.fileName}</td>
+
                     <td>
                         <button className="btn" onClick={() => {
                             this.props.deleteCV(row.id)
@@ -44,6 +29,8 @@ export default class HomePageContainer extends Component {
                     <td> <button onClick={() => {
                         this.props.updateCV(row.id)
                     }}><i className='fas fa-wrench'/></button></td>
+                    <td>
+                    </td>
                 </tr>
             );
         }
@@ -54,6 +41,11 @@ export default class HomePageContainer extends Component {
     }
 
     render() {
+      if (this.props.cv !== '') {
+          return (
+            <Redirect to="/cv"/>
+          )
+      }
         let rows = [];
         let data = this.props.data;
         this.listCVs(rows,data);
@@ -64,7 +56,7 @@ export default class HomePageContainer extends Component {
                 getCVs={this.props.getCVs}
                 CVs={rows}
                 updateCV={this.props.updateCV}
-                data={this.state.data}
+
             />
         );
     }

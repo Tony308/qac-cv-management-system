@@ -12,6 +12,7 @@ class CreateAccountContainer extends Component {
 
         if (password !== confirm ) {
             console.log("doesn't match")
+            e.preventDefault();
         }
     }
 

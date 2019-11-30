@@ -38,22 +38,17 @@ describe('Check LoginComponent component', function() {
                 <input type="submit" value="Submit"/>
             </div>
         );
+        act(() => {
+          <loginComponents/>
+        })
         expect(wrapper.contains(loginComponents)).to.equal(true);
     });
 });
 
 describe('REST test', () => {
     it ('LoginComponent function', (done) => {
-        loginAuthen(body)
-            .then(data => {
-                expect(data).toBeDefined();
-                expect(data).status.equal();
-                done();
-            })
-
+      act(() => {
+        render( <)
+      })
     });
 });
-
-
-
-

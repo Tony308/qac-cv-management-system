@@ -4,13 +4,13 @@ import "../css/CVSection.css";
 
 export function HomePageComponent(props) {
     return(
-        <div>
+        <div style={{border: "1px dashed red"}}>
             <div className="form">
                 <form onSubmit={props.uploadCV}>
                     <label placeholder="Browse file to upload" />
                     <input id="CV" type="file" placeholder="Upload here" alt = "upload-file"
                     />
-                    <textarea style={{float:"right"}} id="output" cols = "50" rows="5"/>
+
                     <br />
                     <br />
                     <input type="submit" value="Submit" />
@@ -33,9 +33,9 @@ export function HomePageComponent(props) {
 
                     <tbody>
                     {props.CVs}
+
                     </tbody>
                 </table>
-
             </div>
         </div>
     );

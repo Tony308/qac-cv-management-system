@@ -14,10 +14,12 @@ export default class LandingContainer extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.createAccount = this.createAccount.bind(this);
         this.updateCv = this.updateCv.bind(this);
+        this.retrieveCV = this.retrieveCV.bind(this);
 
         this.state =  {
-            data: []
-        };
+            data: [],
+            cvContent: ''
+        }
     }
     createAccount(e) {
         e.preventDefault();
@@ -78,7 +80,6 @@ export default class LandingContainer extends Component {
             .then(res => {
                 console.log(res);
                 this.getCVs();
-
             })
             .catch(err => console.log(err));
     }
@@ -148,10 +149,22 @@ export default class LandingContainer extends Component {
             });
     }
 
+    retrieveCV(id) {
+        let url = 'http://localhost:8081/cvsystem/retrieve/' + id;
+
+        axios.get(url)
+            .then(res => {
+              this.setState({
+                cvContent: atob(res.data.cvFile.data),
+                cvFileName: res.data.fileName
+              });
+            })
+            .catch(err => console.log(err));
+            
+    }
 
 
     render() {
-        // console.log(sessionStorage.getItem("auth"));
         return (
             <LandingComponent
                 uploadCV={this.uploadCV}
@@ -162,6 +175,9 @@ export default class LandingContainer extends Component {
                 createAccount={this.createAccount}
                 handleChange={this.handleChange}
                 updateCV={this.updateCv}
+                retrieveCV={this.retrieveCV}
+                cv={this.state.cvContent}
+                cvFileName={this.state.cvFileName}
             />
         );
     }
