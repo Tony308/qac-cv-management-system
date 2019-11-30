@@ -18,7 +18,7 @@ describe('Check main App.js loads', function() {
         const wrapper = shallow(<App />);
         const frontPage = (
             <div className="login">
-            <NavBar/>
+            <NavigationContainer/>
             <LoginComponent />
             </div>
         );
@@ -38,17 +38,12 @@ describe('Check LoginComponent component', function() {
                 <input type="submit" value="Submit"/>
             </div>
         );
-        act(() => {
-          <loginComponents/>
-        })
         expect(wrapper.contains(loginComponents)).to.equal(true);
     });
 });
 
 describe('REST test', () => {
-    it ('LoginComponent function', (done) => {
-      act(() => {
-        render( <)
-      })
+    it ('LoginComponent function', () => {
+      
     });
 });
