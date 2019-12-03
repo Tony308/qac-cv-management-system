@@ -155,12 +155,12 @@ export default class LandingContainer extends Component {
         axios.get(url)
             .then(res => {
               this.setState({
-                cvContent: atob(res.data.cvFile.data),
+                cvContent: res.data.cvFile.data,
                 cvFileName: res.data.fileName
               });
             })
             .catch(err => console.log(err));
-            
+
     }
 
 

@@ -1,7 +1,6 @@
 {
   "name": "cv-site",
   "version": "0.1.0",
-  "private": true,
   "dependencies": {
     "axios": "^0.18.1",
     "npm": "^6.10.3",
@@ -33,5 +32,8 @@
     "enzyme-adapter-react-16": "^1.7.0",
     "mocha": "^5.2.0",
     "sinon": "^7.1.1"
-  }
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/" 
+  }	
 }

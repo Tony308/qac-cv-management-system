@@ -5,9 +5,14 @@ export function DisplayCVComponent(props) {
 
     <div>
       <h3> Filename: {props.cvFileName}</h3>
+
+      {props.cvData ?
+        <object type="application/pdf" data={props.cvData}/>
+      :
       <pre id='output'>
-      {props.cv}
+        {atob(props.cv)}
       </pre>
+      }
     </div>
   );
 }
