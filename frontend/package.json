@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "dependencies": {
     "axios": "^0.18.1",
-    "npm": "^6.10.3",
+    "npm": "^6.13.3",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-router": "^5.0.1",
@@ -27,13 +27,12 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "chai": "^4.2.0",
-    "enzyme": "^3.7.0",
-    "enzyme-adapter-react-16": "^1.7.0",
-    "mocha": "^5.2.0",
-    "sinon": "^7.1.1"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/" 
-  }	
+    "@babel/preset-env": "^7.7.6",
+    "@babel/preset-react": "^7.7.4",
+    "babel-jest": "^24.8.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
+    "jest-enzyme": "^7.1.2",
+    "react-test-renderer": "^16.12.0"
+  }
 }

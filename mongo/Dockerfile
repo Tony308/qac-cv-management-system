@@ -5,13 +5,3 @@ WORKDIR /data
 COPY ./Customers /Customers
 EXPOSE 27017:27107
 ENTRYPOINT ["mongod","--bind_ip_all", "--auth"]
-
-
-
-
-
-
-
-
-
-

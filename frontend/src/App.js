@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
+import logo from './logo.svg';
 import './App.css';
 import LandingContainer from './containers/LandingContainer';
 
-export class App extends Component {
+class App extends Component {
 
     render() {
         return <LandingContainer/>
