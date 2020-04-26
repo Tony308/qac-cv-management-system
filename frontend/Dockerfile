@@ -7,9 +7,8 @@ COPY package.json /app
 COPY package-lock.json /app
 
 ### INSTALLS PACKAGES
-RUN npm install 
-RUN npm start
+RUN npm install && npm audit fix && npm install 
+#RUN npm start
 COPY . /app
 EXPOSE 3000:3000
 ENTRYPOINT ["npm", "start"]
-

@@ -1,0 +1,33 @@
+version: '3'
+services:
+  mongodb:
+    container_name: "mongodb"
+    build: ./mongo
+    image: mongodb:latest
+    labels:
+      com.qa.description: "MongoDb Container for application."
+    volumes:
+      - /Users/tony/Documents/qac-cv-management-system/mongo/mongodb:/data/db
+    ports:
+      - 27017:27017
+
+  cv-react:
+    container_name: "cv_react"
+    build: ./frontend
+    image: cv-react:latest
+    ports:
+      - 3000:3000
+    depends_on:
+      - cv-backend
+
+  cv-backend:
+    container_name: "cv_backend"
+    build: ./backend
+    image: cv-backend
+    volumes: 
+      - /tmp
+    depends_on:
+      - mongodb
+    ports:
+      - 8081:8081
+
