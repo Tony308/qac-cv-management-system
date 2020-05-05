@@ -4,8 +4,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.stereotype.Component;
 
 @Document
+@Component
 public class User {
 
     @Id
@@ -18,7 +20,24 @@ public class User {
     @Field
     private String password;
 
-    public String getId() {
+
+    public User() {
+    }
+    
+	public User(String id, String username, String password) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+	}
+	
+	public User(String username, String password) {
+		super();
+		this.username = username;
+		this.password = password;
+	}
+
+	public String getId() {
         return id;
     }
 

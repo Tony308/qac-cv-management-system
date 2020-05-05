@@ -4,7 +4,7 @@ package com.qa.controller;
 import com.qa.domain.Cv;
 import com.qa.service.CvService;
 
-import org.bson.types.Binary;
+//import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

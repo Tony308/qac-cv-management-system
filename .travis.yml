@@ -1,8 +1,4 @@
-script:
-- cd frontend
-- npm install
-- npm run test
-language:
-- node_js
-node_js:
- - 7
+jobs:
+  include:
+    language: java
+    script: ./scripts/setupBackend.sh

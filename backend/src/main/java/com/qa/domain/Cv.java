@@ -23,17 +23,18 @@ public class Cv {
 	@Field
 	private Binary cvFile;
 
-
-	public Cv(String name, Binary cvFile) {
+	public Cv(String name, Binary cvFile, String fileName) {
 		this.name = name;
 		this.cvFile = cvFile;
+		this.fileName = fileName;
+		this.lastModified = new Date();
 	}
 
 	public Cv(String name){
 	    this.name = name;
     }
 
-    public Cv() {}
+	public Cv() {}
 
     public String getId() {
 		return id;

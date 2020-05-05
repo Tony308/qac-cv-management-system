@@ -23,9 +23,7 @@ public class UserService {
 	    	if (foundUser.isPresent()){
 	        	return new ResponseEntity<>("Username already exists.", HttpStatus.CONFLICT);
 		    } else {
-		    	User user = new User();
-				user.setUsername(username);
-				user.setPassword(password);
+		    	User user = new User(username,password);
 				userRepository.save(user);
 				
 				return new ResponseEntity<>(HttpStatus.CREATED);

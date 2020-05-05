@@ -13,7 +13,6 @@ import com.qa.repository.ICvRepository;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -28,15 +27,11 @@ public class CvService {
 	    return iCvRepository.findAllByName(name);
     }
 
-
     public ResponseEntity<String> uploadCv(MultipartFile file, String name, String fileName) {
             try {
                 Binary fileToBinaryStorage = new Binary(BsonBinarySubType.BINARY, file.getBytes());
-                Cv cv = new Cv(name, fileToBinaryStorage);
-                cv.setLastModified(new Date());
-                cv.setFileName(fileName);
+                Cv cv = new Cv(name, fileToBinaryStorage,fileName);
                 iCvRepository.save(cv);
-
             } catch (Exception e) {
                 e.printStackTrace();
                 return new ResponseEntity<>("Upload failed", HttpStatus.BAD_REQUEST);
@@ -66,7 +61,7 @@ public class CvService {
     public Cv getCV(String id) {
       	Cv cv = null;
     	Optional<Cv> finder = iCvRepository.findById(id);
-	    cv = finder.get();    	
+	    cv = finder.get();
     	return cv;
     	
     }
@@ -92,6 +87,7 @@ public class CvService {
             e.printStackTrace();
             return new ResponseEntity<>("Failed to update.", HttpStatus.BAD_REQUEST);
         }
+
         return new ResponseEntity<>("CV successfully updated.", HttpStatus.OK);
     }
 }
