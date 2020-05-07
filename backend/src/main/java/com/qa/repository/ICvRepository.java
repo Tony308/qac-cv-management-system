@@ -1,9 +1,9 @@
 package com.qa.repository;
 
+import com.qa.domain.Cv;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import com.qa.domain.Cv;
 import java.util.List;
 
 

@@ -1,12 +1,12 @@
 package com.qa.domain;
 
-import java.util.Date;
-
 import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Document
 @Component
@@ -30,13 +30,17 @@ public class Cv {
 		this.lastModified = new Date();
 	}
 
-	public Cv(String name){
-	    this.name = name;
-    }
-
 	public Cv() {}
 
-    public String getId() {
+	public Cv(String id, String name, Binary cvFile, String fileName) {
+		this.id = id;
+		this.name = name;
+		this.fileName = fileName;
+		this.cvFile = cvFile;
+		this.lastModified = new Date();
+	}
+
+	public String getId() {
 		return id;
 	}
 	
@@ -71,7 +75,6 @@ public class Cv {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-
 
 	public void setId(String id) {
 		this.id = id;
