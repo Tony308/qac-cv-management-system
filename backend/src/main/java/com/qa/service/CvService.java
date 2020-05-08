@@ -1,15 +1,13 @@
 package com.qa.service;
 
+import com.qa.domain.Cv;
+import com.qa.repository.ICvRepository;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import com.qa.domain.Cv;
-import com.qa.repository.ICvRepository;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -59,22 +57,33 @@ public class CvService {
 
     
     public Cv getCV(String id) {
+
       	Cv cv = null;
     	Optional<Cv> finder = iCvRepository.findById(id);
-	    cv = finder.get();
-    	return cv;
-    	
+
+        if (finder.isPresent()) {
+            cv = finder.get();
+        }
+        return cv;
+
     }
 	
 	public ResponseEntity<String> deleteCv(String id) {
-        iCvRepository.delete(iCvRepository.findById(id).get());
+        Optional<Cv> foundCv = iCvRepository.findById(id);
+        foundCv.ifPresent(cv -> iCvRepository.delete(cv));
 		return new ResponseEntity<>("CV successfully deleted", HttpStatus.OK);
 	}
 
 	public ResponseEntity<String> updateCv(String id, MultipartFile file, String fileName) {
-	    Optional<Cv> cv;
-        cv = iCvRepository.findById(id);
-        Cv cvToUpdate = cv.get();
+
+	    Optional<Cv> cv = iCvRepository.findById(id);
+	    Cv cvToUpdate = null;
+
+        if (cv.isPresent()){
+            cvToUpdate = cv.get();
+        } else {
+            return new ResponseEntity<>("Unable to find CV", HttpStatus.NOT_FOUND);
+        }
 
         try {
             Binary updatedCvBinary = new Binary(BsonBinarySubType.BINARY, file.getBytes());
@@ -82,7 +91,6 @@ public class CvService {
             cvToUpdate.setLastModified(new Date());
             cvToUpdate.setFileName(fileName);
             iCvRepository.save(cvToUpdate);
-
         } catch(IOException e) {
             e.printStackTrace();
             return new ResponseEntity<>("Failed to update.", HttpStatus.BAD_REQUEST);
