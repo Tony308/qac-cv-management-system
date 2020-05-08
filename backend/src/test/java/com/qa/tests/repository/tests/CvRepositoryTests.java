@@ -2,23 +2,14 @@ package com.qa.tests.repository.tests;
 
 import com.qa.domain.Cv;
 import com.qa.repository.ICvRepository;
-import de.flapdoodle.embed.mongo.MongodExecutable;
-import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.config.IMongodConfig;
-import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
-import de.flapdoodle.embed.mongo.config.Net;
-import de.flapdoodle.embed.mongo.distribution.Version;
-import de.flapdoodle.embed.process.runtime.Network;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Date;
@@ -29,7 +20,6 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@EnableMongoRepositories(basePackageClasses = {ICvRepository.class})
 public class CvRepositoryTests {
 
     @Autowired
@@ -39,25 +29,6 @@ public class CvRepositoryTests {
             "Feel free to delete this file when the database is setup.";
 
     final private Binary fileToBinaryStorage = new Binary(BsonBinarySubType.BINARY, byteData.getBytes());
-
-    @BeforeClass
-    public static void beforeClass() throws Exception {
-        MongodStarter starter = MongodStarter.getDefaultInstance();
-        String bindIp = "localhost";
-        int port = 27017;
-        MongodConfigBuilder mongodConfigBuilder = new MongodConfigBuilder();
-        mongodConfigBuilder.version(Version.Main.DEVELOPMENT);
-        mongodConfigBuilder.net(new Net(bindIp, port, Network.localhostIsIPv6()));
-        IMongodConfig mongodConfig = mongodConfigBuilder
-                .build();
-
-        MongodExecutable mongodExecutable = starter.prepare(mongodConfig);
-
-        if (mongodExecutable != null){
-            mongodExecutable.stop();
-        }
-
-    }
 
     @Before
     public void setUp() {

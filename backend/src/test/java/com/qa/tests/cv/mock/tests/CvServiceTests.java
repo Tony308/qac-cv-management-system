@@ -12,9 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Optional;
@@ -40,11 +38,11 @@ public class CvServiceTests {
     final private Binary fileToBinaryStorage = new Binary(BsonBinarySubType.BINARY, data.getBytes());
 
 
-//    private Cv cv;
+    private Cv cv;
     private Optional<Cv> foundCv = Optional.empty();
 
     final private Cv testEinz = new Cv("1","bob", fileToBinaryStorage, "testFile.txt");
-//    final private Cv testZwei = new Cv("2","alex", fileToBinaryStorage, "testFile.txt");
+    final private Cv testZwei = new Cv("2","alex", fileToBinaryStorage, "testFile.txt");
 
 
     @Before
