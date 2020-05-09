@@ -2,6 +2,7 @@ package com.qa.service;
 
 import com.qa.domain.Cv;
 import com.qa.repository.ICvRepository;
+import org.apache.coyote.Response;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -26,15 +29,24 @@ public class CvService {
     }
 
     public ResponseEntity<String> uploadCv(MultipartFile file, String name, String fileName) {
-            try {
+
+
+        try {
                 Binary fileToBinaryStorage = new Binary(BsonBinarySubType.BINARY, file.getBytes());
+
                 Cv cv = new Cv(name, fileToBinaryStorage,fileName);
+
                 iCvRepository.save(cv);
+
+                URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                        .path("/upload-cv").build().toUri();
+
+                return ResponseEntity.created(location).body("File successfully uploaded");
+
             } catch (Exception e) {
                 e.printStackTrace();
                 return new ResponseEntity<>("Upload failed", HttpStatus.BAD_REQUEST);
             }
-        return new ResponseEntity<>("File is successfully uploaded", HttpStatus.CREATED);
     }
 
 //        public Cv downloadCv(String id) {
@@ -71,7 +83,7 @@ public class CvService {
 	public ResponseEntity<String> deleteCv(String id) {
         Optional<Cv> foundCv = iCvRepository.findById(id);
         foundCv.ifPresent(cv -> iCvRepository.delete(cv));
-		return new ResponseEntity<>("CV successfully deleted", HttpStatus.OK);
+        return ResponseEntity.ok("CV successfully deleted");
 	}
 
 	public ResponseEntity<String> updateCv(String id, MultipartFile file, String fileName) {
@@ -91,11 +103,14 @@ public class CvService {
             cvToUpdate.setLastModified(new Date());
             cvToUpdate.setFileName(fileName);
             iCvRepository.save(cvToUpdate);
-        } catch(IOException e) {
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>("Failed to update.", HttpStatus.BAD_REQUEST);
         }
-
         return new ResponseEntity<>("CV successfully updated.", HttpStatus.OK);
     }
 }
