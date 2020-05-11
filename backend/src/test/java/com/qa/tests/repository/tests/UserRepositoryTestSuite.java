@@ -4,10 +4,12 @@ import com.qa.domain.User;
 import com.qa.repository.UserRepository;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Optional;
@@ -16,7 +18,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class UserRepositoryTests {
+public class UserRepositoryTestSuite {
 
     @Autowired
     private UserRepository userRepository;
@@ -37,6 +39,35 @@ public class UserRepositoryTests {
     public void teardown() {
         userRepository.deleteAll();
     }
+
+	@Test
+	public void testCreateUser() {
+
+		User expected = new User("groot", "i am");
+		userRepository.save(expected);
+
+		Optional<User> found = userRepository
+				.findByUsernameAndPassword("groot", "i am");
+
+		assertTrue(found.isPresent());
+
+	}
+
+	@Test
+	@Ignore
+	public void testCreatingDuplicateUsername() {
+		Boolean state = null;
+		User expected = new User("bob", "i am");
+		try {
+			userRepository.save(expected);
+			state = true;
+		} catch (DuplicateKeyException e) {
+			e.printStackTrace();
+			state = false;
+		}
+
+		assertFalse(state);
+	}
 
 	@Test
 	public void testUpdateUser() {
@@ -71,7 +102,7 @@ public class UserRepositoryTests {
 	}
 
 	@Test
-	public void testUserRepository() {
+	public void testGetUser() {
 
 	    Optional<User> found = userRepository.findByUsername("alex");
 	    User user;

@@ -18,23 +18,28 @@ public class UserService {
     private UserRepository userRepository;
 
     public ResponseEntity<String> createUser(String username, String password) {
-    	
+
         Optional<User> foundUser = userRepository.findByUsername(username);
+
     	try {
 	    	if (foundUser.isPresent()){
+
 	        	return new ResponseEntity<>("Username already exists.", HttpStatus.CONFLICT);
 		    } else {
 		    	User user = new User(username,password);
 				userRepository.save(user);
 
-				return new ResponseEntity<>(HttpStatus.CREATED);
+                URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                        .path("/create-account").buildAndExpand().toUri();
+
+                return ResponseEntity.created(location).build();
 		    }
         } catch (Exception e) {
         	e.printStackTrace();
         	return ResponseEntity.badRequest().build();
         }
 
-}
+    }
 
     public ResponseEntity<String> authenticateUser(String username, String password) {
 

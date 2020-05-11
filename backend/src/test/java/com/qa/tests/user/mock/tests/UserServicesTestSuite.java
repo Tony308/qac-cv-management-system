@@ -12,7 +12,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -37,11 +43,18 @@ public class UserServicesTestSuite {
 
     @Before
     public void setUp() {
+        HttpServletRequest mockRequest = new MockHttpServletRequest();
+        ServletRequestAttributes servletRequestAttributes = new ServletRequestAttributes(mockRequest);
+        RequestContextHolder.setRequestAttributes(servletRequestAttributes);
+
+
         MockitoAnnotations.initMocks(this);
     }
 
     @After
     public void tearDown() {
+        RequestContextHolder.resetRequestAttributes();
+
     }
 
     @Test
@@ -51,9 +64,12 @@ public class UserServicesTestSuite {
 
         ResponseEntity<String> actual = userService.createUser(username, pwd);
 
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/create-account").buildAndExpand().toUri();
+
         verify(userRepository).findByUsername(username);
 
-        ResponseEntity<String> expected = new ResponseEntity<>(HttpStatus.CREATED);
+        ResponseEntity<String> expected = ResponseEntity.created(location).build();
 
         assertEquals(expected, actual);
     }
@@ -66,26 +82,26 @@ public class UserServicesTestSuite {
 
         when(userRepository.findByUsername(username)).thenReturn(foundUser);
 
-        ResponseEntity<String> actual = userService.createUser(username, pwd);
+        ResponseEntity<?> actual = userService.createUser(username, pwd);
 
         verify(userRepository).findByUsername(username);
 
-        ResponseEntity<String> expected = new ResponseEntity<>("Username already exists.", HttpStatus.CONFLICT);
+        ResponseEntity<?> expected = new ResponseEntity<>("Username already exists.", HttpStatus.CONFLICT);
 
         assertEquals(expected, actual);
     }
 
     @Test
-    public void testLoginServiceUNAUTHORIZED() {
+    public void testLoginFail() {
 
         when(userRepository.findByUsernameAndPassword(username, pwd))
                 .thenReturn(foundUser);
 
-        ResponseEntity<String> actual = userService.authenticateUser(username, pwd);
+        ResponseEntity<?> actual = userService.authenticateUser(username, pwd);
 
         verify(userRepository).findByUsernameAndPassword(username, pwd);
 
-        ResponseEntity<String> expected =
+        ResponseEntity<?> expected =
                 new ResponseEntity<>("Incorrect credentials", HttpStatus.UNAUTHORIZED);
 
         assertEquals(expected, actual);

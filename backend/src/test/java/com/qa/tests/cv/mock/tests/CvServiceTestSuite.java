@@ -7,7 +7,6 @@ import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -33,7 +32,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class CvServiceTests {
+public class CvServiceTestSuite {
 
     @InjectMocks
     private CvService cvService;
@@ -41,11 +40,11 @@ public class CvServiceTests {
     @Mock
     private ICvRepository iCvRepository;
 
-
     final private String data = "Initial File\n" +
             "Feel free to delete this file when the database is setup.";
 
-    final private Binary fileToBinaryStorage = new Binary(BsonBinarySubType.BINARY, data.getBytes());
+    final private Binary fileToBinaryStorage =
+            new Binary(BsonBinarySubType.BINARY, data.getBytes());
 
     private Optional<Cv> foundCv = Optional.empty();
 
@@ -65,64 +64,81 @@ public class CvServiceTests {
 
     @After
     public void tearDown() {
-
     }
 
     @Test
-    public void testGetCv() {
+    public void testGetCvSuccess() {
 
         foundCv = Optional.of(testEinz);
 
         when(iCvRepository.findById("1")).thenReturn(foundCv);
 
-        Cv actual = cvService.getCV("1");
+        ResponseEntity<?> actual = cvService.getCV("1");
 
         verify(iCvRepository).findById("1");
 
-        Cv expected = foundCv.get();
+        ResponseEntity<?> expected = ResponseEntity.ok(testEinz);
+
         assertEquals(expected, actual);
 
     }
 
+    @Test
+    public void testGetCvFail() {
+        when(iCvRepository.findById("1")).thenReturn(foundCv);
+
+        ResponseEntity<?> actual = cvService.getCV("1");
+
+        verify(iCvRepository).findById("1");
+
+        ResponseEntity<?> expected = ResponseEntity.notFound().build();
+
+        assertEquals(expected, actual);
+    }
 
     @Test
-    @Ignore
-    public void testGetAllCVs() {
+    public void testGetAllCVsSuccess() {
         String user = "user";
 
         List<Cv> found = new ArrayList<>();
 
-        found.add(testEinz);
-        found.add(testZwei);
+        Cv eins = new Cv(user, fileToBinaryStorage, "random.pdf");
+        Cv zwei = new Cv(user, fileToBinaryStorage,"testFile.txt");
+
+        found.add(eins);
+        found.add(zwei);
 
         when(iCvRepository.findAllByName(user)).thenReturn(found);
 
-        List<Cv> actual = cvService.getUserCVs(user);
+        ResponseEntity<?> actual = cvService.getUserCVs(user);
 
         verify(iCvRepository).findAllByName(user);
 
         List<Cv> expectedList = new ArrayList<>();
 
-        expectedList.add(testEinz);
-        expectedList.add(testZwei);
+        expectedList.add(eins);
+        expectedList.add(zwei);
 
-        ResponseEntity<List<Cv>> expected = ResponseEntity.ok(expectedList);
+        ResponseEntity<?> expected = ResponseEntity.ok(expectedList);
 
         assertEquals(expected, actual);
 
     }
 
     @Test
-    @Ignore
     public void testGetAllCvsFail() {
 
         List<Cv> found =  new ArrayList<>();
 
         when(iCvRepository.findAllByName("jesus")).thenReturn(found);
 
-        List<Cv> actual = cvService.getUserCVs("jesus");
+        ResponseEntity<?> actual = cvService.getUserCVs("jesus");
 
         verify(iCvRepository).findAllByName("jesus");
+
+        ResponseEntity<?> expected = ResponseEntity.notFound().build();
+
+        assertEquals(expected, actual);
 
     }
 
@@ -139,14 +155,27 @@ public class CvServiceTests {
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path(
                 "/upload-cv").build().toUri();
 
+        ResponseEntity<?> actual = cvService
+                .uploadCv(multipartFile,"Bob", "fileName.pdf");
 
-        ResponseEntity<String> actual = cvService
-                .uploadCv(multipartFile,"bob", "fileName.pdf");
-
-        ResponseEntity<String> expected = ResponseEntity.created(location).body("File successfully uploaded");
+        ResponseEntity<?> expected =
+                ResponseEntity.created(location).body("File successfully uploaded");
 
         assertEquals(expected, actual);
+
     }
+
+    @Test
+    public void testUploadNoCv() {
+        multipartFile = null;
+
+        ResponseEntity<?> actual = cvService.uploadCv(multipartFile, "bob", "testFail.pdf");
+        ResponseEntity<?> expected = ResponseEntity.badRequest().build();
+
+        assertEquals(expected, actual);
+
+    }
+
 
     @Test
     public void testUpdateCvSuccess() {
@@ -159,7 +188,7 @@ public class CvServiceTests {
 
         when(iCvRepository.findById("1")).thenReturn(foundCv);
 
-        ResponseEntity<String> actual = cvService.updateCv(
+        ResponseEntity<?> actual = cvService.updateCv(
                 "1", multipartFile, multipartFile.getOriginalFilename()
         );
 
@@ -178,7 +207,7 @@ public class CvServiceTests {
 
         when(iCvRepository.findById("1")).thenReturn(foundCv);
 
-        ResponseEntity<String> actual = cvService.updateCv(
+        ResponseEntity<?> actual = cvService.updateCv(
                 testEinz.getId(),
                 multipartFile,
                 "fileName.pdf"
@@ -201,12 +230,42 @@ public class CvServiceTests {
 
         when(iCvRepository.findById("1")).thenReturn(foundCv);
 
-        ResponseEntity<String> actual = cvService.updateCv(
+        ResponseEntity<?> actual = cvService.updateCv(
                 testEinz.getId(), multipartFile, multipartFile.getOriginalFilename()
         );
 
         ResponseEntity<String> expected = new ResponseEntity<>(
                 "Unable to find CV", HttpStatus.NOT_FOUND);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testDeleteCv() {
+
+        foundCv = Optional.of(testEinz);
+
+        when(iCvRepository.findById("1")).thenReturn(foundCv);
+
+        ResponseEntity<?> actual = cvService.deleteCv("1");
+
+        verify(iCvRepository).findById("1");
+
+        ResponseEntity<?> expected = ResponseEntity.ok("CV successfully deleted");
+
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
+    public void testDeleteCvFail() {
+        when(iCvRepository.findById("1")).thenReturn(foundCv);
+
+        ResponseEntity<?> actual = cvService.deleteCv("1");
+
+        verify(iCvRepository).findById("1");
+
+        ResponseEntity<?> expected = ResponseEntity.notFound().build();
 
         assertEquals(expected, actual);
     }

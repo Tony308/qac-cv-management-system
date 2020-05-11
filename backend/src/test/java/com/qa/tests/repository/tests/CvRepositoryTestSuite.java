@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class CvRepositoryTests {
+public class CvRepositoryTestSuite {
 
     @Autowired
     ICvRepository iCvRepository;
@@ -78,6 +79,7 @@ public class CvRepositoryTests {
 
         String expected = "3";
         String actual = cv.getId();
+
         assertEquals(expected, actual);
 
     }
@@ -90,7 +92,6 @@ public class CvRepositoryTests {
 
         Cv cv = found.get();
 
-//        cv.setId("3");
         cv.setName("Bob Morley");
         cv.setFileName("New CV.pdf");
         cv.setLastModified(new Date());
@@ -125,4 +126,5 @@ public class CvRepositoryTests {
         assertFalse(found.isPresent());
 
     }
+
 }

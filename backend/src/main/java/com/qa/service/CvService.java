@@ -2,7 +2,6 @@ package com.qa.service;
 
 import com.qa.domain.Cv;
 import com.qa.repository.ICvRepository;
-import org.apache.coyote.Response;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +23,17 @@ public class CvService {
 	@Autowired
 	private ICvRepository iCvRepository;
 
-	public List<Cv> getUserCVs(String name) {
-	    return iCvRepository.findAllByName(name);
+	public ResponseEntity<?> getUserCVs(String name) {
+
+	    List<Cv> list = iCvRepository.findAllByName(name);
+
+	    if (list.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+	    return ResponseEntity.ok().body(list);
     }
 
-    public ResponseEntity<String> uploadCv(MultipartFile file, String name, String fileName) {
-
+    public ResponseEntity<?> uploadCv(MultipartFile file, String name, String fileName) {
 
         try {
                 Binary fileToBinaryStorage = new Binary(BsonBinarySubType.BINARY, file.getBytes());
@@ -43,10 +47,13 @@ public class CvService {
 
                 return ResponseEntity.created(location).body("File successfully uploaded");
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                return new ResponseEntity<>("Upload failed", HttpStatus.BAD_REQUEST);
-            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Upload failed", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 //        public Cv downloadCv(String id) {
@@ -68,25 +75,32 @@ public class CvService {
 //    }
 
     
-    public Cv getCV(String id) {
+    public ResponseEntity<?> getCV(String id) {
 
       	Cv cv = null;
     	Optional<Cv> finder = iCvRepository.findById(id);
 
-        if (finder.isPresent()) {
-            cv = finder.get();
+        if (!finder.isPresent()) {
+            return ResponseEntity.notFound().build();
         }
-        return cv;
+        cv = finder.get();
+
+        return ResponseEntity.ok(cv);
 
     }
 	
-	public ResponseEntity<String> deleteCv(String id) {
+	public ResponseEntity<?> deleteCv(String id) {
         Optional<Cv> foundCv = iCvRepository.findById(id);
-        foundCv.ifPresent(cv -> iCvRepository.delete(cv));
-        return ResponseEntity.ok("CV successfully deleted");
+        if (foundCv.isPresent()) {
+
+            iCvRepository.delete(foundCv.get());
+            return ResponseEntity.ok("CV successfully deleted");
+
+        }
+        return ResponseEntity.notFound().build();
 	}
 
-	public ResponseEntity<String> updateCv(String id, MultipartFile file, String fileName) {
+	public ResponseEntity<?> updateCv(String id, MultipartFile file, String fileName) {
 
 	    Optional<Cv> cv = iCvRepository.findById(id);
 	    Cv cvToUpdate = null;
@@ -106,6 +120,7 @@ public class CvService {
         }
         catch (IOException e) {
             e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         catch (Exception e) {
             e.printStackTrace();

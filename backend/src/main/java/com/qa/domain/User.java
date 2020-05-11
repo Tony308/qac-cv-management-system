@@ -6,17 +6,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
-@Document
+
+@Document(collection = "user")
 @Component
 public class User {
 
     @Id
-    private String id;
-
     @Indexed(unique = true)
+    private String id;
     @Field
+    @Indexed(unique = true)
     private String username;
-
     @Field
     private String password;
 
@@ -29,7 +29,11 @@ public class User {
 		this.password = password;
 	}
 
-	public String getId() {
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
         return id;
     }
 
@@ -48,4 +52,5 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

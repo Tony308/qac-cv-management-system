@@ -11,6 +11,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -34,27 +39,31 @@ public class UserControllerTestSuite {
 
     @Before
     public void setUp() {
+
+        HttpServletRequest mockRequest = new MockHttpServletRequest();
+        ServletRequestAttributes servletRequestAttributes = new ServletRequestAttributes(mockRequest);
+        RequestContextHolder.setRequestAttributes(servletRequestAttributes);
         MockitoAnnotations.initMocks(this);
     }
 
     @After
     public void tearDown() {
-
+        RequestContextHolder.resetRequestAttributes();
     }
 
     @Test
     public void testCreateAccountSuccess() {
 
         when(userService.createUser(username, pwd))
-                .thenReturn(
-                        new ResponseEntity<>(HttpStatus.CREATED)
-                );
+                .thenReturn(new ResponseEntity<>(HttpStatus.CREATED));
 
         actual = userController.createAccount(username, pwd);
 
         verify(userService).createUser(username, pwd);
 
         expected = new ResponseEntity<>(HttpStatus.CREATED);
+
+        assertEquals(expected, actual);
     }
 
     @Test
