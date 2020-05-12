@@ -23,7 +23,6 @@ public class UserService {
 
     	try {
 	    	if (foundUser.isPresent()){
-
 	        	return new ResponseEntity<>("Username already exists.", HttpStatus.CONFLICT);
 		    } else {
 		    	User user = new User(username,password);
@@ -44,13 +43,13 @@ public class UserService {
     public ResponseEntity<String> authenticateUser(String username, String password) {
 
         Optional<User> user = userRepository.findByUsernameAndPassword(username, password);
+
         try {
             if (user.isPresent()) {
                 return ResponseEntity.accepted().body("Login Successful");
-//                return new ResponseEntity<>("Login Successful", HttpStatus.ACCEPTED);
+            } else {
+                return new ResponseEntity<>("Incorrect credentials", HttpStatus.UNAUTHORIZED);
             }
-            return new ResponseEntity<>("Incorrect credentials", HttpStatus.UNAUTHORIZED);
-
         } catch (Exception e) {
         	e.printStackTrace();
         	return new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST);

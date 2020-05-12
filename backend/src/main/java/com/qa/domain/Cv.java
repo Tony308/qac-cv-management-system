@@ -2,7 +2,6 @@ package com.qa.domain;
 
 import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,6 @@ import java.util.Date;
 public class Cv {
 
 	@Id
-	@Indexed(unique = true)
 	private String id;
 	@Field
 	private String name;

@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class CvServiceTestSuite {
+public class CvServiceTests {
 
     @InjectMocks
     private CvService cvService;

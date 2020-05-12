@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 public class User {
 
     @Id
-    @Indexed(unique = true)
     private String id;
     @Field
     @Indexed(unique = true)

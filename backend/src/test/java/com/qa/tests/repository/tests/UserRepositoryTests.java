@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class UserRepositoryTestSuite {
+public class UserRepositoryTests {
 
     @Autowired
     private UserRepository userRepository;

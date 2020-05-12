@@ -23,7 +23,7 @@ public class CvService {
 	@Autowired
 	private ICvRepository iCvRepository;
 
-	public ResponseEntity<?> getUserCVs(String name) {
+	public ResponseEntity getUserCVs(String name) {
 
 	    List<Cv> list = iCvRepository.findAllByName(name);
 
@@ -38,7 +38,7 @@ public class CvService {
         try {
                 Binary fileToBinaryStorage = new Binary(BsonBinarySubType.BINARY, file.getBytes());
 
-                Cv cv = new Cv(name, fileToBinaryStorage,fileName);
+                Cv cv = new Cv(name, fileToBinaryStorage, fileName);
 
                 iCvRepository.save(cv);
 
@@ -56,26 +56,7 @@ public class CvService {
         }
     }
 
-//        public Cv downloadCv(String id) {
-//        Cv cv = iCvRepository.findById(id).get();
-//        //Writes file to PC
-////        Binary document = cv.getCvFile();
-////        try {
-////            FileOutputStream fos = null;
-////            String fileDestination = "/home/tony308/Documents/" + cv.getName()+"'s_CV";
-////            fos = new FileOutputStream(fileDestination);
-////            //Will write Byte data to fileDestination
-////            fos.write(document.getData());
-////            fos.close();
-////        } catch (IOException e) {
-////            e.printStackTrace();
-////            return cv;
-////        }
-//        return cv;
-//    }
-
-    
-    public ResponseEntity<?> getCV(String id) {
+    public ResponseEntity getCV(String id) {
 
       	Cv cv = null;
     	Optional<Cv> finder = iCvRepository.findById(id);
@@ -89,7 +70,7 @@ public class CvService {
 
     }
 	
-	public ResponseEntity<?> deleteCv(String id) {
+	public ResponseEntity deleteCv(String id) {
         Optional<Cv> foundCv = iCvRepository.findById(id);
         if (foundCv.isPresent()) {
 
@@ -100,7 +81,7 @@ public class CvService {
         return ResponseEntity.notFound().build();
 	}
 
-	public ResponseEntity<?> updateCv(String id, MultipartFile file, String fileName) {
+	public ResponseEntity updateCv(String id, MultipartFile file, String fileName) {
 
 	    Optional<Cv> cv = iCvRepository.findById(id);
 	    Cv cvToUpdate = null;

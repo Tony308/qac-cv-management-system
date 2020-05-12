@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-public class CvRepositoryTestSuite {
+public class CvRepositoryTests {
 
     @Autowired
     ICvRepository iCvRepository;

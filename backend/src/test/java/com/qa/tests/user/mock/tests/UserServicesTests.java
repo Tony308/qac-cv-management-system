@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class UserServicesTestSuite {
+public class UserServicesTests {
 
     @Mock
     private UserRepository userRepository;
