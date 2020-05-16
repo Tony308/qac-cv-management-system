@@ -13,7 +13,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,19 +35,19 @@ public class CvService {
 	    return ResponseEntity.ok().body(list);
     }
 
-    public ResponseEntity<?> uploadCv(MultipartFile file, String name, String fileName) {
+    public ResponseEntity uploadCv(MultipartFile file, String name, String fileName) {
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .build().toUri();
 
         try {
-                Binary fileToBinaryStorage = new Binary(BsonBinarySubType.BINARY, file.getBytes());
+            if (file.getSize() >= 16000000) {
+                System.out.println("Should to be stored in GridFS \n Still to be implemented");
+            }
 
-                Cv cv = new Cv(name, fileToBinaryStorage, fileName);
-
-                iCvRepository.save(cv);
-
-                URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                        .path("/upload-cv").build().toUri();
-
-                return ResponseEntity.created(location).body("File successfully uploaded");
+            Binary binary = new Binary(BsonBinarySubType.BINARY, file.getBytes());
+            Cv cv = new Cv(name, binary, fileName);
+            iCvRepository.save(cv);
 
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -54,6 +56,9 @@ public class CvService {
             e.printStackTrace();
             return new ResponseEntity<>("Upload failed", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+        return ResponseEntity.created(location).body("File successfully uploaded");
+
     }
 
     public ResponseEntity getCV(String id) {
@@ -76,7 +81,6 @@ public class CvService {
 
             iCvRepository.delete(foundCv.get());
             return ResponseEntity.ok("CV successfully deleted");
-
         }
         return ResponseEntity.notFound().build();
 	}
@@ -95,7 +99,7 @@ public class CvService {
         try {
             Binary updatedCvBinary = new Binary(BsonBinarySubType.BINARY, file.getBytes());
             cvToUpdate.setCvFile(updatedCvBinary);
-            cvToUpdate.setLastModified(new Date());
+            cvToUpdate.setLastModified(LocalDateTime.now(ZoneId.of("Europe/London")).truncatedTo(ChronoUnit.SECONDS));
             cvToUpdate.setFileName(fileName);
             iCvRepository.save(cvToUpdate);
         }

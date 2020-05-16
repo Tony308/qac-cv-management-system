@@ -1,11 +1,10 @@
-package com.qa.tests.cv.mock.tests;
+package com.qa.tests.unit.service.tests;
 
 import com.qa.domain.Cv;
 import com.qa.repository.ICvRepository;
 import com.qa.service.CvService;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,10 +28,10 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
-@SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
-public class CvServiceTests {
+@SpringBootTest
+public class
+CvServiceTests {
 
     @InjectMocks
     private CvService cvService;
@@ -60,10 +59,6 @@ public class CvServiceTests {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-    }
-
-    @After
-    public void tearDown() {
     }
 
     @Test
@@ -152,8 +147,7 @@ public class CvServiceTests {
                 data.getBytes()
         );
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path(
-                "/upload-cv").build().toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
 
         ResponseEntity<?> actual = cvService
                 .uploadCv(multipartFile,"Bob", "fileName.pdf");
@@ -167,7 +161,6 @@ public class CvServiceTests {
 
     @Test
     public void testUploadNoCv() {
-        multipartFile = null;
 
         ResponseEntity<?> actual = cvService.uploadCv(multipartFile, "bob", "testFail.pdf");
         ResponseEntity<?> expected = ResponseEntity.badRequest().build();

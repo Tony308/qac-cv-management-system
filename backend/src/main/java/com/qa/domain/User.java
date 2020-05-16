@@ -1,22 +1,28 @@
 package com.qa.domain;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
+
 
 @Document(collection = "user")
 @Component
+@Configuration
 public class User {
 
     @Id
     private String id;
     @Field
     @Indexed(unique = true)
+    @NotNull
     private String username;
     @Field
+    @NotNull
     private String password;
 
     public User() {

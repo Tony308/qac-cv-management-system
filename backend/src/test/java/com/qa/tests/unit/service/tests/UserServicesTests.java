@@ -1,4 +1,4 @@
-package com.qa.tests.user.mock.tests;
+package com.qa.tests.unit.service.tests;
 
 import com.qa.controller.UserController;
 import com.qa.domain.User;
@@ -7,12 +7,15 @@ import com.qa.service.UserService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -25,6 +28,8 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest
 public class UserServicesTests {
 
     @Mock
@@ -65,7 +70,7 @@ public class UserServicesTests {
         ResponseEntity<String> actual = userService.createUser(username, pwd);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/create-account").buildAndExpand().toUri();
+                .buildAndExpand().toUri();
 
         verify(userRepository).findByUsername(username);
 

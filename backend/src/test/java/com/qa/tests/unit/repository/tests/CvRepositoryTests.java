@@ -1,4 +1,4 @@
-package com.qa.tests.repository.tests;
+package com.qa.tests.unit.repository.tests;
 
 import com.qa.domain.Cv;
 import com.qa.repository.ICvRepository;
@@ -12,24 +12,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
+@RunWith(SpringJUnit4ClassRunner.class)
 public class CvRepositoryTests {
-
-    @Autowired
-    ICvRepository iCvRepository;
 
     final private String byteData = "Initial File\n" +
             "Feel free to delete this file when the database is setup.";
 
-    final private Binary fileToBinaryStorage = new Binary(BsonBinarySubType.BINARY, byteData.getBytes());
+    final private Binary fileToBinaryStorage = new Binary(
+            BsonBinarySubType.BINARY, byteData.getBytes()
+    );
+
+    @Autowired
+    private ICvRepository iCvRepository;
 
     @Before
     public void setUp() {
@@ -42,26 +45,21 @@ public class CvRepositoryTests {
         iCvRepository.deleteAll();
     }
 
+
     @Test
     public void findAllByName() {
 
         List<Cv> list = iCvRepository.findAllByName("bob");
-
         assertEquals(1, list.size());
 
         Cv newCv = new Cv("bob", fileToBinaryStorage, "testFile.txt");
-
         iCvRepository.save(newCv);
-
         list = iCvRepository.findAllByName("bob");
-
         assertEquals(2, list.size());
 
         newCv = new Cv("bob", fileToBinaryStorage, "cv.pdf");
         iCvRepository.save(newCv);
-
         list = iCvRepository.findAllByName("bob");
-
         assertEquals(3, list.size());
 
     }
@@ -73,14 +71,30 @@ public class CvRepositoryTests {
         iCvRepository.save(example);
 
         Optional<Cv> found = iCvRepository.findById("3");
+        assertTrue(found.isPresent());
 
+        Cv cv = found.get();
+        assertEquals("3", cv.getId());
+    }
+
+    @Test
+    public void testCreateCv() {
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/London"))
+                .truncatedTo(ChronoUnit.MILLIS);
+
+        Cv example = new Cv("3", "alex", localDateTime, "file.txt",fileToBinaryStorage);
+
+        iCvRepository.save(example);
+
+        Optional<Cv> found = iCvRepository.findById("3");
         assertTrue(found.isPresent());
         Cv cv = found.get();
 
-        String expected = "3";
-        String actual = cv.getId();
-
-        assertEquals(expected, actual);
+        assertEquals(example.getId(), cv.getId());
+        assertEquals(example.getName(), cv.getName());
+        assertEquals(example.getLastModified(), cv.getLastModified());
+        assertEquals(example.getFileName(), cv.getFileName());
+        assertEquals(example.getCvFile(), cv.getCvFile());
 
     }
 
@@ -94,7 +108,7 @@ public class CvRepositoryTests {
 
         cv.setName("Bob Morley");
         cv.setFileName("New CV.pdf");
-        cv.setLastModified(new Date());
+        cv.setLastModified(LocalDateTime.now(ZoneId.of("Europe/London")));
         cv.setCvFile(new Binary(BsonBinarySubType.BINARY, "For cv email me".getBytes()));
 
         iCvRepository.save(cv);
@@ -109,8 +123,7 @@ public class CvRepositoryTests {
         assertEquals(cv.getName(), actual.getName());
         assertEquals(cv.getCvFile(), actual.getCvFile());
         assertEquals(cv.getFileName(), actual.getFileName());
-        assertEquals(cv.getLastModified(), actual.getLastModified());
-
+        assertNotEquals(cv.getLastModified(), actual.getLastModified());
     }
 
     @Test
