@@ -29,7 +29,7 @@ public class UserService {
 				userRepository.save(user);
 
                 URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                        .path("/create-account").buildAndExpand().toUri();
+                        .buildAndExpand().toUri();
 
                 return ResponseEntity.created(location).build();
 		    }

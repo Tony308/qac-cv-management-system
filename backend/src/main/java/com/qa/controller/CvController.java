@@ -1,16 +1,10 @@
 package com.qa.controller;
 
-
-import com.qa.domain.Cv;
 import com.qa.service.CvService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/cvsystem")
@@ -24,6 +18,7 @@ public class CvController {
 		this.service = service;
 	}
 
+
 	@GetMapping("/get")
     public ResponseEntity getAllCv(@RequestParam("name") String name) {
 	    return service.getUserCVs(name);
@@ -31,8 +26,8 @@ public class CvController {
 
 	@PostMapping("/upload-cv")
 	public ResponseEntity uploadCv(@RequestParam("file") MultipartFile file,
-                                           @RequestParam("user") String name,
-										   @RequestParam("fileName") String fileName){
+									  @RequestParam("user") String name,
+									  @RequestParam("fileName") String fileName){
 		return service.uploadCv(file, name,fileName);
 	}
 

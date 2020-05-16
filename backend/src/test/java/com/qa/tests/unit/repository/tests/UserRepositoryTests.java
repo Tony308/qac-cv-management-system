@@ -1,10 +1,9 @@
-package com.qa.tests.repository.tests;
+package com.qa.tests.unit.repository.tests;
 
 import com.qa.domain.User;
 import com.qa.repository.UserRepository;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +53,6 @@ public class UserRepositoryTests {
 	}
 
 	@Test
-	@Ignore
 	public void testCreatingDuplicateUsername() {
 		Boolean state = null;
 		User expected = new User("bob", "i am");

@@ -33,19 +33,18 @@ public class CvService {
 	    return ResponseEntity.ok().body(list);
     }
 
-    public ResponseEntity<?> uploadCv(MultipartFile file, String name, String fileName) {
+    public ResponseEntity uploadCv(MultipartFile file, String name, String fileName) {
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .build().toUri();
 
         try {
-                Binary fileToBinaryStorage = new Binary(BsonBinarySubType.BINARY, file.getBytes());
-
-                Cv cv = new Cv(name, fileToBinaryStorage, fileName);
-
-                iCvRepository.save(cv);
-
-                URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                        .path("/upload-cv").build().toUri();
-
-                return ResponseEntity.created(location).body("File successfully uploaded");
+            if (file.getSize() >= 16000000) {
+                System.out.println("Should to be stored in GridFS \n Still to be implemented");
+            }
+            Binary binary = new Binary(BsonBinarySubType.BINARY, file.getBytes());
+            Cv cv = new Cv(name, binary, fileName);
+            iCvRepository.save(cv);
 
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -54,6 +53,9 @@ public class CvService {
             e.printStackTrace();
             return new ResponseEntity<>("Upload failed", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+        return ResponseEntity.created(location).body("File successfully uploaded");
+
     }
 
     public ResponseEntity getCV(String id) {
@@ -76,7 +78,6 @@ public class CvService {
 
             iCvRepository.delete(foundCv.get());
             return ResponseEntity.ok("CV successfully deleted");
-
         }
         return ResponseEntity.notFound().build();
 	}

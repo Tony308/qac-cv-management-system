@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Document(collection = "cv")
@@ -15,12 +16,16 @@ public class Cv {
 	@Id
 	private String id;
 	@Field
+	@NotNull
 	private String name;
 	@Field
+	@NotNull
 	private Date lastModified;
 	@Field
+	@NotNull
 	private String fileName;
 	@Field
+	@NotNull
 	private Binary cvFile;
 
 	public Cv(String name, Binary cvFile, String fileName) {
@@ -32,6 +37,7 @@ public class Cv {
 
 	public Cv() {}
 
+	//Testing purposes only
 	public Cv(String id, String name, Binary cvFile, String fileName) {
 		this.id = id;
 		this.name = name;
@@ -79,5 +85,6 @@ public class Cv {
 	public void setId(String id) {
 		this.id = id;
 	}
+
 
 }

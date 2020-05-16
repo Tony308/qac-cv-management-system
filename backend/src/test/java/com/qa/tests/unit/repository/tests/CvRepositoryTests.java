@@ -1,4 +1,4 @@
-package com.qa.tests.repository.tests;
+package com.qa.tests.unit.repository.tests;
 
 import com.qa.domain.Cv;
 import com.qa.repository.ICvRepository;
@@ -12,24 +12,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
+@RunWith(SpringJUnit4ClassRunner.class)
 public class CvRepositoryTests {
-
-    @Autowired
-    ICvRepository iCvRepository;
 
     final private String byteData = "Initial File\n" +
             "Feel free to delete this file when the database is setup.";
 
-    final private Binary fileToBinaryStorage = new Binary(BsonBinarySubType.BINARY, byteData.getBytes());
+    final private Binary fileToBinaryStorage = new Binary(
+            BsonBinarySubType.BINARY, byteData.getBytes()
+    );
+
+    @Autowired
+    private ICvRepository iCvRepository;
 
     @Before
     public void setUp() {
@@ -42,26 +43,21 @@ public class CvRepositoryTests {
         iCvRepository.deleteAll();
     }
 
+
     @Test
     public void findAllByName() {
 
         List<Cv> list = iCvRepository.findAllByName("bob");
-
         assertEquals(1, list.size());
 
         Cv newCv = new Cv("bob", fileToBinaryStorage, "testFile.txt");
-
         iCvRepository.save(newCv);
-
         list = iCvRepository.findAllByName("bob");
-
         assertEquals(2, list.size());
 
         newCv = new Cv("bob", fileToBinaryStorage, "cv.pdf");
         iCvRepository.save(newCv);
-
         list = iCvRepository.findAllByName("bob");
-
         assertEquals(3, list.size());
 
     }
