@@ -5,9 +5,7 @@ import HomepageComponent from '../components/HomepageComponent.js';
 import LandingContainer from '../containers/LandingContainer.js';
 import LandingComponent from '../components/LandingComponent.js';
 
-
 import { configure, shallow } from 'enzyme';
-
 
 describe("Check LoginComponent", function()  {
   it("loads login page elements", () => {
@@ -42,23 +40,15 @@ describe('Check components', () => {
 
   });
 
-  describe('passes props', () => {
-    it('to landingcomponent', () => {
-      const container = shallow(<LandingContainer/>);
-      const component = mount(<LandingComponent/>);
-      component.find("Something").forEach(item => {
-
-      });
-
-    })
-  });
-
-
-
-
-
-
-
-
-
+  // describe('passes props', () => {
+  //   it('to LandingComponent', () => {
+  //     const container = shallow(<LandingContainer uploadCV="CV"/>);
+  //
+  //     expect(container).toContainReact(testHomepage);
+  //     const component = mount(<LandingComponent/>);
+  //     component.find("Something").forEach(item => {
+  //     });
+  //
+  //   })
+  // });
 });

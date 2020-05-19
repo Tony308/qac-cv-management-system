@@ -1,7 +1,6 @@
 package com.qa.controller;
 
 import com.qa.service.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    final private UserService userService;
 
     public UserController(UserService service) {
         this.userService = service;
@@ -26,7 +25,6 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    @ResponseBody
     public ResponseEntity<String> authenticateLogin(@RequestParam("username") String username,
                                                         @RequestParam("password") String password) {
 

@@ -21,6 +21,7 @@ export default class LandingContainer extends Component {
             cvContent: ''
         }
     }
+
     createAccount(e) {
         e.preventDefault();
 
@@ -76,6 +77,7 @@ export default class LandingContainer extends Component {
         data.append("id", id,);
         data.append("file", file);
         data.append("fileName", file.name);
+
         axios.put(url, data)
             .then(res => {
                 console.log(res);
@@ -160,9 +162,7 @@ export default class LandingContainer extends Component {
               });
             })
             .catch(err => console.log(err));
-
     }
-
 
     render() {
         return (
