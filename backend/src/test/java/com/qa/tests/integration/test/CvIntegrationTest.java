@@ -217,6 +217,5 @@ public class CvIntegrationTest {
                 .andExpect(content().string("CV successfully updated."))
                 .andReturn();
 
-
     }
 }
