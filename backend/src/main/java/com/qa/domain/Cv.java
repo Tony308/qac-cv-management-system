@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 @Document(collection = "cv")
