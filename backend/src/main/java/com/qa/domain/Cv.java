@@ -16,7 +16,6 @@ import java.time.temporal.ChronoUnit;
 
 @Document(collection = "cv")
 @Component
-@Configuration
 public class Cv {
 
 	@Id

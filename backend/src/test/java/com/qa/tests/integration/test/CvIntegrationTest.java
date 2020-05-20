@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,16 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -39,14 +44,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration
 public class CvIntegrationTest {
 
     @Autowired
     private ICvRepository cvRepository;
 
     @Autowired
+    private WebApplicationContext context;
+
     private MockMvc mockMvc;
 
     final private String[] data = new String[]{"Initial File\n" +
@@ -61,6 +68,10 @@ public class CvIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .build();
+
         HttpServletRequest mockRequest = new MockHttpServletRequest();
         ServletRequestAttributes servletRequestAttributes = new ServletRequestAttributes(mockRequest);
         RequestContextHolder.setRequestAttributes(servletRequestAttributes);

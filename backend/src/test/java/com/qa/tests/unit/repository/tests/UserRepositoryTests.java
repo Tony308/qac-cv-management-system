@@ -9,14 +9,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
 import static org.junit.Assert.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
+@RunWith(SpringRunner.class)
 public class UserRepositoryTests {
 
     @Autowired
@@ -54,7 +54,7 @@ public class UserRepositoryTests {
 
 	@Test
 	public void testCreatingDuplicateUsername() {
-		Boolean state = null;
+		boolean state;
 		User expected = new User("bob", "i am");
 		try {
 			userRepository.save(expected);

@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -21,7 +21,7 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 
 @SpringBootTest
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 public class CvRepositoryTests {
 
     final private String byteData = "Initial File\n" +
@@ -141,3 +141,4 @@ public class CvRepositoryTests {
     }
 
 }
+

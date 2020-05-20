@@ -2,6 +2,7 @@ package com.qa.controller;
 
 import com.qa.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ public class UserController {
     }
 
     @PostMapping("/create-account")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> createAccount(@RequestParam("username") String username,
                                                     @RequestParam("password") String password) {
 
@@ -25,6 +27,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> authenticateLogin(@RequestParam("username") String username,
                                                         @RequestParam("password") String password) {
 

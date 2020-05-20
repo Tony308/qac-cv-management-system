@@ -12,7 +12,6 @@ import javax.validation.constraints.NotNull;
 
 @Document(collection = "user")
 @Component
-@Configuration
 public class User {
 
     @Id
