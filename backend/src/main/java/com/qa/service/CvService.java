@@ -46,7 +46,7 @@ public class CvService {
             }
 
             Binary binary = new Binary(BsonBinarySubType.BINARY, file.getBytes());
-            Cv cv = new Cv(name, binary, fileName);
+            Cv cv = new Cv(name, fileName, binary);
             iCvRepository.save(cv);
 
         } catch (NullPointerException e) {

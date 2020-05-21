@@ -1,4 +1,4 @@
-package com.qa.tests.integration.test;
+package com.qa.tests.integration;
 
 import com.qa.domain.Cv;
 import com.qa.repository.ICvRepository;
@@ -9,11 +9,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -21,7 +19,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -46,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class CvIntegrationTest {
+public class CvControllerIntegrationTest {
 
     @Autowired
     private ICvRepository cvRepository;
@@ -83,11 +80,11 @@ public class CvIntegrationTest {
                 data[0].getBytes()
         );
 
-        mockCv = new Cv("1","user", binary, file.getOriginalFilename());
+        mockCv = new Cv("1","user", file.getOriginalFilename(), binary);
         cvRepository.save(mockCv);
 
         binary = new Binary(BsonBinarySubType.BINARY, data[1].getBytes());
-        mockCv = new Cv("user", binary, "MI5.pdf");
+        mockCv = new Cv("user","MI5.pdf", binary);
         cvRepository.save(mockCv);
     }
 
@@ -170,7 +167,7 @@ public class CvIntegrationTest {
                 .contentType(MediaType.MULTIPART_FORM_DATA);
 
 
-        MvcResult actual = mockMvc.perform(request)
+        mockMvc.perform(request)
                 .andExpect(status().isCreated())
                 .andExpect(content().string("File successfully uploaded"))
                 .andReturn();

@@ -38,9 +38,6 @@ public class UserServicesTests {
     @InjectMocks
     private UserService userService;
 
-    @Mock
-    private UserController userController;
-
     private User user;
     private Optional<User> foundUser = Optional.empty();
     final private String username = "user";
@@ -48,18 +45,7 @@ public class UserServicesTests {
 
     @Before
     public void setUp() {
-        HttpServletRequest mockRequest = new MockHttpServletRequest();
-        ServletRequestAttributes servletRequestAttributes = new ServletRequestAttributes(mockRequest);
-        RequestContextHolder.setRequestAttributes(servletRequestAttributes);
-
-
         MockitoAnnotations.initMocks(this);
-    }
-
-    @After
-    public void tearDown() {
-        RequestContextHolder.resetRequestAttributes();
-
     }
 
     @Test

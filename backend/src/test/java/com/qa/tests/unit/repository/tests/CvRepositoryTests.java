@@ -36,8 +36,8 @@ public class CvRepositoryTests {
 
     @Before
     public void setUp() {
-        iCvRepository.save(new Cv("1","bob", fileToBinaryStorage, "testFile.txt"));
-        iCvRepository.save(new Cv("2","alex", fileToBinaryStorage, "testFile.txt"));
+        iCvRepository.save(new Cv("1","bob",  "testFile.txt", fileToBinaryStorage));
+        iCvRepository.save(new Cv("2","alex","testFile.txt", fileToBinaryStorage));
     }
 
     @After
@@ -52,12 +52,12 @@ public class CvRepositoryTests {
         List<Cv> list = iCvRepository.findAllByName("bob");
         assertEquals(1, list.size());
 
-        Cv newCv = new Cv("bob", fileToBinaryStorage, "testFile.txt");
+        Cv newCv = new Cv("bob",  "testFile.txt", fileToBinaryStorage);
         iCvRepository.save(newCv);
         list = iCvRepository.findAllByName("bob");
         assertEquals(2, list.size());
 
-        newCv = new Cv("bob", fileToBinaryStorage, "cv.pdf");
+        newCv = new Cv("bob", "cv.pdf", fileToBinaryStorage);
         iCvRepository.save(newCv);
         list = iCvRepository.findAllByName("bob");
         assertEquals(3, list.size());
@@ -67,7 +67,7 @@ public class CvRepositoryTests {
     @Test
     public void testFindById() {
 
-        Cv example = new Cv("3", "alex", fileToBinaryStorage, "file.txt");
+        Cv example = new Cv("3", "alex", "file.txt", fileToBinaryStorage);
         iCvRepository.save(example);
 
         Optional<Cv> found = iCvRepository.findById("3");

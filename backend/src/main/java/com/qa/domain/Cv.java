@@ -2,7 +2,6 @@ package com.qa.domain;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.bson.types.Binary;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -12,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 @Document(collection = "cv")
@@ -35,23 +35,22 @@ public class Cv {
 
 	public Cv() {}
 
-	public Cv(String name, Binary cvFile, String fileName) {
+	public Cv(@NotNull String name, @NotNull String fileName, @NotNull Binary cvFile) {
 		this.name = name;
-		this.cvFile = cvFile;
 		this.fileName = fileName;
+		this.cvFile = cvFile;
 		this.lastModified = LocalDateTime.now(ZoneId.of("Europe/London"))
 				.truncatedTo(ChronoUnit.SECONDS);
 	}
 
 	//Testing purposes only
-	public Cv(String id, String name, Binary cvFile, String fileName) {
+	public Cv(String id, @NotNull String name, @NotNull String fileName, @NotNull Binary cvFile) {
 		this.id = id;
 		this.name = name;
 		this.fileName = fileName;
 		this.cvFile = cvFile;
 		this.lastModified = LocalDateTime.now(ZoneId.of("Europe/London"))
 				.truncatedTo(ChronoUnit.SECONDS);
-
 	}
 
 	//Testing
@@ -105,12 +104,14 @@ public class Cv {
 		String data = new String(
 				Base64.encodeBase64(cvFile.getData()),
 				StandardCharsets.UTF_8);
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+		String formatDateTime = lastModified.format(format);
 
 		return"{"+
 				"\"fileName\":\""+fileName+"\""+
 				",\"name\":\""+name+"\""+
 				",\"id\":\""+id+"\""+
-				",\"lastModified\":\""+this.lastModified+"\""+
+				",\"lastModified\":\""+formatDateTime+"\""+
 				",\"cvFile\":"+
 				"{\"data\":\""+data+"\""+
 				",\"type\":"+cvFile.getType()+"}"+

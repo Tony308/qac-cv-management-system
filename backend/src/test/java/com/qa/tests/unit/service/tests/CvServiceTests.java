@@ -48,10 +48,10 @@ CvServiceTests {
     private Optional<Cv> foundCv = Optional.empty();
 
     final private Cv testEinz = new Cv("1","bob",
-            fileToBinaryStorage,"testFile.txt");
+            "testFile.txt",fileToBinaryStorage);
 
     final private Cv testZwei = new Cv("2","alex",
-            fileToBinaryStorage, "testFile.txt");
+            "testFile.txt", fileToBinaryStorage);
 
     private MultipartFile multipartFile;
 
@@ -97,8 +97,8 @@ CvServiceTests {
 
         List<Cv> found = new ArrayList<>();
 
-        Cv eins = new Cv(user, fileToBinaryStorage, "random.pdf");
-        Cv zwei = new Cv(user, fileToBinaryStorage,"testFile.txt");
+        Cv eins = new Cv(user, "random.pdf", fileToBinaryStorage);
+        Cv zwei = new Cv(user, "testFile.txt", fileToBinaryStorage);
 
         found.add(eins);
         found.add(zwei);
@@ -115,15 +115,18 @@ CvServiceTests {
         expectedList.add(zwei);
 
         ResponseEntity<?> expected = ResponseEntity.ok(expectedList);
-
         assertEquals(expected, actual);
+
+        for (Cv cv : expectedList) {
+            System.out.println(cv.toString());
+        }
 
     }
 
     @Test
     public void testGetAllCvsFail() {
 
-        List<Cv> found =  new ArrayList<>();
+        List<Cv> found = new ArrayList<>();
 
         when(iCvRepository.findAllByName("jesus")).thenReturn(found);
 
