@@ -36,8 +36,8 @@ public class CvRepositoryTests {
 
     @Before
     public void setUp() {
-        iCvRepository.save(new Cv("1","bob",  "testFile.txt", fileToBinaryStorage));
-        iCvRepository.save(new Cv("2","alex","testFile.txt", fileToBinaryStorage));
+        iCvRepository.save(new Cv("1","maximus",  "testFile.txt", fileToBinaryStorage));
+        iCvRepository.save(new Cv("2","jimmy","testFile.txt", fileToBinaryStorage));
     }
 
     @After
@@ -49,17 +49,17 @@ public class CvRepositoryTests {
     @Test
     public void findAllByName() {
 
-        List<Cv> list = iCvRepository.findAllByName("bob");
+        List<Cv> list = iCvRepository.findAllByName("maximus");
         assertEquals(1, list.size());
 
-        Cv newCv = new Cv("bob",  "testFile.txt", fileToBinaryStorage);
+        Cv newCv = new Cv("maximus",  "testFile.txt", fileToBinaryStorage);
         iCvRepository.save(newCv);
-        list = iCvRepository.findAllByName("bob");
+        list = iCvRepository.findAllByName("maximus");
         assertEquals(2, list.size());
 
-        newCv = new Cv("bob", "cv.pdf", fileToBinaryStorage);
+        newCv = new Cv("maximus", "cv.pdf", fileToBinaryStorage);
         iCvRepository.save(newCv);
-        list = iCvRepository.findAllByName("bob");
+        list = iCvRepository.findAllByName("maximus");
         assertEquals(3, list.size());
 
     }
@@ -67,7 +67,7 @@ public class CvRepositoryTests {
     @Test
     public void testFindById() {
 
-        Cv example = new Cv("3", "alex", "file.txt", fileToBinaryStorage);
+        Cv example = new Cv("3", "jimmy", "file.txt", fileToBinaryStorage);
         iCvRepository.save(example);
 
         Optional<Cv> found = iCvRepository.findById("3");
@@ -82,7 +82,7 @@ public class CvRepositoryTests {
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Europe/London"))
                 .truncatedTo(ChronoUnit.MILLIS);
 
-        Cv example = new Cv("3", "alex", localDateTime, "file.txt",fileToBinaryStorage);
+        Cv example = new Cv("3", "jimmy", localDateTime, "file.txt",fileToBinaryStorage);
 
         iCvRepository.save(example);
 

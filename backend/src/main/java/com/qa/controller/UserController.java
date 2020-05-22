@@ -19,18 +19,17 @@ public class UserController {
     }
 
     @PostMapping("/create-account")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> createAccount(@RequestParam("username") String username,
-                                                    @RequestParam("password") String password) {
-
+    public ResponseEntity<String> createAccount(
+            @RequestParam("username") String username,
+            @RequestParam("password") String password) {
         return userService.createUser(username, password);
     }
 
     @PostMapping("/login")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> authenticateLogin(@RequestParam("username") String username,
-                                                        @RequestParam("password") String password) {
-
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ResponseEntity<String> authenticateLogin(
+            @RequestParam("username") String username,
+             @RequestParam("password") String password) {
         return userService.authenticateUser(username, password);
     }
 }

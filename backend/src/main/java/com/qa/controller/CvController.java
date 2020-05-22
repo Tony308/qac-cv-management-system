@@ -3,12 +3,14 @@ package com.qa.controller;
 import com.qa.service.CvService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/cvsystem")
 @CrossOrigin(origins = "*")
+@Validated
 public class CvController {
 	
 	@Autowired

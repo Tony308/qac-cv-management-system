@@ -1,7 +1,9 @@
 package com.qa.tests.integration;
 
 import com.qa.domain.Cv;
+import com.qa.domain.User;
 import com.qa.repository.ICvRepository;
+import com.qa.repository.UserRepository;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
@@ -49,6 +51,9 @@ public class CvControllerIntegrationTest {
     private ICvRepository cvRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private WebApplicationContext context;
 
     private MockMvc mockMvc;
@@ -80,17 +85,20 @@ public class CvControllerIntegrationTest {
                 data[0].getBytes()
         );
 
-        mockCv = new Cv("1","user", file.getOriginalFilename(), binary);
+        userRepository.save(new User("jimmy", "password"));
+
+        mockCv = new Cv("1","jimmy", file.getOriginalFilename(), binary);
         cvRepository.save(mockCv);
 
         binary = new Binary(BsonBinarySubType.BINARY, data[1].getBytes());
-        mockCv = new Cv("user","MI5.pdf", binary);
+        mockCv = new Cv("jimmy","MI5.pdf", binary);
         cvRepository.save(mockCv);
     }
 
     @After
     public void tearDown() throws Exception {
         RequestContextHolder.resetRequestAttributes();
+        userRepository.deleteAll();
         cvRepository.deleteAll();
     }
 
@@ -128,7 +136,7 @@ public class CvControllerIntegrationTest {
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/cvsystem/get")
-                .param("name", "user")
+                .param("name", "jimmy")
                 .contentType(MediaType.APPLICATION_JSON);
 
         MvcResult actual = mockMvc.perform(request)
@@ -139,7 +147,7 @@ public class CvControllerIntegrationTest {
 
         JSONArray jsonArray = new JSONArray(response.getContentAsString());
 
-        List<Cv> cvList = cvRepository.findAllByName("user");
+        List<Cv> cvList = cvRepository.findAllByName("jimmy");
 
         assertEquals(2,jsonArray.length());
         assertEquals(cvList.size(),jsonArray.length());
@@ -156,13 +164,13 @@ public class CvControllerIntegrationTest {
     @Test
     public void testUploadCv() throws Exception{
 
-        List<Cv> list = cvRepository.findAllByName("user");
+        List<Cv> list = cvRepository.findAllByName("jimmy");
 
         assertEquals(2, list.size());
 
         RequestBuilder request = multipart("/cvsystem/upload-cv")
                 .file(file)
-                .param("user", "user")
+                .param("user", "jimmy")
                 .param("fileName", file.getOriginalFilename())
                 .contentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -172,13 +180,13 @@ public class CvControllerIntegrationTest {
                 .andExpect(content().string("File successfully uploaded"))
                 .andReturn();
 
-        list = cvRepository.findAllByName("user");
+        list = cvRepository.findAllByName("jimmy");
         assertEquals(3, list.size());
 
         Cv cv = list.get(list.size() - 1);
 
         assertEquals(file.getOriginalFilename(), cv.getFileName());
-        assertEquals("user", cv.getName());
+        assertEquals("jimmy", cv.getName());
     }
 
     @Test

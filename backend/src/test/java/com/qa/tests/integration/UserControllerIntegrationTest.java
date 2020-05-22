@@ -48,12 +48,11 @@ public class UserControllerIntegrationTest {
         HttpServletRequest mockRequest = new MockHttpServletRequest();
         ServletRequestAttributes servletRequestAttributes = new ServletRequestAttributes(mockRequest);
         RequestContextHolder.setRequestAttributes(servletRequestAttributes);
-
-        userRepository.save(new User("user", "test"));
+        userRepository.save(new User("username", "password"));
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws Exception {
         RequestContextHolder.resetRequestAttributes();
         userRepository.deleteAll();
     }
@@ -64,14 +63,37 @@ public class UserControllerIntegrationTest {
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/cvsystem/login")
-                .param("username", "user")
-                .param("password", "test");
+                .param("username", "username")
+                .param("password", "password");
 
         mockMvc.perform(request)
                 .andExpect(status().isAccepted())
                 .andExpect(content().string("Login Successful"))
                 .andReturn();
 
+    }
+
+    @Test
+    public void testLoginUnauthorized() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/cvsystem/login")
+                .param("username", "username")
+                .param("password", "wrongpassword");
+
+        mockMvc.perform(request)
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void testLoginBadRequest() throws Exception {
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/cvsystem/login")
+                .param("username", "")
+                .param("password", "");
+
+        mockMvc.perform(request)
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -83,8 +105,8 @@ public class UserControllerIntegrationTest {
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/cvsystem/create-account")
-                .param("username", "test")
-                .param("password", "password")
+                .param("username", "username1")
+                .param("password", "password1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
 
@@ -94,6 +116,37 @@ public class UserControllerIntegrationTest {
 
         list = userRepository.findAll();
         assertEquals(2, list.size());
+
+    }
+
+    @Test
+    public void testCreateUserBadRequest() throws Exception {
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/cvsystem/create-account")
+                .param("username","")
+                .param("password", "");
+//todo fix test
+        mockMvc.perform(request)
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        request = MockMvcRequestBuilders
+                .post("/cvsystem/create-account")
+                .param("username","test")
+                .param("password", "user");
+
+        mockMvc.perform(request)
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        request = MockMvcRequestBuilders
+                .post("/cvsystem/create-account")
+                .param("username","test")
+                .param("password", "user");
+
+        mockMvc.perform(request)
+                .andExpect(status().isBadRequest()).andReturn();
 
     }
 }

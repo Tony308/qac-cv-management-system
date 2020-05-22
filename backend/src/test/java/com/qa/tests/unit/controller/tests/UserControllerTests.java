@@ -52,7 +52,6 @@ public class UserControllerTests {
 
     @Before
     public void setUp() {
-
         HttpServletRequest mockRequest = new MockHttpServletRequest();
         ServletRequestAttributes servletRequestAttributes = new ServletRequestAttributes(mockRequest);
         RequestContextHolder.setRequestAttributes(servletRequestAttributes);

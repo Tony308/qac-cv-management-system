@@ -1,7 +1,9 @@
 package com.qa.tests.unit.service.tests;
 
 import com.qa.domain.Cv;
+import com.qa.domain.User;
 import com.qa.repository.ICvRepository;
+import com.qa.repository.UserRepository;
 import com.qa.service.CvService;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
@@ -19,6 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.swing.text.html.Option;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,13 +42,18 @@ CvServiceTests {
     @Mock
     private ICvRepository iCvRepository;
 
-    final private String data = "Initial File\n" +
+    @Mock
+    private UserRepository userRepository;
+
+    final private String data = "Initi" +
+            "al File\n" +
             "Feel free to delete this file when the database is setup.";
 
     final private Binary fileToBinaryStorage =
             new Binary(BsonBinarySubType.BINARY, data.getBytes());
 
     private Optional<Cv> foundCv = Optional.empty();
+    private Optional<User> foundUser = Optional.empty();
 
     final private Cv testEinz = new Cv("1","bob",
             "testFile.txt",fileToBinaryStorage);
@@ -152,8 +160,15 @@ CvServiceTests {
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
 
+        User user = new User("bob", "password");
+        Optional<User> foundUser = Optional.of(user);
+
+        when(userRepository.findByUsername("bob")).thenReturn(foundUser);
+
         ResponseEntity<?> actual = cvService
-                .uploadCv(multipartFile,"Bob", "fileName.pdf");
+                .uploadCv(multipartFile,"bob", "fileName.pdf");
+
+        verify(userRepository).findByUsername("bob");
 
         ResponseEntity<?> expected =
                 ResponseEntity.created(location).body("File successfully uploaded");
@@ -164,8 +179,15 @@ CvServiceTests {
 
     @Test
     public void testUploadNoCv() {
+        User user = new User("bob", "password");
+        Optional<User> foundUser = Optional.of(user);
+
+        when(userRepository.findByUsername("bob")).thenReturn(foundUser);
 
         ResponseEntity<?> actual = cvService.uploadCv(multipartFile, "bob", "testFail.pdf");
+
+        verify(userRepository).findByUsername("bob");
+
         ResponseEntity<?> expected = ResponseEntity.badRequest().build();
 
         assertEquals(expected, actual);

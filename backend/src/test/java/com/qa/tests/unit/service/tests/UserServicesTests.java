@@ -1,11 +1,10 @@
 package com.qa.tests.unit.service.tests;
 
-import com.qa.controller.UserController;
 import com.qa.domain.User;
 import com.qa.repository.UserRepository;
 import com.qa.service.UserService;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,17 +13,14 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -49,7 +45,7 @@ public class UserServicesTests {
     }
 
     @Test
-    public void testServiceCreateUserCREATED() {
+    public void testCreateUserCREATED() {
 
         when(userRepository.findByUsername(username)).thenReturn(foundUser);
 
@@ -80,6 +76,20 @@ public class UserServicesTests {
         ResponseEntity<?> expected = new ResponseEntity<>("Username already exists.", HttpStatus.CONFLICT);
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    @Ignore
+    public void testCreateUserBadRequest() {
+        when(userRepository.findByUsername("")).thenReturn(foundUser);
+
+        assertFalse(foundUser.isPresent());
+
+        ResponseEntity actual = userService.createUser("", "");
+
+        verify(userRepository).findByUsername("");
+        assertEquals(ResponseEntity.badRequest().build(), actual);
+
     }
 
     @Test

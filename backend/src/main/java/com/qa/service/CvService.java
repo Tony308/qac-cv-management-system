@@ -1,13 +1,16 @@
 package com.qa.service;
 
 import com.qa.domain.Cv;
+import com.qa.domain.User;
 import com.qa.repository.ICvRepository;
+import com.qa.repository.UserRepository;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -20,10 +23,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Validated
 public class CvService {
 
 	@Autowired
 	private ICvRepository iCvRepository;
+
+	@Autowired
+    private UserRepository userRepository;
 
 	public ResponseEntity getUserCVs(String name) {
 
@@ -36,6 +43,12 @@ public class CvService {
     }
 
     public ResponseEntity uploadCv(MultipartFile file, String name, String fileName) {
+
+        Optional<User> found = userRepository.findByUsername(name);
+
+        if(!found.isPresent()) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .build().toUri();

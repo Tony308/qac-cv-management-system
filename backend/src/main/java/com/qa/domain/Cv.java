@@ -7,7 +7,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Size;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -21,21 +24,19 @@ public class Cv {
 	@Id
 	private String id;
 	@Field
-	@NotNull
+	@NotBlank @Size(min = 5)
 	private String name;
 	@Field
-	@NotNull
+	@NotNull @PastOrPresent
 	private LocalDateTime lastModified;
-	@Field
-	@NotNull
+	@Field @NotBlank
 	private String fileName;
-	@Field
-	@NotNull
+	@Field @NotNull
 	private Binary cvFile;
 
 	public Cv() {}
 
-	public Cv(@NotNull String name, @NotNull String fileName, @NotNull Binary cvFile) {
+	public Cv(@NotBlank String name, @NotBlank String fileName, @NotBlank Binary cvFile) {
 		this.name = name;
 		this.fileName = fileName;
 		this.cvFile = cvFile;
@@ -44,7 +45,7 @@ public class Cv {
 	}
 
 	//Testing purposes only
-	public Cv(String id, @NotNull String name, @NotNull String fileName, @NotNull Binary cvFile) {
+	public Cv(String id, @NotBlank String name, @NotBlank String fileName, @NotBlank Binary cvFile) {
 		this.id = id;
 		this.name = name;
 		this.fileName = fileName;
@@ -54,7 +55,9 @@ public class Cv {
 	}
 
 	//Testing
-	public Cv(String id, @NotNull String name, @NotNull LocalDateTime lastModified, @NotNull String fileName, @NotNull Binary cvFile) {
+	public Cv(String id, @NotBlank String name,
+			  @NotBlank @PastOrPresent @Size(min = 5) LocalDateTime lastModified,
+			  @NotBlank String fileName, @NotBlank Binary cvFile) {
 		this.id = id;
 		this.name = name;
 		this.lastModified = lastModified;
@@ -65,22 +68,26 @@ public class Cv {
 	public String getId() {
 		return id;
 	}
-	
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
-    public Binary getCvFile() {
-        return cvFile;
-    }
+	public LocalDateTime getLastModified() {
+		return lastModified;
+	}
 
-    public void setCvFile(Binary cvFile) {
-        this.cvFile = cvFile;
-    }
+	public void setLastModified(LocalDateTime lastModified) {
+		this.lastModified = lastModified;
+	}
 
 	public String getFileName() {
 		return fileName;
@@ -90,12 +97,12 @@ public class Cv {
 		this.fileName = fileName;
 	}
 
-	public LocalDateTime getLastModified() {
-		return lastModified;
+	public Binary getCvFile() {
+		return cvFile;
 	}
 
-	public void setLastModified(LocalDateTime lastModified) {
-		this.lastModified = lastModified;
+	public void setCvFile(Binary cvFile) {
+		this.cvFile = cvFile;
 	}
 
 	@Override

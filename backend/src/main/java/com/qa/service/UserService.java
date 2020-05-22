@@ -19,13 +19,14 @@ public class UserService {
 
     public ResponseEntity<String> createUser(String username, String password) {
 
-        Optional<User> foundUser = userRepository.findByUsername(username);
 
     	try {
-	    	if (foundUser.isPresent()){
+            Optional<User> foundUser = userRepository.findByUsername(username);
+
+            if (foundUser.isPresent()){
 	        	return new ResponseEntity<>("Username already exists.", HttpStatus.CONFLICT);
 		    } else {
-		    	User user = new User(username,password);
+	    	    User user = new User(username, password);
 				userRepository.save(user);
 
                 URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -35,24 +36,24 @@ public class UserService {
 		    }
         } catch (Exception e) {
         	e.printStackTrace();
-        	return ResponseEntity.badRequest().build();
+        	return ResponseEntity.badRequest().body(e.getMessage());
         }
 
     }
 
     public ResponseEntity<String> authenticateUser(String username, String password) {
 
-        Optional<User> user = userRepository.findByUsernameAndPassword(username, password);
-
         try {
+            Optional<User> user = userRepository.findByUsernameAndPassword(username, password);
+
             if (user.isPresent()) {
                 return ResponseEntity.accepted().body("Login Successful");
-            } else {
-                return new ResponseEntity<>("Incorrect credentials", HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception e) {
         	e.printStackTrace();
-        	return new ResponseEntity<>("Error", HttpStatus.BAD_REQUEST);
+        	return ResponseEntity.badRequest().body(e.getMessage());
         }
+
+        return new ResponseEntity<>("Incorrect credentials", HttpStatus.UNAUTHORIZED);
     }
 }
