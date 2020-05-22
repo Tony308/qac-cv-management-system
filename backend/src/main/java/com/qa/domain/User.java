@@ -5,13 +5,14 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Document(collection = "user")
 @Component
+@Validated
 public class User {
 
     @Id
@@ -27,8 +28,8 @@ public class User {
     public User() {
     }
 
-    public User(@Valid @NotBlank @Size(min = 5, message = "Username must be at least 5 characters long") String username,
-                @Valid @NotBlank @Size(min = 7, message = "Password mus tbe at lesat 7 characters long") String password) {
+    public User(@NotBlank @Size(min = 5, message = "Username must be at least 5 characters long") String username,
+                @NotBlank @Size(min = 7, message = "Password mus tbe at lesat 7 characters long") String password) {
         this.username = username;
         this.password = password;
     }

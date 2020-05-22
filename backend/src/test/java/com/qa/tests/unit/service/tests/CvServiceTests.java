@@ -7,6 +7,9 @@ import com.qa.repository.UserRepository;
 import com.qa.service.CvService;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,10 +27,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.swing.text.html.Option;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -100,22 +105,21 @@ CvServiceTests {
     }
 
     @Test
-    public void testGetAllCVsSuccess() {
-        String user = "user";
+    public void testGetAllCVsSuccess() throws Exception {
 
         List<Cv> found = new ArrayList<>();
 
-        Cv eins = new Cv(user, "random.pdf", fileToBinaryStorage);
-        Cv zwei = new Cv(user, "testFile.txt", fileToBinaryStorage);
+        Cv eins = new Cv("1","user", "random.pdf", fileToBinaryStorage);
+        Cv zwei = new Cv("2","user", "testFile.txt", fileToBinaryStorage);
 
         found.add(eins);
         found.add(zwei);
 
-        when(iCvRepository.findAllByName(user)).thenReturn(found);
+        when(iCvRepository.findAllByName("user")).thenReturn(found);
 
-        ResponseEntity<?> actual = cvService.getUserCVs(user);
+        ResponseEntity<?> actual = cvService.getUserCVs("user");
 
-        verify(iCvRepository).findAllByName(user);
+        verify(iCvRepository).findAllByName("user");
 
         List<Cv> expectedList = new ArrayList<>();
 
@@ -123,12 +127,9 @@ CvServiceTests {
         expectedList.add(zwei);
 
         ResponseEntity<?> expected = ResponseEntity.ok(expectedList);
+
+
         assertEquals(expected, actual);
-
-        for (Cv cv : expectedList) {
-            System.out.println(cv.toString());
-        }
-
     }
 
     @Test
@@ -231,7 +232,7 @@ CvServiceTests {
                 "fileName.pdf"
         );
 
-        ResponseEntity<String> expected = new ResponseEntity<>("Failed to update.", HttpStatus.BAD_REQUEST);
+        ResponseEntity expected = ResponseEntity.badRequest().build();
 
         verify(iCvRepository).findById("1");
 

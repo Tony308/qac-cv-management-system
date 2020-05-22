@@ -45,7 +45,6 @@ public class CvRepositoryTests {
         iCvRepository.deleteAll();
     }
 
-
     @Test
     public void findAllByName() {
 

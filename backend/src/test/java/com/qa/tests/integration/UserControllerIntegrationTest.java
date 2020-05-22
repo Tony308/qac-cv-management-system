@@ -120,21 +120,26 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
+    public void testCreateUserConflict() throws Exception {
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/cvsystem/create-account")
+                .param("username", "username")
+                .param("password", "password")
+                .contentType("application/json");
+
+        mockMvc.perform(request)
+                .andExpect(status().isConflict())
+                .andExpect(content().string("Username already exists."));
+    }
+
+    @Test
     public void testCreateUserBadRequest() throws Exception {
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/cvsystem/create-account")
                 .param("username","")
                 .param("password", "");
-//todo fix test
-        mockMvc.perform(request)
-                .andExpect(status().isBadRequest())
-                .andReturn();
-
-        request = MockMvcRequestBuilders
-                .post("/cvsystem/create-account")
-                .param("username","test")
-                .param("password", "user");
 
         mockMvc.perform(request)
                 .andExpect(status().isBadRequest())
@@ -146,7 +151,16 @@ public class UserControllerIntegrationTest {
                 .param("password", "user");
 
         mockMvc.perform(request)
-                .andExpect(status().isBadRequest()).andReturn();
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        request = MockMvcRequestBuilders
+                .post("/cvsystem/create-account")
+                .param("username","LONGERUSERNAME")
+                .param("password", "user");
+
+        mockMvc.perform(request)
+                .andExpect(status().isBadRequest());
 
     }
 }

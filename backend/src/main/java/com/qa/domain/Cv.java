@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -19,6 +20,7 @@ import java.time.temporal.ChronoUnit;
 
 @Document(collection = "cv")
 @Component
+@Validated
 public class Cv {
 
 	@Id
@@ -36,7 +38,7 @@ public class Cv {
 
 	public Cv() {}
 
-	public Cv(@NotBlank String name, @NotBlank String fileName, @NotBlank Binary cvFile) {
+	public Cv(@NotBlank @Size(min = 5) String name, @NotBlank String fileName, @NotNull Binary cvFile) {
 		this.name = name;
 		this.fileName = fileName;
 		this.cvFile = cvFile;
@@ -45,7 +47,7 @@ public class Cv {
 	}
 
 	//Testing purposes only
-	public Cv(String id, @NotBlank String name, @NotBlank String fileName, @NotBlank Binary cvFile) {
+	public Cv(String id, @NotBlank @Size(min = 5) String name, @NotBlank String fileName, @NotNull Binary cvFile) {
 		this.id = id;
 		this.name = name;
 		this.fileName = fileName;
@@ -55,9 +57,7 @@ public class Cv {
 	}
 
 	//Testing
-	public Cv(String id, @NotBlank String name,
-			  @NotBlank @PastOrPresent @Size(min = 5) LocalDateTime lastModified,
-			  @NotBlank String fileName, @NotBlank Binary cvFile) {
+	public Cv(String id, @NotBlank @Size(min = 5) String name, @NotNull @PastOrPresent LocalDateTime lastModified, @NotBlank String fileName, @NotNull Binary cvFile) {
 		this.id = id;
 		this.name = name;
 		this.lastModified = lastModified;

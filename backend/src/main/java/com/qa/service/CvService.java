@@ -14,7 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.io.IOException;
+import javax.validation.ConstraintViolationException;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -44,16 +44,16 @@ public class CvService {
 
     public ResponseEntity uploadCv(MultipartFile file, String name, String fileName) {
 
-        Optional<User> found = userRepository.findByUsername(name);
-
-        if(!found.isPresent()) {
-            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
-        }
-
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .build().toUri();
-
         try {
+            Optional<User> found = userRepository.findByUsername(name);
+
+            if(!found.isPresent()) {
+                return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+            }
+
+
             if (file.getSize() >= 16000000) {
                 System.out.println("Should to be stored in GridFS \n Still to be implemented");
             }
@@ -62,12 +62,12 @@ public class CvService {
             Cv cv = new Cv(name, fileName, binary);
             iCvRepository.save(cv);
 
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | ConstraintViolationException e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch(Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>("Upload failed", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return ResponseEntity.created(location).body("File successfully uploaded");
@@ -100,30 +100,32 @@ public class CvService {
 
 	public ResponseEntity updateCv(String id, MultipartFile file, String fileName) {
 
-	    Optional<Cv> cv = iCvRepository.findById(id);
-	    Cv cvToUpdate = null;
-
-        if (cv.isPresent()){
-            cvToUpdate = cv.get();
-        } else {
-            return new ResponseEntity<>("Unable to find CV", HttpStatus.NOT_FOUND);
-        }
-
         try {
+
+            Optional<Cv> cv = iCvRepository.findById(id);
+            Cv cvToUpdate = null;
+
+            if (!cv.isPresent()) {
+                return new ResponseEntity<>("Unable to find CV", HttpStatus.NOT_FOUND);
+            }
+
+            cvToUpdate = cv.get();
+
             Binary updatedCvBinary = new Binary(BsonBinarySubType.BINARY, file.getBytes());
+            cvToUpdate.setLastModified(LocalDateTime.now(ZoneId.of("Europe/London"))
+                    .truncatedTo(ChronoUnit.SECONDS));
             cvToUpdate.setCvFile(updatedCvBinary);
-            cvToUpdate.setLastModified(LocalDateTime.now(ZoneId.of("Europe/London")).truncatedTo(ChronoUnit.SECONDS));
             cvToUpdate.setFileName(fileName);
             iCvRepository.save(cvToUpdate);
-        }
-        catch (IOException e) {
+
+        } catch (ConstraintViolationException | NullPointerException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>("Failed to update.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
         return new ResponseEntity<>("CV successfully updated.", HttpStatus.OK);
     }
 }
