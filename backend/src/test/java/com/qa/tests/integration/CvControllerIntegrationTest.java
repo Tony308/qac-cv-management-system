@@ -281,6 +281,8 @@ public class CvControllerIntegrationTest {
         Optional<Cv> found = cvRepository.findById("1");
         assertTrue(found.isPresent());
 
+        cvRepository.save(new Cv("1234", "jimmy", file.getOriginalFilename(), binary));
+
          request = MockMvcRequestBuilders
                 .delete("/cvsystem/delete/1")
                 .contentType("application/json");
@@ -292,6 +294,21 @@ public class CvControllerIntegrationTest {
 
         found = cvRepository.findById("1");
         assertFalse(found.isPresent());
+
+        found = cvRepository.findById("1234");
+        assertTrue(found.isPresent());
+
+        request = MockMvcRequestBuilders
+                .delete("/cvsystem/delete/{id}", 1234)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().string("CV successfully deleted"));
+
+        found = cvRepository.findById("1234");
+        assertFalse(found.isPresent());
+
     }
 
 

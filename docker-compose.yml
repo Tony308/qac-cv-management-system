@@ -3,7 +3,7 @@ services:
   mongodb:
     container_name: "mongodb"
     build: ./mongo
-    image: mongodb
+    image: tonyh308/cv-mongodb:latest
     labels:
       com.qa.description: "MongoDb Container for application."
     volumes:
@@ -14,7 +14,7 @@ services:
   cv-react:
     container_name: "cv-react"
     build: ./frontend
-    image: cv-react
+    image: tonyh308/cv-react:latest
     ports:
       - 3000:3000
     depends_on:
@@ -25,7 +25,9 @@ services:
   cv-backend:
     container_name: "cv-backend"
     build: ./backend
-    image: cv-backend
+    image: tonyh308/cv-backend:latest
+    environment:
+      TZ: "Europe/London"
     volumes: 
       - /tmp
     depends_on:

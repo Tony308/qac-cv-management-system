@@ -4,6 +4,8 @@ jobs:
       directories:
         - $HOME/.m2
     language: java
+    after_success:
+      - bash <(curl -s https://codecov.io/bash)
     before_script:
     - export TZ=Europe/London
     script: ./scripts/setupBackend.sh

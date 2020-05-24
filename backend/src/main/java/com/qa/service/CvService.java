@@ -91,7 +91,6 @@ public class CvService {
 	public ResponseEntity deleteCv(String id) {
         Optional<Cv> foundCv = iCvRepository.findById(id);
         if (foundCv.isPresent()) {
-
             iCvRepository.delete(foundCv.get());
             return ResponseEntity.ok("CV successfully deleted");
         }
