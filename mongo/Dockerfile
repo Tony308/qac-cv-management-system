@@ -1,5 +1,4 @@
-FROM mongo
-RUN apt-get update
+FROM mongo:4.2.7-bionic
 WORKDIR /data
-COPY ./Customers /Customers
-ENTRYPOINT ["mongod","--auth", "--bind_ip_all"]
+ENTRYPOINT ["mongod", "--bind_ip_all", "--auth"]
+EXPOSE 27017:27017

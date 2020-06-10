@@ -79,20 +79,6 @@ public class UserServicesTests {
     }
 
     @Test
-    @Ignore
-    public void testCreateUserBadRequest() {
-        when(userRepository.findByUsername("")).thenReturn(foundUser);
-
-        assertFalse(foundUser.isPresent());
-
-        ResponseEntity actual = userService.createUser("", "");
-
-        verify(userRepository).findByUsername("");
-        assertEquals(ResponseEntity.badRequest().build(), actual);
-
-    }
-
-    @Test
     public void testLoginFail() {
 
         when(userRepository.findByUsernameAndPassword(username, pwd))

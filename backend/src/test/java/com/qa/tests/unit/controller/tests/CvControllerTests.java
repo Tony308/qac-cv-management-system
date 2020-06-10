@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebMvcTest(value = CvController.class, secure = false)
+@WebMvcTest(value = CvController.class)
 public class CvControllerTests {
 
     @InjectMocks

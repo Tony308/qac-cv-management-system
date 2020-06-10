@@ -26,16 +26,18 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Constraint;
+import javax.validation.ConstraintViolationException;
 import java.net.URI;
+import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebMvcTest(value = UserController.class, secure = false)
+@WebMvcTest(value = UserController.class)
 public class UserControllerTests {
 
     @InjectMocks
@@ -49,6 +51,7 @@ public class UserControllerTests {
 
     final private String username = "username";
     final private String pwd = "password";
+    private ConstraintViolationException ConstraintViolationException;
 
     @Before
     public void setUp() {
@@ -87,11 +90,25 @@ public class UserControllerTests {
         MockHttpServletResponse response = actual.getResponse();
 
         assertEquals(HttpStatus.CREATED.value(), response.getStatus());
-
     }
 
     @Test
-    public void testCreateAccFail() throws Exception {
+    public void testCreateUserBadRequest() throws Exception {
+
+//        when(userService.createUser("", ""))
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/cvsystem/create-account")
+                .param("username", "")
+                .param("password", "");
+
+        MvcResult actual = mockMvc.perform(requestBuilder)
+                .andExpect(status().isBadRequest())
+                .andReturn();
+    }
+
+    @Test
+    public void testCreateAccConflict() throws Exception {
 
         when(userService.createUser(username, pwd))
                 .thenReturn(
@@ -144,7 +161,7 @@ public class UserControllerTests {
     }
 
     @Test
-    public void testAuthenticationFail() throws Exception {
+    public void testAuthenticationUnauthorized() throws Exception {
 
         when(userService.authenticateUser(username, pwd))
                 .thenReturn(new ResponseEntity<>(
@@ -164,6 +181,6 @@ public class UserControllerTests {
                 .andReturn();
 
         verify(userService).authenticateUser(username, pwd);
-
     }
+
 }

@@ -13,12 +13,12 @@ import java.util.Optional;
 @Validated
 public interface UserRepository extends MongoRepository<User, String> {
 
-    User findUserByUsernameAndPassword(@NotBlank @Size String username,
-                                       @NotBlank @Size(min = 7) String password);
+    User findUserByUsernameAndPassword(@NotBlank String username, @NotBlank String password);
 
-    Optional<User> findByUsernameAndPassword(@NotBlank @Size(min = 5) String username,
-                                             @NotBlank @Size(min = 7) String password);
+    Optional<User> findByUsernameAndPassword(@NotBlank String username, @NotBlank String password);
+
     Optional<User> findByUsername(@NotBlank @Size(min = 5) String username);
+
 
 
 

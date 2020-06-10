@@ -32,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration
 public class UserControllerIntegrationTest {
 
+
     @Autowired
     private UserRepository userRepository;
 
@@ -53,6 +54,7 @@ public class UserControllerIntegrationTest {
 
     @After
     public void tearDown() throws Exception {
+
         RequestContextHolder.resetRequestAttributes();
         userRepository.deleteAll();
     }
@@ -68,8 +70,7 @@ public class UserControllerIntegrationTest {
 
         mockMvc.perform(request)
                 .andExpect(status().isAccepted())
-                .andExpect(content().string("Login Successful"))
-                .andReturn();
+                .andExpect(content().string("Login Successful"));
 
     }
 
@@ -111,8 +112,7 @@ public class UserControllerIntegrationTest {
                 .accept(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(request)
-                .andExpect(status().isCreated())
-                .andReturn();
+                .andExpect(status().isCreated());
 
         list = userRepository.findAll();
         assertEquals(2, list.size());
@@ -142,8 +142,7 @@ public class UserControllerIntegrationTest {
                 .param("password", "");
 
         mockMvc.perform(request)
-                .andExpect(status().isBadRequest())
-                .andReturn();
+                .andExpect(status().isBadRequest());
 
         request = MockMvcRequestBuilders
                 .post("/cvsystem/create-account")
@@ -151,13 +150,12 @@ public class UserControllerIntegrationTest {
                 .param("password", "user");
 
         mockMvc.perform(request)
-                .andExpect(status().isBadRequest())
-                .andReturn();
+                .andExpect(status().isBadRequest());
 
         request = MockMvcRequestBuilders
                 .post("/cvsystem/create-account")
                 .param("username","LONGERUSERNAME")
-                .param("password", "user");
+                .param("password", "test");
 
         mockMvc.perform(request)
                 .andExpect(status().isBadRequest());

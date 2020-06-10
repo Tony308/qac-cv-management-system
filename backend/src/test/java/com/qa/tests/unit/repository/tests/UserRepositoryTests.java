@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.validation.ConstraintViolationException;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -31,7 +32,6 @@ public class UserRepositoryTests {
 		jimmy = new User("jimmy", "password");
 		userRepository.save(maximus);
 		userRepository.save(jimmy);
-
 	}
 
     @After
@@ -40,7 +40,7 @@ public class UserRepositoryTests {
     }
 
 	@Test
-	public void testCreateUser() {
+	public void testSaveUser() {
 
 		String username = "anikan";
 		String pwd = "skywalker";
@@ -55,6 +55,40 @@ public class UserRepositoryTests {
 	}
 
 	@Test
+	public void testSaveUserException() {
+
+		try {
+			String username = "too";
+			String pwd = "small";
+			User expected = new User(username, pwd);
+			userRepository.save(expected);
+		} catch (ConstraintViolationException e) {
+
+		}
+
+
+	}
+
+	@Test
+	public void testFindByUsername() {
+		Optional<User> found = userRepository.findByUsername("jimmy");
+		assertTrue(found.isPresent());
+	}
+
+	@Test
+	public void testFindByUsernameException() throws ConstraintViolationException {
+
+		boolean status = true;
+		try {
+			userRepository.findByUsername("");
+		} catch (ConstraintViolationException e) {
+			status = false;
+		}
+
+		assertFalse(status);
+	}
+
+	@Test
 	public void testCreatingDuplicateUsername() {
 		boolean state;
 		User expected = new User("jimmy", "password");
@@ -62,7 +96,6 @@ public class UserRepositoryTests {
 			userRepository.save(expected);
 			state = true;
 		} catch (DuplicateKeyException e) {
-			e.printStackTrace();
 			state = false;
 		}
 

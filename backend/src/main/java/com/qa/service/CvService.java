@@ -14,7 +14,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Constraint;
 import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -32,7 +36,7 @@ public class CvService {
 	@Autowired
     private UserRepository userRepository;
 
-	public ResponseEntity getUserCVs(String name) {
+    public ResponseEntity getUserCVs(@NotBlank String name) {
 
 	    List<Cv> list = iCvRepository.findAllByName(name);
 
@@ -42,7 +46,7 @@ public class CvService {
 	    return ResponseEntity.ok().body(list);
     }
 
-    public ResponseEntity uploadCv(MultipartFile file, String name, String fileName) {
+    public ResponseEntity uploadCv(@NotNull MultipartFile file, @NotBlank String name, @NotBlank String fileName) {
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .build().toUri();
@@ -62,7 +66,7 @@ public class CvService {
             Cv cv = new Cv(name, fileName, binary);
             iCvRepository.save(cv);
 
-        } catch (NullPointerException | ConstraintViolationException e) {
+        } catch (ConstraintViolationException | NullPointerException e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch(Exception e) {
@@ -74,7 +78,7 @@ public class CvService {
 
     }
 
-    public ResponseEntity getCV(String id) {
+    public ResponseEntity getCV(@NotBlank String id) {
 
       	Cv cv = null;
     	Optional<Cv> finder = iCvRepository.findById(id);
@@ -88,7 +92,7 @@ public class CvService {
 
     }
 	
-	public ResponseEntity deleteCv(String id) {
+	public ResponseEntity deleteCv(@NotBlank String id) {
         Optional<Cv> foundCv = iCvRepository.findById(id);
         if (foundCv.isPresent()) {
             iCvRepository.delete(foundCv.get());
@@ -97,8 +101,8 @@ public class CvService {
         return ResponseEntity.notFound().build();
 	}
 
-	public ResponseEntity updateCv(String id, MultipartFile file, String fileName) {
-
+	public ResponseEntity updateCv(@NotBlank String id,@NotNull MultipartFile file,@NotBlank String fileName)
+            throws ConstraintViolationException {
         try {
 
             Optional<Cv> cv = iCvRepository.findById(id);

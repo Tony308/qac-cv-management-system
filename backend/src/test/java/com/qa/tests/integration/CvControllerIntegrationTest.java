@@ -11,7 +11,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +67,6 @@ public class CvControllerIntegrationTest {
             new Binary(BsonBinarySubType.BINARY, data[0].getBytes());
 
     private MockMultipartFile file;
-    private Cv mockCv;
 
     private RequestBuilder request;
 
@@ -91,7 +89,7 @@ public class CvControllerIntegrationTest {
 
         userRepository.save(new User("jimmy", "password"));
 
-        mockCv = new Cv("1","jimmy", file.getOriginalFilename(), binary);
+        Cv mockCv = new Cv("1", "jimmy", file.getOriginalFilename(), binary);
         cvRepository.save(mockCv);
 
         binary = new Binary(BsonBinarySubType.BINARY, data[1].getBytes());
@@ -262,20 +260,6 @@ public class CvControllerIntegrationTest {
     }
 
     @Test
-    @Ignore
-    public void testUploadCv_ServerError() throws Exception {
-
-        file = new MockMultipartFile("file",data[0].getBytes());
-        request = MockMvcRequestBuilders.multipart("/cvsystem/upload-cv")
-                .file(file)
-                .param("user", "asfddsafasd")
-                .param("fileName", "fsadfdasfasd");
-
-        mockMvc.perform(request)
-                .andExpect(status().isInternalServerError());
-    }
-
-    @Test
     public void testDeleteCv() throws Exception{
 
         Optional<Cv> found = cvRepository.findById("1");
@@ -324,7 +308,7 @@ public class CvControllerIntegrationTest {
                 .andExpect(status().isNotFound());
 
     }
-    
+
     @Test
     public void testUpdateCv() throws Exception{
 
@@ -386,7 +370,6 @@ public class CvControllerIntegrationTest {
     @Test
     public void testUpdateCv_BadRequest() throws Exception {
 
-        //Todo status 200 -> 400
         Optional<Cv> found = cvRepository.findById("1");
         assertTrue(found.isPresent());
 
@@ -408,8 +391,7 @@ public class CvControllerIntegrationTest {
         });
 
         mockMvc.perform(request)
-                .andExpect(status().isBadRequest())
-                .andReturn();
+                .andExpect(status().isBadRequest());
 
         file = new MockMultipartFile(
                 "wrongParam",
@@ -431,4 +413,5 @@ public class CvControllerIntegrationTest {
         mockMvc.perform(request)
                 .andExpect(status().isBadRequest());
     }
+
 }
