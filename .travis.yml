@@ -1,4 +1,23 @@
 jobs:
   include:
+    services:
+      - docker
+    env:
+      - DOCKER_COMPOSE_VERSION=1.25.5
+    addons:
+      apt:
+        packages:
+        - docker-ce
+    cache:
+      directories:
+        - "$HOME/.m2"
     language: java
-    script: ./scripts/setupBackend.sh
+    after_success:
+      - bash <(curl -s https://codecov.io/bash)
+    before_script:
+      - export TZ=Europe/London
+    script: "./scripts/setupBackend.sh"
+env:
+  global:
+  - secure: LQT0QFFoJhRv9P00AHvxsSJLbiK7+92K77J9msAF3oSteIGL9VGyfdAS/FCfjM1yzxqhke/DlnwzOrB/cxughtCljXWfh2ijrNHBea7jWWVa3fdYNWDFcOShFXd7MOeuEc1FkALJidNOdJw/wATk43Do0dXIq4zOyFOat+9wOWad9s3kwvPgobiIVmi48tkBZc+tvlGo8Q7keZfi3mVewquxgh/8FivK9cOJGRxn+7cVfLChGKXwx/Vb/YFVhIa+Yxv9pAVGAo3dBmiDqKQnyNnVMNCno7m4aSMgAVRXrKw/AzIDXnRYzZM+N6cBuaDOsNFAACCtCDGsfsCS1urLymTVXz32lFMQTTOjI79HPwOuFZ/91Q2revbVSMttPIvSrC6sFmksRguhcrHjaOh7oaOhG3t6vQ4mxOBnvxKIaGhC1QVm1+kjQfsQ3WmVnjprkCtei0vqvvm2PM34vpTXA6QpTVhdfFFgi/pe/5To3h92iwY8IWj78DDtGiGrZhCl55yu68dGMcNSBOnpmkVp760pECRLZuYjww5YFegCHxrZ5b9DJuNSvxGir0ZcZr0AfxzFHsPQgzymAOCIhl75UUR1Bk0tlbEDfkQVay8EFGAoroyHDI7mJhbxzLVqjlsKSwsSdhxTr2INtcRUPJ7XkuOmHHf7kk8VAhdZ5ugFdaU=
+  - secure: h52eB/z9g2pQM4WuNNEwCrbp45gEOC7Vz0Oz06MQhlPBcM9i3lU58kEwmQw2qbINTlZRzjlFb4rjvdCc1RTy09qmufeHGkMYoyXmvUnoaxwOVoW49CPSiQvEYppTKvs1FAXxB8nWXLgbGPOT8GJL35EmfFYpjLp1nhR6k06jqtbw0ZpPDKAPBib3jjyASrIS8JgvDNAOLppmUa5SSHw5BVNgp+J/gt+xxzqlCf9DrirM1Yi7tx671MwltKEwwjhnTM38vh80+ajOU+Q+a6p/LdV1Lrq/N0fz9DbfG+0uzIpCeJOmP5YfHvwx3DeiJ921W7euEebqxEwUNg2XAdlrGiy6DafbWmbJR6a4e9husVOezCtHxkn5T/7s1Akq72tUSyKVyHy5dUlH02S5Pzrq7sPgirPof3LHSLslgXN4ogUzc8FezZyllo329+nBXsXlLOYFyte38ccDUZRwAsj0Xi5/+TvlnJfBwdh7aBvLU+KatMu076Ys6au/dgZJHBNWJ5yZo2NS5rYDWhdp4cyhdp/2RDdp90/nFnLDC6hB3+nXl8y9G/Pxvnp9u4qvu9D02uGH+fv/nkvTLymsyV46aXXKKWjma7I+9tcj/vXT9pFwwVMyx3tnfv6pejw0ivYV5XgmaruEKRP+YknkKrKnrap9zg1o3tj7ZODOhBAQSek=

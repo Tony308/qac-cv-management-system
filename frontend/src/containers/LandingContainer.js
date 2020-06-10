@@ -4,7 +4,6 @@ import LandingComponent from "../components/LandingComponent";
 
 export default class LandingContainer extends Component {
     constructor(props) {
-
         super(props);
 
         this.uploadCV = this.uploadCV.bind(this);
@@ -37,7 +36,7 @@ export default class LandingContainer extends Component {
 
         this.setState({
             password: null
-        })
+        });
     }
 
     uploadCV(e) {
@@ -47,6 +46,7 @@ export default class LandingContainer extends Component {
         if (!file || !localStorage.getItem("username") || !file.name) {
             console.log('error');
             return "Error, not enough details.";
+
         }
         const data = new FormData();
 
@@ -105,7 +105,17 @@ export default class LandingContainer extends Component {
         this.setState({
             [e.target.name]:e.target.value
         });
+        this.createCookieInHour(e.target.name, e.target.value, 1);
+        console.log(document.cookie);
     }
+
+    createCookieInHour(cookieName, cookieValue, hourToExpire) {
+      let date = new Date();
+      date.setTime(date.getTime()+(hourToExpire*60*60*1000));
+      document.cookie = cookieName + " = " + cookieValue + "; expires = " +date.toGMTString();
+    }
+
+
 
     login(e) {
         e.preventDefault();
@@ -117,7 +127,6 @@ export default class LandingContainer extends Component {
         data.append('password', this.state.password);
 
         localStorage.setItem("username", this.state.username);
-        localStorage.getItem("username");
 
         axios.post(url, data)
             .then(res => {

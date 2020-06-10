@@ -9,29 +9,29 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.validation.ConstraintViolationException;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
+@RunWith(SpringRunner.class)
 public class UserRepositoryTests {
 
     @Autowired
     private UserRepository userRepository;
 
-    private User alex;
-    private User bob;
+    private User maximus;
+    private User jimmy;
 
 	@Before
     public void setUp()  {
-		alex = new User("alex", "test");
-		bob = new User("bob", "password");
-		userRepository.save(alex);
-		userRepository.save(bob);
-
+		maximus = new User("maximus", "desparado");
+		jimmy = new User("jimmy", "password");
+		userRepository.save(maximus);
+		userRepository.save(jimmy);
 	}
 
     @After
@@ -40,27 +40,62 @@ public class UserRepositoryTests {
     }
 
 	@Test
-	public void testCreateUser() {
+	public void testSaveUser() {
 
-		User expected = new User("groot", "i am");
+		String username = "anikan";
+		String pwd = "skywalker";
+		User expected = new User(username, pwd);
 		userRepository.save(expected);
 
 		Optional<User> found = userRepository
-				.findByUsernameAndPassword("groot", "i am");
+				.findByUsernameAndPassword(username, pwd);
 
 		assertTrue(found.isPresent());
 
 	}
 
 	@Test
+	public void testSaveUserException() {
+
+		try {
+			String username = "too";
+			String pwd = "small";
+			User expected = new User(username, pwd);
+			userRepository.save(expected);
+		} catch (ConstraintViolationException e) {
+
+		}
+
+
+	}
+
+	@Test
+	public void testFindByUsername() {
+		Optional<User> found = userRepository.findByUsername("jimmy");
+		assertTrue(found.isPresent());
+	}
+
+	@Test
+	public void testFindByUsernameException() throws ConstraintViolationException {
+
+		boolean status = true;
+		try {
+			userRepository.findByUsername("");
+		} catch (ConstraintViolationException e) {
+			status = false;
+		}
+
+		assertFalse(status);
+	}
+
+	@Test
 	public void testCreatingDuplicateUsername() {
-		Boolean state = null;
-		User expected = new User("bob", "i am");
+		boolean state;
+		User expected = new User("jimmy", "password");
 		try {
 			userRepository.save(expected);
 			state = true;
 		} catch (DuplicateKeyException e) {
-			e.printStackTrace();
 			state = false;
 		}
 
@@ -70,7 +105,7 @@ public class UserRepositoryTests {
 	@Test
 	public void testUpdateUser() {
 
-		Optional<User> foundUser = userRepository.findByUsername("alex");
+		Optional<User> foundUser = userRepository.findByUsername("maximus");
 		String expected;
 		String actual;
 
@@ -78,7 +113,7 @@ public class UserRepositoryTests {
 
 		User user = foundUser.get();
 		user.setUsername("hendrix");
-		user.setPassword("pwd");
+		user.setPassword("password");
 
 		userRepository.save(user);
 
@@ -92,7 +127,7 @@ public class UserRepositoryTests {
 
 		assertEquals("Test username are equal.",expected, actual);
 
-		expected = "pwd";
+		expected = "password";
 		actual = user.getPassword();
 
 		assertEquals("Test updated password are equal", expected, actual);
@@ -102,7 +137,7 @@ public class UserRepositoryTests {
 	@Test
 	public void testGetUser() {
 
-	    Optional<User> found = userRepository.findByUsername("alex");
+	    Optional<User> found = userRepository.findByUsername(maximus.getUsername());
 	    User user;
 
 	    assertTrue(found.isPresent());
@@ -110,38 +145,38 @@ public class UserRepositoryTests {
 		user = found.get();
 
 		String actual = user.getUsername();
-	    String expected = alex.getUsername();
+	    String expected = maximus.getUsername();
 
-		assertEquals("alex", actual);
+		assertEquals("maximus", actual);
 	    assertEquals(expected, actual);
 
-		assertEquals("test",user.getPassword());
-		assertEquals(alex.getPassword(), user.getPassword());
+		assertEquals("desparado",user.getPassword());
+		assertEquals(maximus.getPassword(), user.getPassword());
 
-		found = userRepository.findByUsername("bob");
+		found = userRepository.findByUsername("jimmy");
 
 		assertTrue(found.isPresent());
 		user = found.get();
 
-		expected = bob.getUsername();
+		expected = jimmy.getUsername();
 		actual = user.getUsername();
 
-		assertEquals("bob", actual);
+		assertEquals("jimmy", actual);
 		assertEquals(expected, actual);
 
 		assertEquals("password", user.getPassword());
-		assertEquals(bob.getPassword(), user.getPassword());
+		assertEquals(jimmy.getPassword(), user.getPassword());
 
     }
 
 	@Test
 	public void testDeleteUser() {
 
-		Optional<User> foundUser = userRepository.findByUsername("alex");
+		Optional<User> foundUser = userRepository.findByUsername("maximus");
 		assertTrue(foundUser.isPresent());
 
 		userRepository.delete(foundUser.get());
-		foundUser = userRepository.findByUsername("alex");
+		foundUser = userRepository.findByUsername("maximus");
 
 		assertFalse(foundUser.isPresent());
 

@@ -18,7 +18,6 @@ public class CvController {
 		this.service = service;
 	}
 
-
 	@GetMapping("/get")
     public ResponseEntity getAllCv(@RequestParam("name") String name) {
 	    return service.getUserCVs(name);

@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebMvcTest(CvController.class)
+@WebMvcTest(value = CvController.class)
 public class CvControllerTests {
 
     @InjectMocks
@@ -88,7 +88,7 @@ public class CvControllerTests {
     public void testGetCv() throws Exception {
 
         mockCv = new Cv("1","mock",
-                binary,"MockFile.txt");
+                "MockFile.txt", binary);
 
         when(cvService.getCV("1")).thenReturn(ResponseEntity.ok(mockCv));
 
@@ -150,12 +150,14 @@ public class CvControllerTests {
         List<Cv> cvList = new ArrayList<>();
 
         mockCv = new Cv("1","mock",
-                binary,"MockFile.txt");
+                "MockFile.txt",
+                binary);
         cvList.add(mockCv);
 
         binary = new Binary(BsonBinarySubType.BINARY, data[1].getBytes());
         mockCv = new Cv("2","mock",
-                binary,"testfile.txt");
+                "testfile.txt",
+                binary);
         cvList.add(mockCv);
 
 
