@@ -8,9 +8,7 @@ export function HomePageComponent(props) {
             <div className="form">
                 <form onSubmit={props.uploadCV}>
                     <label placeholder="Browse file to upload" />
-                    <input id="CV" type="file" placeholder="Upload here" alt = "upload-file"
-                    />
-
+                    <input id="CV" type="file" placeholder="Upload here" alt = "upload-file"/>
                     <br />
                     <br />
                     <input type="submit" value="Submit" />

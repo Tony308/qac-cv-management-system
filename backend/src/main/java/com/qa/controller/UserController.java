@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 
 @RestController
 @RequestMapping("/cvsystem")
-@CrossOrigin(origins = "*")
+@CrossOrigin("http://localhost:3000")
 @Validated
 public class UserController {
 
@@ -23,14 +23,14 @@ public class UserController {
     }
 
     @PostMapping("/create-account")
-    public ResponseEntity<String> createAccount(
+    public ResponseEntity<?> createAccount(
             @RequestParam("username") @NotBlank @Size(min = 5) String username,
             @RequestParam("password") @NotBlank @Size(min = 7) String password) {
         return userService.createUser(username, password);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> authenticateLogin(
+    public ResponseEntity<?> authenticateLogin(
             @RequestParam("username") @NotBlank String username,
              @RequestParam("password") @NotBlank String password) {
         return userService.authenticateUser(username, password);

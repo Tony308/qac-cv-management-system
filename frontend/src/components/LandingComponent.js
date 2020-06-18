@@ -7,7 +7,6 @@ import DisplayCVContainer from "../containers/DisplayCVContainer";
 import Navbar from '../containers/NavigationContainer';
 import '../css/DefaultStyling.css';
 
-
 function LandingComponent(props) {
 
     return (
@@ -17,17 +16,18 @@ function LandingComponent(props) {
             <Switch>
                 <Route exact={true} path="/" render={
                     () => {
-                        if (sessionStorage.getItem("auth") === 'true') {
-                            return (<Redirect to="/home"/>)
-                        }
-                            return <LoginContainer
-                            login={props.login}
-                            handleChange={props.handleChange}
-                        />
+                      if (sessionStorage.getItem("auth") === 'true') {
+                          return (<Redirect to="/home"/>)
+                      }
+                          return <LoginContainer
+                          login={props.login}
+                          handleChange={props.handleChange}
+                          errMessage={props.errMessage}
+                      />
                     }
                 } />
                 <Route exact={true} path="/home" render={() => {
-                    if (sessionStorage.getItem("auth")=== 'true') {
+                    if (sessionStorage.getItem("auth") === 'true') {
                         return <HomePageContainer
                             uploadCV={props.uploadCV}
                             getCVs={props.getCVs}
@@ -48,6 +48,8 @@ function LandingComponent(props) {
                         return <CreateAccountContainer
                             handleChange={props.handleChange}
                             createAccount={props.createAccount}
+                            errMessage={props.errMessage}
+                            validationMessage={props.validationMessage}
                         />
                     }
                 }

@@ -3,15 +3,8 @@ import DisplayCVComponent from "../components/DisplayCVComponent";
 import {Redirect} from 'react-router';
 
 export default class DisplayCVContainer extends Component {
-  constructor(props){
-    super(props);
-  }
-
   render (){
-    let authentication = (sessionStorage.getItem("auth") === "false");
-
-    if (authentication) {
-    } else if (this.props.cv === '') {
+    if (this.props.cv === '') {
       return <Redirect to="/home" />
     }
 

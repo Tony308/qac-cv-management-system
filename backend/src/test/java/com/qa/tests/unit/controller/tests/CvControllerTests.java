@@ -2,6 +2,7 @@ package com.qa.tests.unit.controller.tests;
 
 import com.qa.controller.CvController;
 import com.qa.domain.Cv;
+import com.qa.jwt.JwtTokenUtil;
 import com.qa.service.CvService;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.bson.BsonBinarySubType;
@@ -32,6 +33,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -62,6 +64,8 @@ public class CvControllerTests {
             "Feel free to delete this file when the database is setup.",
             "Other data"};
 
+    final private String mockToken = "mockToken";
+
     private Binary binary =
             new Binary(BsonBinarySubType.BINARY, data[0].getBytes());
 
@@ -90,16 +94,17 @@ public class CvControllerTests {
         mockCv = new Cv("1","mock",
                 "MockFile.txt", binary);
 
-        when(cvService.getCV("1")).thenReturn(ResponseEntity.ok(mockCv));
+        when(cvService.getCV("1", mockToken)).thenReturn(ResponseEntity.ok(mockCv));
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/cvsystem/retrieve/1");
+                .get("/cvsystem/retrieve/1")
+                .cookie(new Cookie("authToken", mockToken));
 
         MvcResult actual = mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk())
                 .andReturn();
 
-        verify(cvService).getCV("1");
+        verify(cvService).getCV("1", mockToken);
 
         MockHttpServletResponse response = actual.getResponse();
 
@@ -128,20 +133,22 @@ public class CvControllerTests {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/cvsystem/upload-cv").build().toUri();
 
-        when(cvService.uploadCv(file, user, fileName))
+        when(cvService.uploadCv(file, user, fileName, mockToken))
                 .thenReturn(ResponseEntity.created(location).body("File successfully uploaded"));
 
         RequestBuilder request = multipart("/cvsystem/upload-cv")
                 .file(file)
                 .param("user", user)
-                .param("fileName", fileName);
+                .param("fileName", fileName)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .cookie(new Cookie("authToken", mockToken));
 
                 mockMvc.perform(request)
                 .andExpect(status().isCreated())
                 .andExpect(content().string("File successfully uploaded"))
                 .andReturn();
 
-        verify(cvService).uploadCv(file, user, fileName);
+        verify(cvService).uploadCv(file, user, fileName, mockToken);
 
     }
 
@@ -160,21 +167,21 @@ public class CvControllerTests {
                 binary);
         cvList.add(mockCv);
 
-
-        when(cvService.getUserCVs("mock")).thenReturn(
+        when(cvService.getUserCVs("mock", mockToken)).thenReturn(
                 ResponseEntity.ok().body(cvList)
         );
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/cvsystem/get")
                 .param("name", "mock")
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON)
+                .cookie(new Cookie("authToken", mockToken));;
 
         MvcResult actual = mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andReturn();
 
-        verify(cvService).getUserCVs("mock");
+        verify(cvService).getUserCVs("mock", mockToken);
 
         MockHttpServletResponse response = actual.getResponse();
 
@@ -214,16 +221,17 @@ public class CvControllerTests {
     public void testDeleteCv() throws Exception {
 
         RequestBuilder request = MockMvcRequestBuilders
-                .delete("/cvsystem/delete/1");
+                .delete("/cvsystem/delete/1")
+                .cookie(new Cookie("authToken", mockToken));
 
-        when(cvService.deleteCv("1")).thenReturn(ResponseEntity.ok("CV successfully deleted"));
+        when(cvService.deleteCv("1", mockToken)).thenReturn(ResponseEntity.ok("CV successfully deleted"));
 
         mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(content().string("CV successfully deleted"))
                 .andReturn();
 
-        verify(cvService).deleteCv("1");
+        verify(cvService).deleteCv("1", mockToken);
 
     }
 
@@ -237,7 +245,7 @@ public class CvControllerTests {
                 data[1].getBytes()
         );
 
-        when(cvService.updateCv("1", file, file.getOriginalFilename()))
+        when(cvService.updateCv("1", file, file.getOriginalFilename(), mockToken))
                 .thenReturn(ResponseEntity.ok("CV successfully updated."));
 
         MockHttpServletRequestBuilder request = multipart("/cvsystem/update-cv/1")
@@ -245,6 +253,7 @@ public class CvControllerTests {
                 .header("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE)
                 .param("fileName",file.getOriginalFilename())
                 .contentType(MediaType.MULTIPART_FORM_DATA)
+                .cookie(new Cookie("authToken", mockToken))
                 .accept(MediaType.MULTIPART_FORM_DATA);
 
         request.with(servletRequest -> {
@@ -257,7 +266,7 @@ public class CvControllerTests {
                 .andExpect(content().string("CV successfully updated."))
                 .andReturn();
 
-        verify(cvService).updateCv("1", file, file.getOriginalFilename());
+        verify(cvService).updateCv("1", file, file.getOriginalFilename(), mockToken);
 
     }
 }

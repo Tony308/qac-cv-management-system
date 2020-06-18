@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import HomePageComponent from "../components/HomePageComponent";
-import DisplayCVContainer from "../containers/DisplayCVContainer";
 import {Redirect} from "react-router"
 
 export default class HomePageContainer extends Component {
@@ -20,7 +19,6 @@ export default class HomePageContainer extends Component {
                       this.props.retrieveCV(row.id)
                     }}>
                       {row.fileName}</td>
-
                     <td>
                         <button className="btn" onClick={() => {
                             this.props.deleteCV(row.id)
@@ -37,7 +35,7 @@ export default class HomePageContainer extends Component {
     }
 
     componentDidMount() {
-        this.props.getCVs();
+      this.props.getCVs();
     }
 
     render() {
@@ -56,7 +54,6 @@ export default class HomePageContainer extends Component {
                 getCVs={this.props.getCVs}
                 CVs={rows}
                 updateCV={this.props.updateCV}
-
             />
         );
     }

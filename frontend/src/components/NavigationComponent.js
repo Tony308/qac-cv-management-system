@@ -12,7 +12,6 @@ function NavigationComponent(props) {
                 :
                 null
             }
-
             <br/>
             <hr/>
 

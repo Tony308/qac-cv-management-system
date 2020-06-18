@@ -18,10 +18,4 @@ public interface UserRepository extends MongoRepository<User, String> {
     Optional<User> findByUsernameAndPassword(@NotBlank String username, @NotBlank String password);
 
     Optional<User> findByUsername(@NotBlank @Size(min = 5) String username);
-
-
-
-
-
-
 }

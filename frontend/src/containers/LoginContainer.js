@@ -7,6 +7,7 @@ class loginContainer extends Component {
         return(<LoginComponent
             login={this.props.login}
             handleChange={this.props.handleChange}
+            errMessage={this.props.errMessage}
         />);
     }
 }

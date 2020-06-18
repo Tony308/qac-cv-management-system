@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Unit Test Repositories" type="JUnit" factoryName="JUnit" singleton="false">
+    <module name="cvsystem" />
+    <useClassPathOnly />
+    <option name="PACKAGE_NAME" value="com.qa.tests.unit.repository" />
+    <option name="MAIN_CLASS_NAME" value="" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="package" />
+    <option name="PARAMETERS" value="" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
