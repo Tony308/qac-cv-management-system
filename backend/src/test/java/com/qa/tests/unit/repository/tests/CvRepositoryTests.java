@@ -31,13 +31,16 @@ public class CvRepositoryTests {
             BsonBinarySubType.BINARY, byteData.getBytes()
     );
 
+    final private Cv maximus = new Cv("1","maximus",  "testFile.txt", fileToBinaryStorage);
+    final private Cv jimmy = new Cv("2","jimmy","testFile.txt", fileToBinaryStorage);
+
     @Autowired
     private ICvRepository iCvRepository;
 
     @Before
     public void setUp() {
-        iCvRepository.save(new Cv("1","maximus",  "testFile.txt", fileToBinaryStorage));
-        iCvRepository.save(new Cv("2","jimmy","testFile.txt", fileToBinaryStorage));
+        iCvRepository.save(maximus);
+        iCvRepository.save(jimmy);
     }
 
     @After
@@ -107,22 +110,13 @@ public class CvRepositoryTests {
 
         cv.setName("Bob Morley");
         cv.setFileName("New CV.pdf");
-        cv.setLastModified(LocalDateTime.now(ZoneId.of("Europe/London")).truncatedTo(ChronoUnit.SECONDS));
+        cv.setLastModified(LocalDateTime.now(ZoneId.of("Europe/London"))
+                .truncatedTo(ChronoUnit.SECONDS));
         cv.setCvFile(new Binary(BsonBinarySubType.BINARY, "For cv email me".getBytes()));
-
         iCvRepository.save(cv);
 
-        found = iCvRepository.findById("1");
+        assertNotEquals(maximus.toString(), cv.toString());
 
-        assertTrue(found.isPresent());
-
-        Cv actual = found.get();
-
-        assertEquals(cv.getId(), actual.getId());
-        assertEquals(cv.getName(), actual.getName());
-        assertEquals(cv.getCvFile(), actual.getCvFile());
-        assertEquals(cv.getFileName(), actual.getFileName());
-        assertNotEquals(cv.getLastModified(), actual.getLastModified());
     }
 
     @Test
