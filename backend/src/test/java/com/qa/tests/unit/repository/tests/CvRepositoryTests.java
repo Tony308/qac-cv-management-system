@@ -107,7 +107,7 @@ public class CvRepositoryTests {
 
         cv.setName("Bob Morley");
         cv.setFileName("New CV.pdf");
-        cv.setLastModified(LocalDateTime.now(ZoneId.of("Europe/London")));
+        cv.setLastModified(LocalDateTime.now(ZoneId.of("Europe/London")).truncatedTo(ChronoUnit.SECONDS));
         cv.setCvFile(new Binary(BsonBinarySubType.BINARY, "For cv email me".getBytes()));
 
         iCvRepository.save(cv);
