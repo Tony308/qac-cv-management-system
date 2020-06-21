@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/Navbar.css';
 import NavigationComponent from "../components/NavigationComponent";
-// import Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 
 class NavigationContainer extends React.Component {
     constructor(props) {
@@ -10,7 +10,7 @@ class NavigationContainer extends React.Component {
     }
 
     logout() {
-      // Cookies.remove('authToken');
+      Cookies.remove('authToken');
       sessionStorage.removeItem('auth');
       localStorage.removeItem('username');
       window.location.href = "/";

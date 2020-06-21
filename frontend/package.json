@@ -10,14 +10,13 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
-    "serve": "^11.3.2",
-    "typescript": "^3.9.5",
-    "universal-cookie": "^4.0.3"
+    "serve": "^11.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "jest": "jest",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -30,12 +29,9 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "chai": "^4.2.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
-    "jest-enzyme": "^7.1.2",
-    "mocha": "^8.0.1",
-    "sinon": "^9.0.2"
+    "jest-enzyme": "^7.1.2"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"

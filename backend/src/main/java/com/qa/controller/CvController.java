@@ -9,7 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/cvsystem")
-@CrossOrigin(value = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(value = {"http://localhost:3000", "https://localhost:3000"},
+		allowCredentials = "true")
 public class CvController {
 
 	@Autowired

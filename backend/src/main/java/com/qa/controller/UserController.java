@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 
 @RestController
 @RequestMapping("/cvsystem")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(value = {"http://localhost:3000", "https://localhost:3000"})
 @Validated
 public class UserController {
 
