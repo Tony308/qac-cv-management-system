@@ -1,6 +1,10 @@
 {
   "name": "cv-site",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tony308/qac-cv-management-system"
+  },
   "dependencies": {
     "axios": "^0.19.2",
     "js-cookie": "^2.2.1",
@@ -29,8 +33,12 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.10.1",
+    "@testing-library/react": "^10.4.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.9.0",
     "jest-enzyme": "^7.1.2"
   },
   "publishConfig": {

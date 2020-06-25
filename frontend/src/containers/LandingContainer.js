@@ -11,10 +11,10 @@ export default class LandingContainer extends Component {
         this.getCVs = getCVs.bind(this);
         this.deleteCV = deleteCV.bind(this);
         this.login = login.bind(this);
-        this.handleChange = this.handleChange.bind(this);
         this.createAccount = createAccount.bind(this);
         this.updateCv = updateCv.bind(this);
         this.retrieveCV = retrieveCV.bind(this);
+        this.handleChange = this.handleChange.bind(this);
 
         this.state =  {
             data: [],

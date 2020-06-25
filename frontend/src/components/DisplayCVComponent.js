@@ -7,7 +7,7 @@ export function DisplayCVComponent(props) {
       <h3> Filename: {props.cvFileName}</h3>
 
       {props.cvData ?
-        <object type="application/pdf" data={props.cvData}/>
+        <object aria-labelledby={props.cvFileName}type="application/pdf" data={props.cvData}/>
       :
       <pre id='output'>
         {atob(props.cv)}

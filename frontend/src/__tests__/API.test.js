@@ -1,26 +1,5 @@
-import React from 'react';
-import App from '../App.js';
-import LandingContainer from '../containers/LandingContainer';
-import { configure, shallow } from 'enzyme';
-
-jest.mock("../__mocks__/LandingContainer");
-
-describe('API test', function() {
-  it( 'login works.', () => {
-      const login = jest.fn( () => {
-
-      let result = Promise.resolve({
-        data: "Login Successful",
-        status: 202
-      });
-      console.log(result);
-      expect(result.status).toBe(202);
-      expect('to').toBe('fail');
-    });
-
-  });
-
-  it('test something', () => {
-    // expect('').toBe('not');
-  });
-});
+describe('API ', () => {
+  it('login API mock test', function() {
+      // expect(Cookies.get('authToken')).toBe('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJodWFuZyIsImlhdCI6MTU5Mjc1NzE0NywidXNlcm5hbWUiOiJ1c2VybmFtZSJ9.yOWC1fuISRo5Vtj87DZ7mzT9ZyuSBZrrtB-Bt4J45SF-J9e5EmDbQlPjI-bik0Jz9Qu4lct43tz48oXZXogDHg')    
+  })
+})

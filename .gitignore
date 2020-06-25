@@ -8,10 +8,13 @@
 *.ear
 hs_err_pid*
 classes/
+
 ##########################
 ## Selenium
 ##########################
 chromedriver
+chromedriver.exe
+
 ##########################
 ## Maven
 ##########################
@@ -60,14 +63,9 @@ nbactions.xml
 nb-configuration.xml
 
 ##########################
-## OS X
-##########################
-.DS_Store
-
-##########################
 ## MongoDb
 ##########################
-
+#MongoDb:/data/db 
 mongodb/
 
 ##########################
@@ -114,11 +112,7 @@ bower_components
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode/
 
 # misc
 .sass-cache

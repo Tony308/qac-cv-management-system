@@ -14,6 +14,7 @@ services:
     volumes:
     - /tmp
     entrypoint: ["java", "-jar", "/usr/local/lib/cvsystem-0.0.1-SNAPSHOT.jar", "-Dspring.profiles.active=prod"]
+
   cv-react:
     build: ./frontend
     container_name: cv-react
@@ -21,7 +22,7 @@ services:
     - cv-backend
     environment:
       CI: "true"
-    image: tonyh308/cv-react:1.3.0
+    image: tonyh308/cv-react:1.3.1
     labels:
       com.qa.description: ReactJS container application.
     ports:

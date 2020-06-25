@@ -8,14 +8,13 @@ const API  = axios.create({
   withCredentials: true
 });
 
-
 function getCookie(cookieName) {
   return Cookies.get(cookieName, {expires: 1});
 }
 
 function login(e) {
-  Cookies.remove('authToken', {expires: 1})
   e.preventDefault();
+  Cookies.remove('authToken', {expires: 1})
   let url = "http://localhost:8081/cvsystem/login";
   let data = new FormData();
 

@@ -8,5 +8,4 @@ class App extends Component {
         return <LandingContainer/>
     }
 }
-
 export default App;
