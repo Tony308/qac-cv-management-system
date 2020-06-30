@@ -1,5 +1,4 @@
 import React from 'react';
-// import {Redirect, Route, Switch} from "react-router";
 import {Redirect, Route, Switch} from "react-router-dom";
 
 import LoginContainer from "../containers/LoginContainer";
@@ -67,11 +66,9 @@ function LandingComponent(props) {
                     }
                 }
                 />
-
             </Switch>
         </div>
     )
-
 }
 
 export default LandingComponent;

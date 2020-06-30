@@ -1,7 +1,6 @@
 import React from 'react';
 
 function NavigationComponent(props) {
-
     return(
         <nav>
             <ul>{props.navLinks} </ul>
@@ -18,5 +17,4 @@ function NavigationComponent(props) {
         </nav>
     );
 }
-
 export default NavigationComponent;

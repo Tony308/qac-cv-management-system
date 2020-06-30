@@ -13,11 +13,9 @@ export default class DisplayCVContainer extends Component {
     let cv = this.props.cv;
 
     if (cvFileName.includes(".pdf")) {
-      console.log("It's a PDF.");
       cvData = "data:application/pdf;base64," + cv;
       cv = '';
-
-    } else if (cvFileName.includes(".PNG") || cvFileName.includes(".png")) {
+    } else if (cvFileName.includes(".PNG") || cvFileName.includes(".png") || cvFileName.includes('.jpg')) {
       let image = new Image();
       image.src = "data:image/png;base64, " + cv;
       document.body.append(image);

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
+import { Redirect } from "react-router-dom";
+
 import HomePageComponent from "../components/HomePageComponent";
-import {Redirect} from "react-router"
 
 export default class HomePageContainer extends Component {
-
     listCVs(rows, data) {
         for (let x  = 0; x < data.length; x++) {
             let row = data[x];
@@ -12,7 +12,6 @@ export default class HomePageContainer extends Component {
                 <tr key={x}>
                     <td onClick={() => {
                         this.props.retrieveCV(row.id);
-
                     }}>{row.name}</td>
 
                     <td onClick={() => {
@@ -51,9 +50,8 @@ export default class HomePageContainer extends Component {
         return(
             <HomePageComponent
                 uploadCV={this.props.uploadCV}
-                getCVs={this.props.getCVs}
-                CVs={rows}
                 updateCV={this.props.updateCV}
+                CVs={rows}
             />
         );
     }

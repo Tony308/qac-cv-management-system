@@ -2,6 +2,7 @@ import React from 'react';
 import '../css/Navbar.css';
 import NavigationComponent from "../components/NavigationComponent";
 import Cookies from 'js-cookie';
+import {Link} from 'react-router-dom';
 
 class NavigationContainer extends React.Component {
     constructor(props) {
@@ -17,18 +18,17 @@ class NavigationContainer extends React.Component {
     }
 
     render() {
-        const pages = ['home', 'create-account', 'about', 'contact'];
+        const pages = ['Home', 'create-account'];
         const navLinks = pages.map(page => {
             return (
                 <li key={page}>
-                    <a href={'/' + page}>
-                        {page} <br/>
-                    </a>
+                    <Link to={`/${page}`}>
+                        {page}
+                        <br/>
+                    </Link>
                 </li>
             )
         });
-
-
         return(
             <NavigationComponent logout={this.logout} navLinks={navLinks}/>
         );

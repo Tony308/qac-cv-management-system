@@ -4,25 +4,24 @@ import LandingComponent from "../components/LandingComponent";
 import {login, createAccount, getCVs, uploadCV, retrieveCV, updateCv, deleteCV} from '../_services/API';
 
 export default class LandingContainer extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
+    this.uploadCV = uploadCV.bind(this);
+    this.getCVs = getCVs.bind(this);
+    this.deleteCV = deleteCV.bind(this);
+    this.login = login.bind(this);
+    this.createAccount = createAccount.bind(this);
+    this.updateCv = updateCv.bind(this);
+    this.retrieveCV = retrieveCV.bind(this);
+    this.handleChange = this.handleChange.bind(this);
 
-        this.uploadCV = uploadCV.bind(this);
-        this.getCVs = getCVs.bind(this);
-        this.deleteCV = deleteCV.bind(this);
-        this.login = login.bind(this);
-        this.createAccount = createAccount.bind(this);
-        this.updateCv = updateCv.bind(this);
-        this.retrieveCV = retrieveCV.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-
-        this.state =  {
-            data: [],
-            cvContent: '',
-            username:'',
-            password:''
-        };
-    }
+    this.state =  {
+        data: [],
+        cvContent: '',
+        username:'',
+        password:''
+    };
+  }
 
     handleChange(e) {
         this.setState({

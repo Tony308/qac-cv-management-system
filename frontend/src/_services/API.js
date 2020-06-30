@@ -58,7 +58,7 @@ function createAccount(e) {
   .catch(err => {
     this.handleHttpError(err);
   });
-}
+} //End
 
 function getCVs() {
   let resource = `/get?name=${localStorage.getItem("username")}`;
@@ -74,9 +74,7 @@ function getCVs() {
 
 function uploadCV(e) {
     e.preventDefault();
-
     let file = document.getElementById("CV").files[0];
-
     if (!file) {
         console.log('No file');
         return;
@@ -106,7 +104,6 @@ function uploadCV(e) {
         .catch(err => this.handleHttpError(err));
 } //End
 
-
 function retrieveCV(id) {
   let url = `/retrieve/${id}`;
 
@@ -118,7 +115,7 @@ function retrieveCV(id) {
         });
       })
       .catch(err => this.handleHttpError(err));
-}
+} //End
 
 function updateCv(id) {
     let url = `/update-cv/${id}`;

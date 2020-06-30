@@ -1,7 +1,6 @@
 import React from 'react';
-// import TableStyle from ;
+import TableStyle from '../css/TableStyle.css';
 import "../css/CVSection.css";
-const TableStyle = require('../css/TableStyle.css');
 
 export function HomePageComponent(props) {
   return(
@@ -9,7 +8,7 @@ export function HomePageComponent(props) {
       <div className="form">
           <form onSubmit={props.uploadCV}>
               <label placeholder="Browse file to upload" />
-              <input id="CV" type="file" placeholder="Upload here" alt = "upload-file"/>
+              <input id="CV" type="file" placeholder="Upload here" alt="upload-file"/>
               <br />
               <br />
               <input type="submit" value="Submit" />
@@ -23,17 +22,14 @@ export function HomePageComponent(props) {
           <hr/>
           <br/>
           <table style={TableStyle}>
-
-              <thead>
-                  <tr>
-                      <td>Username</td><td>File name</td>
-                  </tr>
-              </thead>
-
-              <tbody>
+            <thead>
+              <tr>
+                <td>Username</td><td>File name</td>
+              </tr>
+            </thead>
+            <tbody>
               {props.CVs}
-
-              </tbody>
+            </tbody>
           </table>
       </div>
     </div>
