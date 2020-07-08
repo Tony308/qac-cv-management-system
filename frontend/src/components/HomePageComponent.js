@@ -1,4 +1,5 @@
 import React from 'react';
+
 import TableStyle from '../css/TableStyle.css';
 import "../css/CVSection.css";
 

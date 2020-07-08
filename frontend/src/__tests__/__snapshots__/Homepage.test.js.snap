@@ -35,4 +35,158 @@ Object {
 }
 `;
 
-exports[`Homepage container, test snapshot 2`] = `null`;
+exports[`Homepage container, test snapshot 2`] = `
+<div
+  style={
+    Object {
+      "border": "1px dashed red",
+    }
+  }
+>
+  <div
+    className="form"
+  >
+    <form
+      onSubmit={[MockFunction]}
+    >
+      <label
+        placeholder="Browse file to upload"
+      />
+      <input
+        alt="upload-file"
+        id="CV"
+        placeholder="Upload here"
+        type="file"
+      />
+      <br />
+      <br />
+      <input
+        type="submit"
+        value="Submit"
+      />
+    </form>
+    <br />
+  </div>
+  <div
+    className="cvs"
+  >
+    <hr />
+    <br />
+    <table
+      style={Object {}}
+    >
+      <thead>
+        <tr>
+          <td>
+            Username
+          </td>
+          <td>
+            File name
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td
+            onClick={[Function]}
+          >
+            random
+          </td>
+          <td
+            onClick={[Function]}
+          >
+            maxresefault.jpg
+          </td>
+          <td>
+            <button
+              className="btn"
+              onClick={[Function]}
+            >
+              <i
+                className="fa fa-trash"
+              />
+            </button>
+          </td>
+          <td>
+             
+            <button
+              onClick={[Function]}
+            >
+              <i
+                className="fas fa-wrench"
+              />
+            </button>
+          </td>
+          <td />
+        </tr>
+        <tr>
+          <td
+            onClick={[Function]}
+          >
+            random
+          </td>
+          <td
+            onClick={[Function]}
+          >
+            Test File.pdf
+          </td>
+          <td>
+            <button
+              className="btn"
+              onClick={[Function]}
+            >
+              <i
+                className="fa fa-trash"
+              />
+            </button>
+          </td>
+          <td>
+             
+            <button
+              onClick={[Function]}
+            >
+              <i
+                className="fas fa-wrench"
+              />
+            </button>
+          </td>
+          <td />
+        </tr>
+        <tr>
+          <td
+            onClick={[Function]}
+          >
+            random
+          </td>
+          <td
+            onClick={[Function]}
+          >
+            README.md
+          </td>
+          <td>
+            <button
+              className="btn"
+              onClick={[Function]}
+            >
+              <i
+                className="fa fa-trash"
+              />
+            </button>
+          </td>
+          <td>
+             
+            <button
+              onClick={[Function]}
+            >
+              <i
+                className="fas fa-wrench"
+              />
+            </button>
+          </td>
+          <td />
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;

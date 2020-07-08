@@ -2,18 +2,31 @@ import React from 'react';
 import { cleanup, render } from '@testing-library/react'
 import '@testing-library/jest-dom';
 import renderer from 'react-test-renderer';
-import {MemoryRouter} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
 
 import DisplayCvContainer from '../containers/DisplayCVContainer';
 import imageBlob from '../__mocks__/TestImageBlob';
 import pdfBlob from '../__mocks__/TestPdfBlob';
 
+const mockHistoryPush = jest.fn(() => console.log('history.pushing'));
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+      push: mockHistoryPush,
+    }),
+}));
+
+var history = null;
+
+beforeEach(() => history = useHistory());
+afterEach(cleanup);
+
 describe('DisplayCV', () => {
+
     var data;
     var filename;
-
-    afterEach(cleanup);
-    
     test('plain/text snapshot', () => {
         data = "SW5pdGlhbCBGaWxlCkZlZWwgZnJlZSB0byBkZWxldGUgdGhpcyBmaWxlIHdoZW4gdGhlIGRhdGFiYXNlIGlzIHNldHVwLg==";
         filename = 'testFile.txt';
@@ -21,9 +34,9 @@ describe('DisplayCV', () => {
         expect(tree).toMatchSnapshot('default');
     })
     test('render plain/text', () => {
-        const {getByText} = render(<DisplayCvContainer cv={data} cvFileName={filename} />);
-        const content = getByText(/Initial File/);
-        expect(content).toHaveTextContent('Initial File Feel free to delete this file when the database is setup.');
+        const {getByLabelText} = render(<DisplayCvContainer cv={data} cvFileName={filename} />);
+        const document = getByLabelText(filename);
+        expect(document).toBeInTheDocument();
     })
 
     test('render PDF', () => {
@@ -31,7 +44,7 @@ describe('DisplayCV', () => {
         filename = "test file.pdf";
 
         const {getByLabelText} = render(<DisplayCvContainer cv={data} cvFileName={filename}/>);
-        const pdf = getByLabelText(/test file.pdf/);
+        const pdf = getByLabelText(filename);
         expect(pdf).toBeInTheDocument();
     })
 
@@ -39,19 +52,16 @@ describe('DisplayCV', () => {
         data = pdfBlob;
         filename = "test file.pdf";
 
-        const tree = renderer.create(<DisplayCvContainer cv={pdfBlob} cvFileName={filename} />).toJSON();
+        const tree = renderer.create(<DisplayCvContainer cv={data} cvFileName={filename} />).toJSON();
         expect(tree).toMatchSnapshot('pdf');
     })
-        
-    
 
     test('render image', () => {
         data = imageBlob;
         filename = 'image.jpg';
-
-        const {getByRole} = render(<DisplayCvContainer cv={data} cvFileName={filename} />);
-        const image = getByRole('img');
-        expect(image).toBeInTheDocument();
+        const {getByLabelText} = render(<DisplayCvContainer cv={data} cvFileName={filename} />);
+        const doc = getByLabelText(filename);
+        expect(doc).toBeInTheDocument();
     })
 
     test('image snapshot', () => {
@@ -62,14 +72,13 @@ describe('DisplayCV', () => {
         expect(tree).toMatchSnapshot('image');
     })
 
-    test('redirect to homepage', () => {
+    test('Back button', () => {
         const {getByRole} = render(
-            <MemoryRouter
-                initialEntries={['/home', '/create-account']}
-                >
-                <DisplayCvContainer cv='' cvFileName=''/>
-            </MemoryRouter>
-        );
+            <DisplayCvContainer cv='random' cvFileName='file.txt'/>
+        )
 
+        const backBtn = getByRole('button');
+        userEvent.click(backBtn);
+        expect(mockHistoryPush).toBeCalledTimes(1);
     })
 })

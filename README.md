@@ -12,7 +12,7 @@ The CV application is a small project for educational purposes and not meant for
 ## Front-end: ReactJS
 _____
 
-Note: _Requires Node.js installed on machine_
+Note: _Requires Node.js installed on machine. Does not support version 8.x_
 To start the React frontend:
   1. Open a terminal in the frontend directory
   2. Execute: 
@@ -69,17 +69,18 @@ Append the flag to use the desired spring profile.
   4. In the backend, application.properties; replace the localhost/IP with the IPv4 of the docker network: X.X.X.2
   6. Repeat step 2.
 
+Images can also be found on [Docker Hub](https://hub.docker.com/u/tonyh308).
 
 Testing
 ----
 
 Introduction of continuous integration using Travis CI and Github Workflows.
 
-Travis builds and tests backend using JUnit4 framework.
+Travis builds and tests backend using JUnit4 framework:
 
 `.travis.yml`
 
-Github Workflows tests backend as well and frontend using Jest framework.
+Github Workflows CI for Maven & React:
 
 `.github/workflows/`
 - `maven.yml`

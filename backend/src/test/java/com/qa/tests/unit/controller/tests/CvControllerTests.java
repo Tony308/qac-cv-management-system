@@ -2,7 +2,6 @@ package com.qa.tests.unit.controller.tests;
 
 import com.qa.controller.CvController;
 import com.qa.domain.Cv;
-import com.qa.jwt.JwtTokenUtil;
 import com.qa.service.CvService;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.bson.BsonBinarySubType;

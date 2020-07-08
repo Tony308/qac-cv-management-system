@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import '@testing-library/jest-dom';
-import { MemoryRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {render, cleanup} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -14,26 +14,34 @@ const updateCV = jest.fn((id) => console.log(`Update CV ${id}`));
 const uploadCV = jest.fn(() => console.log());
 const deleteCV = jest.fn((id) => console.log(`delete CV ${id}`));
 
+const mockHistoryPush = jest.fn(() => console.log('history.pushing'));
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+      push: mockHistoryPush,
+    }),
+}));
+
+var history = null;
+
+beforeEach(() => history = useHistory());
+afterEach(cleanup);
 describe('Homepage container, test', () => {
-    afterEach(cleanup);
 
     test('snapshot', () => {        
 
         expect(cvList).toMatchSnapshot(cvList);
         
         const tree = renderer.create(
-            <MemoryRouter>
-            <Homepage 
-                    data={cvList}
-                    cv={null}
-                    getCVs={getCVs} 
-                    updateCV={updateCV}
-                    uploadCV={uploadCV}
-                    deleteCV={deleteCV}
-                    retrieveCV={retrieveCV}
-                />
-            </MemoryRouter>
+        <Homepage 
+            data={cvList}
+            getCVs={getCVs} 
+            updateCV={updateCV}
+            uploadCV={uploadCV}
+            deleteCV={deleteCV}
+            retrieveCV={retrieveCV}
+        />  
         ).toJSON();
         
         expect(tree).toMatchSnapshot();
@@ -42,17 +50,14 @@ describe('Homepage container, test', () => {
 
     test('upload Cv', () => {
         const {getByRole, getByPlaceholderText} = render(
-            <MemoryRouter>
-                <Homepage 
-                    data={cvList}
-                    cv={''}
-                    getCVs={getCVs} 
-                    updateCV={updateCV}
-                    uploadCV={uploadCV}
-                    deleteCV={deleteCV}
-                    retrieveCV={retrieveCV}
-                />
-            </MemoryRouter>
+            <Homepage 
+                data={cvList}
+                getCVs={getCVs} 
+                updateCV={updateCV}
+                uploadCV={uploadCV}
+                deleteCV={deleteCV}
+                retrieveCV={retrieveCV}
+            />
         );
 
         const fileUpload = getByPlaceholderText('Upload here');
@@ -69,17 +74,15 @@ describe('Homepage container, test', () => {
 
     test('update Cv', () => {
         const {getAllByRole, getByPlaceholderText} = render(
-            <MemoryRouter>
-                <Homepage 
-                    data={cvList}
-                    cv={''}
-                    getCVs={getCVs} 
-                    updateCV={updateCV}
-                    uploadCV={uploadCV}
-                    deleteCV={deleteCV}
-                    retrieveCV={retrieveCV}
-                />
-            </MemoryRouter>
+
+            <Homepage 
+                data={cvList}
+                getCVs={getCVs} 
+                updateCV={updateCV}
+                uploadCV={uploadCV}
+                deleteCV={deleteCV}
+                retrieveCV={retrieveCV}
+            />
         );
         const fileUpload = getByPlaceholderText('Upload here');
         let file = new File([cvList[0].cvFile.data], "uploadImage.jpg", { type:'image/png', lastModified:Date.now() });
@@ -94,17 +97,14 @@ describe('Homepage container, test', () => {
 
     test('delete Cv', () => {
         const {getAllByRole} = render(
-            <MemoryRouter>
-                <Homepage 
-                    data={cvList}
-                    cv={''}
-                    getCVs={getCVs} 
-                    updateCV={updateCV}
-                    uploadCV={uploadCV}
-                    deleteCV={deleteCV}
-                    retrieveCV={retrieveCV}
-                />
-            </MemoryRouter>
+            <Homepage 
+                data={cvList}
+                getCVs={getCVs} 
+                updateCV={updateCV}
+                uploadCV={uploadCV}
+                deleteCV={deleteCV}
+                retrieveCV={retrieveCV}
+            />
         );
         const del = getAllByRole('button');
         userEvent.click(del[1]);
@@ -115,17 +115,15 @@ describe('Homepage container, test', () => {
 
     test('retrieve Cv', () => {
         const {getByRole, getAllByRole} = render(
-            <MemoryRouter>
-                <Homepage
-                data={cvList}
-                cv={''}
-                getCVs={getCVs} 
-                updateCV={updateCV}
-                uploadCV={uploadCV}
-                deleteCV={deleteCV}
-                retrieveCV={retrieveCV}
-                 />
-            </MemoryRouter>
+            <Homepage
+            data={cvList}
+            getCVs={getCVs} 
+            updateCV={updateCV}
+            uploadCV={uploadCV}
+            deleteCV={deleteCV}
+            retrieveCV={retrieveCV}
+            history={history}
+            />
         );
 
         const fileCell = getByRole('cell', {name: 'Test File.pdf'});
@@ -134,5 +132,6 @@ describe('Homepage container, test', () => {
         userEvent.click(nameCell[0]);
 
         expect(retrieveCV).toBeCalledTimes(2);
+        expect(mockHistoryPush).toBeCalledTimes(2);
     });
 })

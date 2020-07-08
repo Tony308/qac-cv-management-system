@@ -6,7 +6,9 @@ module.exports = {
   moduleFileExtensions: [ "js", "jsx"],
   moduleDirectories: [ "node_modules", "bower_components", "shared" ],
   moduleNameMapper: {
-    "\\.(css|less|scss|sass|json)$": "identity-obj-proxy"
+    "\\.(css|less)$": "<rootDir>/src/__mocks__/styleMock.js",
+    "^.+\\.(css)$": "identity-obj-proxy",
+    // "\\.(gif|ttf|eot|svg)$": "<rootDir>/src/__mocks__/fileMock.js"
   },
-  collectCoverage: true,
+  collectCoverage: true
 };  

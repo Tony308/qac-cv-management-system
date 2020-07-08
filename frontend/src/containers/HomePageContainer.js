@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
-import { Redirect } from "react-router-dom";
-
 import HomePageComponent from "../components/HomePageComponent";
 
 export default class HomePageContainer extends Component {
+
+    handleClick(id) {
+        this.props.retrieveCV(id);
+        this.props.history.push('/cv');
+    }
+
     listCVs(rows, data) {
         for (let x  = 0; x < data.length; x++) {
             let row = data[x];
@@ -11,13 +15,13 @@ export default class HomePageContainer extends Component {
             rows.push(
                 <tr key={x}>
                     <td onClick={() => {
-                        this.props.retrieveCV(row.id);
+                        this.handleClick(row.id)
                     }}>{row.name}</td>
 
                     <td onClick={() => {
-                      this.props.retrieveCV(row.id)
+                        this.handleClick(row.id)
                     }}>
-                      {row.fileName}</td>
+                        {row.fileName}</td>
                     <td>
                         <button className="btn" onClick={() => {
                             this.props.deleteCV(row.id)
@@ -34,15 +38,10 @@ export default class HomePageContainer extends Component {
     }
 
     componentDidMount() {
-      this.props.getCVs();
+        this.props.getCVs();
     }
 
     render() {
-      if (this.props.cv !== '') {
-          return (
-            <Redirect to="/cv"/>
-          )
-      }
         let rows = [];
         let data = this.props.data;
         this.listCVs(rows,data);
@@ -50,7 +49,6 @@ export default class HomePageContainer extends Component {
         return(
             <HomePageComponent
                 uploadCV={this.props.uploadCV}
-                updateCV={this.props.updateCV}
                 CVs={rows}
             />
         );

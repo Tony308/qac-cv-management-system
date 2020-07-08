@@ -1,33 +1,37 @@
-import React, {Component} from 'react';
+import React from 'react';
 import DisplayCVComponent from "../components/DisplayCVComponent";
 import {Redirect} from 'react-router';
 
-export default class DisplayCVContainer extends Component {
-  render (){
-    if (this.props.cv === '') {
-      return <Redirect to="/home" />
+export default class DisplayCVContainer extends React.Component {
+
+    setupDocument(cvFileName, fileType) {
+        cvFileName = cvFileName.toLowerCase();
+        if (cvFileName.includes(".pdf")) {
+            fileType = 'application/pdf';
+        } else if (cvFileName.includes(".png") || cvFileName.includes('.jpg')) {
+            fileType = `image/png`
+        }
+        return fileType;
     }
 
-    let cvFileName = this.props.cvFileName;
-    let cvData = null;
-    let cv = this.props.cv;
+    render (){
+        if (this.props.cv === '') {
+            return <Redirect to="/home" />
+        }
+        var cvFileName = this.props.cvFileName;
+        var cvData = null;
+        var fileType = '';
 
-    if (cvFileName.includes(".pdf")) {
-      cvData = "data:application/pdf;base64," + cv;
-      cv = '';
-    } else if (cvFileName.includes(".PNG") || cvFileName.includes(".png") || cvFileName.includes('.jpg')) {
-      let image = new Image();
-      image.src = "data:image/png;base64, " + cv;
-      document.body.append(image);
-      cv = '';
+        fileType = this.setupDocument(cvFileName, fileType);
+
+        cvData = `data:${fileType};base64,${this.props.cv}`;
+        
+        return(
+            <DisplayCVComponent
+            cvFileName={this.props.cvFileName}
+            fileType={fileType}
+            cvData={cvData}
+            />
+        );
     }
-
-    return(
-      <DisplayCVComponent
-        cv={cv}
-        cvFileName={this.props.cvFileName}
-        cvData={cvData}
-      />
-    );
-  }
 }
