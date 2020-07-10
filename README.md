@@ -1,13 +1,16 @@
-CV Management System
+CV Management System 
+![Node.js CI](https://github.com/Tony308/qac-cv-management-system/workflows/Node.js%20CI/badge.svg) 
+![Java CI with Maven](https://github.com/Tony308/qac-cv-management-system/workflows/Java%20CI%20with%20Maven/badge.svg)
+[![Build Status](https://travis-ci.org/Tony308/qac-cv-management-system.svg?branch=developer)](https://travis-ci.org/Tony308/qac-cv-management-system)
 ====
 
-The CV application is a small project for educational purposes and not meant for actual.
+
+The CV application is a small project for educational purposes and not meant for actual use.
 
 ## Application Deployment
 
 -  Run locally
 -  Docker deployment
-
 
 ## Front-end: ReactJS
 _____
@@ -63,11 +66,21 @@ Append the flag to use the desired spring profile.
 
 # Docker Deployment
 
-  1. Open terminal in the app roor folder.
-  2. Execute `docker-compose up`. Will fail but it will create a default network bridge to use.
-  3. Execute `docker network inspect <name-of-network>`. Remember the IP
-  4. In the backend, application.properties; replace the localhost/IP with the IPv4 of the docker network: X.X.X.2
-  6. Repeat step 2.
+#### Pre-requisite:
+  - Create a docker network with name `cv-network`
+    - `docker network create cv-network`
+
+#### Deployment:
+  1. Open terminal in the app root folder.
+  2. Execute `docker-compose up`.
+
+#### **Spring Profile with Docker-Compose:**
+
+Edit `SPRING_PROFILES_ACTIVE` environment variable
+
+| Test | Production |
+| --- | --- |
+| `test` | `prod` |
 
 Images can also be found on [Docker Hub](https://hub.docker.com/u/tonyh308).
 
