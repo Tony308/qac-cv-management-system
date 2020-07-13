@@ -13,6 +13,10 @@ jobs:
     strategy:
       matrix:
         node-version:  [10.x, 11.x, 12.x, 13.x, 14.x]
+    
+    env:
+      CODECOV_TOKEN: "secret:8+5euEfFOO5ZvMCSAdj2/lTx8ptS1HMmnHv3ONOEfr0VpIPmLiW9qnzt5sNYD7wSJcUqv0fdlOfshff829bq9rTx+KNjHTtzImj/tNRPjfw="
+      CI: true
 
     steps:
     - uses: actions/checkout@v2
@@ -25,8 +29,6 @@ jobs:
         npm install
         npm run build --if-present
         npm run jest
-      env:
-        CI: true
 
     - name: Cache files
       uses: actions/cache@v2.0.0
@@ -39,8 +41,8 @@ jobs:
           ${{ matrix.node-version }}-node-${{ hashFiles('**/package.json') }} 
 
     - name: Upload coverage to codecov
-        uses: codecov/codecov-action@v1.0.10
-        with:
+      uses: codecov/codecov-action@v1.0.10
+      with:
           name: "Github CI Node/Jest"
-          token: secret:ueXNFC8BgG2ykly0lku6Eg92WeXtJPTkt0Gyx1tTH45IngVxFWFfyaHUAiENs/ypJkKEh6ORo/N9BAx0hmD/6+3UiQ0FzpZis7nVv2ilHq4=
-          file: ../../frontend/coverage/clover.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./frontend/coverage/coverage-final.json
