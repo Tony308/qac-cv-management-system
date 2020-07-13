@@ -37,7 +37,7 @@ public class CvService {
     private UserRepository userRepository;
 
 	@Autowired
-    JwtTokenUtil tokenUtil;
+    private JwtTokenUtil tokenUtil;
 
     public ResponseEntity getUserCVs(@NotBlank String name, String token)  {
 	    try {
@@ -62,7 +62,6 @@ public class CvService {
                 .build().toUri();
         try {
             tokenUtil.verifyToken(token);
-
             Optional<User> found = userRepository.findByUsername(name);
 
             if(!found.isPresent()) {

@@ -36,6 +36,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class CvServiceTests {
 
+
     @InjectMocks
     private CvService cvService;
 
@@ -65,7 +66,6 @@ public class CvServiceTests {
 
     private MultipartFile multipartFile;
 
-
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -73,7 +73,6 @@ public class CvServiceTests {
 
     @Test
     public void testGetCvSuccess() {
-
         foundCv = Optional.of(testEinz);
 
         when(iCvRepository.findById("1")).thenReturn(foundCv);
@@ -85,7 +84,6 @@ public class CvServiceTests {
         ResponseEntity<?> expected = ResponseEntity.ok(testEinz);
 
         assertEquals(expected, actual);
-
     }
 
     @Test

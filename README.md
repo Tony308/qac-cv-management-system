@@ -2,6 +2,7 @@ CV Management System
 ![Node.js CI](https://github.com/Tony308/qac-cv-management-system/workflows/Node.js%20CI/badge.svg) 
 ![Java CI with Maven](https://github.com/Tony308/qac-cv-management-system/workflows/Java%20CI%20with%20Maven/badge.svg)
 [![Build Status](https://travis-ci.org/Tony308/qac-cv-management-system.svg?branch=developer)](https://travis-ci.org/Tony308/qac-cv-management-system)
+[![codecov](https://codecov.io/gh/Tony308/qac-cv-management-system/branch/developer/graph/badge.svg)](https://codecov.io/gh/Tony308/qac-cv-management-system)
 ====
 
 

@@ -65,7 +65,6 @@ nb-configuration.xml
 ##########################
 ## MongoDb
 ##########################
-#MongoDb:/data/db 
 mongodb/
 
 ##########################

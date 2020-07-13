@@ -74,7 +74,6 @@ public class CvControllerTests {
 
     @Before
     public void setUp() throws Exception {
-
         HttpServletRequest mockRequest = new MockHttpServletRequest();
         ServletRequestAttributes servletRequestAttributes = new ServletRequestAttributes(mockRequest);
         RequestContextHolder.setRequestAttributes(servletRequestAttributes);
