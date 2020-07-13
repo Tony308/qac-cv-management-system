@@ -2,9 +2,9 @@ name: Node.js CI
 
 on:
   push: 
-    branches: [developer, testing, frontend-testing]
+    branches: [developer, testing, jwt-issue]
   pull_request: 
-    branches: [developer, testing, frontend-testing]
+    branches: [developer, testing, jwt-issue]
 
 jobs:
   build:
@@ -37,3 +37,10 @@ jobs:
         key:  ${{ matrix.node-version }}-node-${{ hashFiles('**/package.json') }}
         restore-keys: | 
           ${{ matrix.node-version }}-node-${{ hashFiles('**/package.json') }} 
+
+    - name: Upload coverage to codecov
+        uses: codecov/codecov-action@v1.0.10
+        with:
+          name: "Github CI Node/Jest"
+          token: secret:ueXNFC8BgG2ykly0lku6Eg92WeXtJPTkt0Gyx1tTH45IngVxFWFfyaHUAiENs/ypJkKEh6ORo/N9BAx0hmD/6+3UiQ0FzpZis7nVv2ilHq4=
+          file: ../../frontend/coverage/clover.xml

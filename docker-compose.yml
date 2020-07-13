@@ -11,14 +11,11 @@ services:
     environment:
       TZ: Europe/London
       SPRING_PROFILES_ACTIVE: prod
-#      SPRING_PROFILES_ACTIVE: test
-    image: tonyh308/cv-backend:1.7.1
+    image: tonyh308/cv-backend:1.7.2
     labels:
       com.qa.description: Spring-Boot REST API for application.
     ports:
     - 8081:8081
-    volumes:
-    - /tmp
 
   cv-react:
     build: ./frontend

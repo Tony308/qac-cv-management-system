@@ -25,7 +25,7 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    JwtTokenUtil tokenUtil;
+    private JwtTokenUtil tokenUtil;
 
     public ResponseEntity<String> createUser (
             @NotBlank @Size(min = 5) String username,
