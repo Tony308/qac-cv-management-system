@@ -5,9 +5,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ developer, testing ]
+    branches: [ master, developer ]
   pull_request:
-    branches: [ developer, testing ]
+    branches: [ master, developer ]
 
 jobs:
   build:
@@ -22,7 +22,6 @@ jobs:
     - name: Setup timezone
       uses: zcong1993/setup-timezone@v1.0
       with:
-        # which timezone you want to use
         timezone: Europe/London
 
     - name: Cache, local Maven Repository
@@ -37,3 +36,10 @@ jobs:
         cd ./backend
         mvn clean install -DskipTests=true
         mvn -B package --file pom.xml
+
+    - name: Upload coverage to codecov
+      uses: codecov/codecov-action@v1.0.10
+      with:
+          name: "Github CI Node/Jest"
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: backend/target/site/jacoco/jacoco.xml
