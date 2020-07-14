@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot test 1`] = `
+<div>
+  <h1>
+     Create Account
+  </h1>
+  <p
+    style={
+      Object {
+        "color": "red",
+        "fontSize": "14px",
+      }
+    }
+  >
+    <b />
+  </p>
+  <form
+    method="POST"
+    name="create-account-form"
+  >
+    <p>
+      Username:
+    </p>
+    <input
+      id="username"
+      name="username"
+      placeholder="Username"
+      type="text"
+    />
+    <p>
+      Password:
+    </p>
+    <input
+      id="password"
+      name="password"
+      placeholder="Password"
+      type="password"
+    />
+    <p
+      style={
+        Object {
+          "color": "red",
+          "fontSize": "12px",
+        }
+      }
+    />
+    <p>
+      Confirm Password:
+    </p>
+    <input
+      onChange={[Function]}
+      placeholder="Confirm Password"
+      type="password"
+    />
+    <br />
+    <br />
+    <input
+      type="submit"
+      value="Create Account"
+    />
+  </form>
+</div>
+`;

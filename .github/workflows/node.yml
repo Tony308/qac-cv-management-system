@@ -1,0 +1,48 @@
+name: Node.js CI
+
+on:
+  push: 
+    branches: [master, developer]
+  pull_request: 
+    branches: [master, developer]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version:  [10.x, 11.x, 12.x, 13.x, 14.x]
+    
+    env:
+      CODECOV_TOKEN: "secret:8+5euEfFOO5ZvMCSAdj2/lTx8ptS1HMmnHv3ONOEfr0VpIPmLiW9qnzt5sNYD7wSJcUqv0fdlOfshff829bq9rTx+KNjHTtzImj/tNRPjfw="
+      CI: true
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: | 
+        cd ./frontend
+        npm install
+        npm run build --if-present
+        npm run jest
+
+    - name: Cache files
+      uses: actions/cache@v2.0.0
+      with:
+        path: 
+          ./frontend/node_modules
+          ./frontend/package*.json
+        key:  ${{ matrix.node-version }}-node-${{ hashFiles('**/package.json') }}
+        restore-keys: | 
+          ${{ matrix.node-version }}-node-${{ hashFiles('**/package.json') }} 
+
+    - name: Upload coverage to codecov
+      uses: codecov/codecov-action@v1.0.10
+      with:
+          name: "Github CI Node/Jest"
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./frontend/coverage/coverage-final.json

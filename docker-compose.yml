@@ -1,0 +1,49 @@
+networks:
+  default:
+    external: 
+      name: cv-network
+services:
+  cv-backend:
+    build: ./backend
+    container_name: cv-backend
+    depends_on:
+    - mongodb
+    environment:
+      TZ: Europe/London
+      SPRING_PROFILES_ACTIVE: prod
+    image: tonyh308/cv-backend:1.7.2
+    labels:
+      com.qa.description: Spring-Boot REST API for application.
+    ports:
+    - 8081:8081
+
+  cv-react:
+    build: ./frontend
+    container_name: cv-react
+    depends_on:
+    - cv-backend
+    environment:
+      CI: "true"
+    image: tonyh308/cv-react:1.3.1
+    labels:
+      com.qa.description: ReactJS container for application.
+    ports:
+    - 3000:3000/tcp
+
+  mongodb:
+    build:
+      ./mongo
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_DATABASE: test
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INTIDB_ROOT_USERNAME: admin
+    image: tonyh308/cv-mongodb:2.0
+    labels:
+      com.qa.description: MongoDb Container for application.
+    ports:
+      - 27017-27019:27017-27019/tcp
+    volumes:
+    - ./mongo/mongodb:/data/db:rw
+    
+version: '3.0'

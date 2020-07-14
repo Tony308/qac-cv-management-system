@@ -1,0 +1,14 @@
+jobs:
+  include:
+    cache:
+      directories:
+      - "$HOME/.m2"
+    language: java
+    after_success:
+    - bash <(curl -s https://codecov.io/bash) -f "./backend/target/site/jacoco/jacoco.xml"
+    before_script:
+    - export TZ=Europe/London
+    script: "./scripts/setupBackend.sh"
+env:
+  global:
+  - secure: VisnvhWjvcEb8ZBDHI2V+C5bAR3/FYuFvWi9XfiVWFgzDveS/J0gzadqX1gisEVKiJZPBbqCEwDcMum3vM5Q4YS5yUKUT/q+2HbEft8GUynonJRe7yDIV2IcjD914ctDoDnna23NOplAv6DTLvPUYfM8Sc9ZxdPQWsWVeujdsTqwGYnDKlipYL+8UGY14cWoXsW2RLo487z3691Jh1yUjjRUQuIaTJiMAo+B9Pev2t6UVFbDUVWd83qSw+GmLjVhGuYAJNBEIoJI90EYgF626YGQso2mYTn9U4UeCV0U+4a998fA/1iXgs8eKC02QwKPwhw1n1jIZd7cLE8bTeok3WnOhflh4IQWr47lUSQVXqJmo7hMhrDxGL6UvRIfiieynw6K/FITnoWi0W/U2IHbt1uQHX9WnCkEBphbnsQd+Q2aRdbIz/IGMQJ3iHamYKnNufIxz4DaH3fY3AmbQOUnlXRWnf9hXSs4yYkpnYt9fTbGOrLnQTnGTz25uYu+mJISTvMos+aNy1x+lEyCcu/TIkP1JN+dDBKkmTX8GSIiH5POi4Y2e9pYSmwXoCwpOVVwaf3JuVqzIfKSLc5iDsudxKAkNs2YAqCv41ygK2Kjft0aofaAzAjorVpO8re1Apj5U0ayeh5os0s7OpBC+QJuZCZS1pT7OPmXEzIMBXaaevU=

@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navbar  snapshot 1`] = `
+<nav>
+  <ul>
+    <li>
+      <a
+        href="/Home"
+        onClick={[Function]}
+      >
+        Home
+        <br />
+      </a>
+    </li>
+    <li>
+      <a
+        href="/create-account"
+        onClick={[Function]}
+      >
+        create-account
+        <br />
+      </a>
+    </li>
+     
+  </ul>
+  <br />
+  <br />
+  <hr />
+</nav>
+`;
