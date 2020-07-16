@@ -18,3 +18,10 @@ comment:
   layout: "reach,diff,flags,tree"
   behavior: default
   require_changes: no
+
+ignore:
+  "/*"
+  "/scripts"
+  "/.git"
+  "/.github"
+  "/mongo"

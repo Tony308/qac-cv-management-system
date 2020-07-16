@@ -1,8 +1,9 @@
 package com.qa.service;
 
 import com.qa.domain.User;
-import com.qa.jwt.JwtTokenUtil;
 import com.qa.repository.UserRepository;
+import com.qa.utility.BCryptUtil;
+import com.qa.utility.JwtUtil;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,11 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private JwtTokenUtil tokenUtil;
+    private JwtUtil tokenUtil;
+
+    @Autowired
+    private BCryptUtil bCryptUtil;
+
 
     public ResponseEntity<String> createUser (
             @NotBlank @Size(min = 5) String username,
@@ -37,6 +42,8 @@ public class UserService {
             if (foundUser.isPresent()) {
 	        	return new ResponseEntity<>("Username already exists.", HttpStatus.CONFLICT);
 		    }
+
+            password = bCryptUtil.hashPassword(password);
             userRepository.save(new User(username, password));
 
             URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -51,9 +58,10 @@ public class UserService {
     public ResponseEntity authenticateUser (@NotBlank String username, @NotBlank String password)
             throws ConstraintViolationException {
         try {
-            Optional<User> user = userRepository.findByUsernameAndPassword(username, password);
 
-            if (!user.isPresent()) {
+            Optional<User> user = userRepository.findByUsername(username);
+
+            if (!user.isPresent() || !bCryptUtil.verifyPwd(password, user.get().getPassword())) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect credentials");
             }
 

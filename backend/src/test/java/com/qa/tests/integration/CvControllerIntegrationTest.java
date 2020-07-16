@@ -2,9 +2,9 @@ package com.qa.tests.integration;
 
 import com.qa.domain.Cv;
 import com.qa.domain.User;
-import com.qa.jwt.JwtTokenUtil;
 import com.qa.repository.ICvRepository;
 import com.qa.repository.UserRepository;
+import com.qa.utility.JwtUtil;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
@@ -12,7 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +60,7 @@ public class CvControllerIntegrationTest {
     private WebApplicationContext context;
 
     @Autowired
-    private JwtTokenUtil tokenUtil;
+    private JwtUtil tokenUtil;
 
     private String token;
     private Cookie cookie;
@@ -187,23 +186,6 @@ public class CvControllerIntegrationTest {
 
             assertEquals(cvIndex.toString(), jsonObject.toString());
         }
-    }
-
-    @Test
-    @Ignore
-    public void testGetUserCvs_NotFound() throws Exception {
-
-        String username = "something made up";
-        List<Cv> cv = cvRepository.findAllByName(username);
-        assertTrue(cv.isEmpty());
-
-        request = MockMvcRequestBuilders
-                .get("/cvsystem/get")
-                .param("name", username);
-
-        mockMvc.perform(request)
-                .andExpect(status().isNotFound());
-
     }
 
     @Test

@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="TestAll" type="JUnit" factoryName="JUnit" singleton="false" repeat_count="2">
+  <configuration default="false" name="TestAll" type="JUnit" factoryName="JUnit" singleton="false" repeat_count="10" repeat_mode="N Times">
     <module name="cvsystem" />
     <useClassPathOnly />
     <extension name="coverage" runner="jacoco">
@@ -32,7 +32,7 @@
         <option name="ENABLED" value="true" />
       </pattern>
       <pattern>
-        <option name="PATTERN" value="com.qa.jwt.JwtTokenUtil" />
+        <option name="PATTERN" value="com.qa.utility.JwtUtil" />
         <option name="ENABLED" value="true" />
       </pattern>
       <pattern>

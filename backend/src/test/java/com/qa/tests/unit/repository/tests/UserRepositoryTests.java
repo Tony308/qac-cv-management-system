@@ -150,7 +150,7 @@ public class UserRepositoryTests {
 		assertEquals("maximus", actual);
 	    assertEquals(expected, actual);
 
-		assertEquals("desparado",user.getPassword());
+		assertEquals("desparado", user.getPassword());
 		assertEquals(maximus.getPassword(), user.getPassword());
 
 		found = userRepository.findByUsername("jimmy");

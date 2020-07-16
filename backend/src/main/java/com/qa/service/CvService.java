@@ -3,9 +3,9 @@ package com.qa.service;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.qa.domain.Cv;
 import com.qa.domain.User;
-import com.qa.jwt.JwtTokenUtil;
 import com.qa.repository.ICvRepository;
 import com.qa.repository.UserRepository;
+import com.qa.utility.JwtUtil;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class CvService {
     private UserRepository userRepository;
 
 	@Autowired
-    private JwtTokenUtil tokenUtil;
+    private JwtUtil tokenUtil;
 
     public ResponseEntity getUserCVs(@NotBlank String name, String token)  {
 	    try {

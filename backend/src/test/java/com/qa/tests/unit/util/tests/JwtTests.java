@@ -1,10 +1,10 @@
-package com.qa.tests.unit.jwt.tests;
+package com.qa.tests.unit.util.tests;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.qa.jwt.JwtTokenUtil;
+import com.qa.utility.JwtUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +36,7 @@ public class JwtTests {
     private String secret;
 
     @Autowired
-    private JwtTokenUtil tokenUtil;
+    private JwtUtil tokenUtil;
 
     @Before
     public void setUp() throws Exception {
