@@ -1,4 +1,4 @@
-package com.qa.jwt;
+package com.qa.utility;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -18,14 +18,14 @@ import java.util.Map;
 
 @Component
 @PropertySource("classpath:/application.properties")
-public class JwtTokenUtil {
+public class JwtUtil {
 
     private final String issuer;
     private final String defaultClaim;
 
     final private Algorithm algorithm;
 
-    public JwtTokenUtil(
+    public JwtUtil(
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.issuer}") String issuer,
             @Value("${jwt.claim}") String defaultClaim) {

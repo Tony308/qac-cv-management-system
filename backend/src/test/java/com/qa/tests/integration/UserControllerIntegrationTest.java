@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -53,7 +54,9 @@ public class UserControllerIntegrationTest {
                 new ServletRequestAttributes(mockRequest);
         RequestContextHolder.setRequestAttributes(servletRequestAttributes);
 
-        userRepository.save(new User("username", "password"));
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String password = encoder.encode("password");
+        userRepository.save(new User("username", password));
     }
 
     @After

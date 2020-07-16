@@ -36,7 +36,6 @@ public class Cv {
 
 	public Cv(){}
 
-
 	public Cv(@NotBlank @Size(min = 5) String name, @NotBlank String fileName, @NotNull Binary cvFile) {
 		this.name = name;
 		this.fileName = fileName;

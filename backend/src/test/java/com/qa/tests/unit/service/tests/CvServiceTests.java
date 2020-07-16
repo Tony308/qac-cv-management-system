@@ -2,10 +2,10 @@ package com.qa.tests.unit.service.tests;
 
 import com.qa.domain.Cv;
 import com.qa.domain.User;
-import com.qa.jwt.JwtTokenUtil;
 import com.qa.repository.ICvRepository;
 import com.qa.repository.UserRepository;
 import com.qa.service.CvService;
+import com.qa.utility.JwtUtil;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.junit.Before;
@@ -47,7 +47,7 @@ public class CvServiceTests {
     private UserRepository userRepository;
 
     @Mock
-    private JwtTokenUtil tokenUtil;
+    private JwtUtil tokenUtil;
 
     final private String data = "Initial File\n" +
             "Feel free to delete this file when the database is setup.";
@@ -125,24 +125,6 @@ public class CvServiceTests {
 
 
         assertEquals(expected, actual);
-    }
-
-    @Test
-    @Ignore
-    public void testGetAllCvsFail() {
-
-        List<Cv> found = new ArrayList<>();
-
-        when(iCvRepository.findAllByName("jesus")).thenReturn(found);
-
-        ResponseEntity<?> actual = cvService.getUserCVs("jesus", "token");
-
-        verify(iCvRepository).findAllByName("jesus");
-
-        ResponseEntity<?> expected = ResponseEntity.notFound().build();
-
-        assertEquals(expected, actual);
-
     }
 
     @Test

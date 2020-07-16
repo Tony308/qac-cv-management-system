@@ -81,7 +81,6 @@
 			<artifactId>spring-boot-starter-validation</artifactId>
 			<version>2.3.0.RELEASE</version>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
 		<dependency>
 			<groupId>com.auth0</groupId>

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
@@ -36,7 +37,9 @@ public class UserServiceIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
-        user = new User(username, pwd);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String password = encoder.encode(pwd);
+        user = new User(username, password);
         userRepository.save(user);
 
     }
@@ -66,7 +69,8 @@ public class UserServiceIntegrationTest {
     @Test
     public void testLoginUnauthorized() {
         ResponseEntity actual = userService.authenticateUser(username, "wrong");
-        assertEquals(HttpStatus.UNAUTHORIZED, actual.getStatusCode());
+        ResponseEntity expected = ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect credentials");
+        assertEquals(expected, actual);
 
     }
 
