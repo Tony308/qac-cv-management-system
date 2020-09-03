@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.qa.cvsystem</groupId>
 	<artifactId>cvsystem</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<description>cv bench project system</description>
 	<name>QAC_CV_Management_System</name>
 

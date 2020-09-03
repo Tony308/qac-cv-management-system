@@ -34,10 +34,6 @@ services:
     build:
       ./mongo
     container_name: mongodb
-    environment:
-      MONGO_INITDB_DATABASE: test
-      MONGO_INITDB_ROOT_PASSWORD: admin
-      MONGO_INTIDB_ROOT_USERNAME: admin
     image: tonyh308/cv-mongodb:2.0
     labels:
       com.qa.description: MongoDb Container for application.

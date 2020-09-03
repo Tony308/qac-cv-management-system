@@ -22,8 +22,7 @@ public class JwtTokenUtil {
 
     private final String issuer;
     private final String defaultClaim;
-
-    final private Algorithm algorithm;
+    private final Algorithm algorithm;
 
     public JwtTokenUtil(
             @Value("${jwt.secret}") String secret,

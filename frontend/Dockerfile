@@ -1,9 +1,12 @@
-FROM node:12.2.0-alpine
+FROM node:12.2.0-alpine as build
 RUN mkdir -p /app
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY . .
 ### INSTALLS PACKAGES
-RUN npm install
-EXPOSE 3000:3000
-ENTRYPOINT ["npm", "run", "start"]
+RUN npm i && npm run build
+
+FROM node:12.2.0-alpine 
+COPY --from=build /app/build ./build
+
+RUN npm run serve
