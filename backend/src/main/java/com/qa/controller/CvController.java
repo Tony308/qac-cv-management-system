@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/cvsystem")
-@CrossOrigin(value = {"http://localhost:3000", "https://localhost:3000"},
+@CrossOrigin(value = {"http://localhost:3000", "https://localhost:3000", "https://cv-management-sys-backend.herokuapp.com/"},
 		allowCredentials = "true")
 public class CvController {
 

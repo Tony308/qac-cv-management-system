@@ -1,21 +1,24 @@
 const axios = require('axios');
 const Cookies = require('js-cookie');
 
+const baseURL = process.env.NODE_ENV === "production" ? `https://cv-management-sys-backend.herokuapp.com/cvsystem` : `http://localhost:8081/cvsystem`;
+
 const API  = axios.create({
-  baseURL: 'http://localhost:8081/cvsystem',
+  baseURL,
   timeout: 3500,
-  headers: {'Authorization': `Bearer ${Cookies.get('authToken',{expires:1})}`},
   withCredentials: true
 });
 
+const attributes = {expires: 1, secure: true, sameSite: 'lax'}
+
 function getCookie(cookieName) {
-  return Cookies.get(cookieName, {expires: 1});
+  return Cookies.get(cookieName, attributes);
 }
 
 function login(e) {
   e.preventDefault();
-  Cookies.remove('authToken', {expires: 1})
-  let url = "http://localhost:8081/cvsystem/login";
+  Cookies.remove('authToken', attributes)
+  let url = `${baseURL}/login`;
   let data = new FormData();
 
   data.append('username', this.state.username);
@@ -30,7 +33,7 @@ function login(e) {
         password: ""
       });
       console.log(res);
-      Cookies.set("authToken", res.data.token, {expires: 1});
+      Cookies.set("authToken", res.data.token, attributes);
       console.log(getCookie('authToken'));
       sessionStorage.setItem("auth", 'true');
     }
@@ -41,7 +44,7 @@ function login(e) {
 
 function createAccount(e) {
   e.preventDefault();
-  const url = `http://localhost:8081/cvsystem/create-account`;
+  const url = `${baseURL}/create-account`;
 
   let data = new FormData();
   data.append("username", this.state.username);
@@ -79,7 +82,6 @@ function uploadCV(e) {
         console.log('No file');
         return;
     } else if (!localStorage.getItem("username")) {
-      //Is only ever set in login hence, requries re-login
       sessionStorage.setItem('auth', 'false');
       window.location.href="/"
       return;
