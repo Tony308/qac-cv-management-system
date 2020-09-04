@@ -3,21 +3,22 @@ const Cookies = require('js-cookie');
 
 const baseURL = process.env.NODE_ENV === "production" ? `https://cv-management-sys-backend.herokuapp.com/cvsystem` : `http://localhost:8081/cvsystem`;
 
+const cookieAttrs = {expires: 1, secure: true, sameSite: 'None'}
+
 const API  = axios.create({
   baseURL,
-  timeout: 3500,
+  timeout: 3500,  
   withCredentials: true
 });
 
-const attributes = {expires: 1, secure: true, sameSite: 'lax'}
 
 function getCookie(cookieName) {
-  return Cookies.get(cookieName, attributes);
+  return Cookies.get(cookieName, cookieAttrs);
 }
 
 function login(e) {
   e.preventDefault();
-  Cookies.remove('authToken', attributes)
+  Cookies.remove('authToken', cookieAttrs)
   let url = `${baseURL}/login`;
   let data = new FormData();
 
@@ -33,7 +34,7 @@ function login(e) {
         password: ""
       });
       console.log(res);
-      Cookies.set("authToken", res.data.token, attributes);
+      Cookies.set("authToken", res.data.token, cookieAttrs);
       console.log(getCookie('authToken'));
       sessionStorage.setItem("auth", 'true');
     }
