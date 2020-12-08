@@ -2,12 +2,13 @@ const axios = require('axios');
 const Cookies = require('js-cookie');
 
 const baseURL = process.env.NODE_ENV === "production" ? `https://cv-management-sys-backend.herokuapp.com/cvsystem` : `http://localhost:8081/cvsystem`;
+// const baseURL = `https://cv-management-sys-backend.herokuapp.com/cvsystem`;i
 
 const cookieAttrs = {expires: 1, secure: true, sameSite: 'None'}
 
 const API  = axios.create({
   baseURL,
-  timeout: 3500,  
+  timeout: 3500,
   withCredentials: true
 });
 

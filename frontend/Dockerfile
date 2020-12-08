@@ -8,5 +8,5 @@ RUN npm i && npm run build
 
 FROM node:12.2.0-alpine 
 COPY --from=build /app/build ./build
-
-RUN npm run serve
+RUN npm i -g serve
+ENTRYPOINT ["serve", "-s", "build"]
